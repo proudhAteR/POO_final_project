@@ -14,7 +14,7 @@ import Doctrina.Rendering.SpriteProperties;
 public abstract class MovableEntity extends StaticEntity {
 
     protected int speed = 5;
-    private static final int ANIMATION_SPEED = 8;
+    private static final int ANIMATION_SPEED = 6;
 
     protected int currentAnimationFrame = 1;
     protected int nextFrame = ANIMATION_SPEED;
@@ -40,13 +40,13 @@ public abstract class MovableEntity extends StaticEntity {
 
     public void move() {
         int allowedSpeed = collision.getAllowedSpeed();
-        x += direction.calculateVelocityX(allowedSpeed);
-        y += direction.calculateVelocityY(allowedSpeed);
+        position.addX(direction.calculateVelocityX(allowedSpeed)); 
+        position.addY(direction.calculateVelocityY(allowedSpeed));
 
-        moved = (x != lastX || y != lastY);
+        moved = (position.getX() != lastX || position.getY() != lastY);
 
-        lastX = x;
-        lastY = y;
+        lastX = position.getX();
+        lastY = position.getY();
     }
 
     protected void resetAnimationFrame() {
@@ -69,7 +69,7 @@ public abstract class MovableEntity extends StaticEntity {
         for (int i = 0; i < Direction.values().length; i++) {
             frames[i] = resourcesManager.extractFrames(properties.getFrameCount(), properties.getXOff(),
                     properties.getYOff(), this, image);
-            properties.setYOff(this.height);
+            properties.setYOff(this.size.getHeight());
         }
     }
 
@@ -136,28 +136,28 @@ public abstract class MovableEntity extends StaticEntity {
     public void draw(Canvas canvas) {
 
         switch (direction) {
-            case DOWN -> canvas.drawImage(frames[0][currentAnimationFrame], x, y);
-            case LEFT -> canvas.drawImage(frames[1][currentAnimationFrame], x, y);
-            case RIGHT -> canvas.drawImage(frames[2][currentAnimationFrame], x, y);
-            case UP -> canvas.drawImage(frames[3][currentAnimationFrame], x, y);
+            case DOWN -> canvas.drawImage(frames[0][currentAnimationFrame], position);
+            case LEFT -> canvas.drawImage(frames[1][currentAnimationFrame], position);
+            case RIGHT -> canvas.drawImage(frames[2][currentAnimationFrame], position);
+            case UP -> canvas.drawImage(frames[3][currentAnimationFrame], position);
 
         }
     }
 
     private Rectangle getUpperHitBox() {
-        return new Rectangle(x, y - speed, width, speed);
+        return new Rectangle(position.getX(), position.getY() - speed, size.getWidth(), speed);
     }
 
     private Rectangle getLowerHitBox() {
-        return new Rectangle(x, y + height, width, speed);
+        return new Rectangle(position.getX(), position.getY()  + size.getHeight(), size.getWidth(), speed);
     }
 
     private Rectangle getLeftHitBox() {
-        return new Rectangle(x - speed, y, speed, height);
+        return new Rectangle(position.getX() - speed, position.getY(), speed, size.getHeight());
     }
 
     private Rectangle getRightHitBox() {
-        return new Rectangle(x + width, y, speed, height);
+        return new Rectangle(position.getX() + size.getWidth(), position.getY(), speed, size.getHeight());
     }
 
     public boolean intersectsWith(StaticEntity other) {

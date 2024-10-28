@@ -3,27 +3,34 @@ package Doctrina.Entities;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import Doctrina.Physics.Position;
+import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;
 
 public abstract class StaticEntity{
-    protected int x;
-    protected int y;
-    protected int height;
-    protected int width;
+    protected Position position;
+    protected Size size;
     protected Color color;
 
     public abstract void draw(Canvas canvas);
 
     public void teleport(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.position.setX(x);
+        this.position.setY(y);
+    }
+
+    public void teleport(Position position){
+        teleport(position.getX(), position.getY());
+    }
+    public Position getPosition() {
+        return position;
     }
 
     public abstract void load();
 
-    public void setDimension(int width, int height) {
-        this.height = height;
-        this.width = width;
+    public void setDimension(Size size) {
+        this.size.setHeight(size.getHeight());
+        this.size.setWidth(size.getWidth());
     }
 
     public boolean collided(StaticEntity entity) {
@@ -31,7 +38,7 @@ public abstract class StaticEntity{
     }
 
     protected Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
+        return new Rectangle(position.getX(), position.getY(), size.getWidth(), size.getHeight());
     }
 
     public void drawHitBox(Canvas canvas, Color color) {
@@ -47,19 +54,19 @@ public abstract class StaticEntity{
     }
 
     public int getX() {
-        return x;
+        return position.getX();
     }
 
     public int getY() {
-        return y;
+        return position.getY();
     }
 
     public int getWidth() {
-        return width;
+        return size.getWidth();
     }
 
     public int getHeight() {
-        return height;
+        return size.getHeight();
     }
 
 }

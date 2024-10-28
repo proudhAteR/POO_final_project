@@ -8,6 +8,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import Doctrina.Entities.StaticEntity;
+import city_cleaner.SFX;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -48,11 +49,11 @@ public class ResourcesManager {
         }
     }
 
-    public void playSFX(String SFXPath) {
+    public void playSFX(SFX effect) {
         try {
             Clip clip = AudioSystem.getClip();
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
-                    this.getClass().getClassLoader().getResourceAsStream(SFXPath));
+                    this.getClass().getClassLoader().getResourceAsStream(effect.getPath()));
             clip.open(audioInputStream);
             clip.start();
         } catch (Exception e) {

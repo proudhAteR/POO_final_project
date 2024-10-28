@@ -3,6 +3,8 @@ package city_cleaner;
 import Doctrina.Controllers.MovementController;
 import Doctrina.Rendering.SpriteProperties;
 import Doctrina.Entities.ControllableEntity;
+import Doctrina.Physics.Position;
+import Doctrina.Physics.Size;
 
 import java.awt.Color;
 
@@ -12,8 +14,10 @@ public class Player extends ControllableEntity{
 
     public Player(MovementController controller) {
         super(controller);
-        teleport(300, 300);
-        setDimension(16, 16);
+        position = new Position(300, 300);
+        teleport(position);
+        size = new Size(16, 16);
+        setDimension(size);
         properties = new SpriteProperties(3, 16, 0);
         setSpeed(2);
         load();

@@ -3,6 +3,7 @@ package Doctrina.Rendering;
 import java.awt.*;
 
 import Doctrina.Entities.StaticEntity;
+import Doctrina.Physics.Position;
 
 public class Canvas {
     private Graphics2D graphics;
@@ -46,5 +47,9 @@ public class Canvas {
 
     public void drawImage(Image image, int x, int y) {
         graphics.drawImage(image, x, y, null);
+    }
+
+    public void drawImage(Image image, Position position) {
+        graphics.drawImage(image,position.getX(), position.getY(), null);
     }
 }

@@ -3,6 +3,7 @@ package city_cleaner;
 import java.awt.Color;
 
 import Doctrina.Rendering.Canvas;
+import Doctrina.Rendering.RenderingEngine;
 import Doctrina.Core.Game;
 
 public class CityCleanerGame extends Game{
@@ -13,6 +14,8 @@ public class CityCleanerGame extends Game{
     protected void initialize() {
         gamePad = new GamePad();
         player = new Player(gamePad, Color.MAGENTA);
+        RenderingEngine.getInstance().getScreen().fullscreen();
+        RenderingEngine.getInstance().getScreen().hideCursor();
     }
 
     @Override
