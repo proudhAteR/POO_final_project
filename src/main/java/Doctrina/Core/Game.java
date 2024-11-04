@@ -6,6 +6,7 @@ import Doctrina.Rendering.RenderingEngine;
 public abstract class Game {
     private boolean playing = true;
     private final RenderingEngine renderingEngine;
+    protected Camera camera;
    
 
     public Game() {

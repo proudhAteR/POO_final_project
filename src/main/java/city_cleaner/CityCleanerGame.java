@@ -4,16 +4,20 @@ import java.awt.Color;
 
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
+import Doctrina.Core.Camera;
 import Doctrina.Core.Game;
+import Doctrina.Physics.Position;
 
-public class CityCleanerGame extends Game{
+public class CityCleanerGame extends Game {
     private GamePad gamePad;
     private Player player;
-    //private World world;
+
+    // private World world;
     @Override
     protected void initialize() {
         gamePad = new GamePad();
         player = new Player(gamePad, Color.MAGENTA);
+        camera = new Camera(new Position(0, 0));
         RenderingEngine.getInstance().getScreen().fullscreen();
         RenderingEngine.getInstance().getScreen().hideCursor();
     }
@@ -23,7 +27,8 @@ public class CityCleanerGame extends Game{
         if (gamePad.isQuitPressed()) {
             stop();
         }
-        player.update(); 
+        player.update();
+        camera.update(player);
 
     }
 
