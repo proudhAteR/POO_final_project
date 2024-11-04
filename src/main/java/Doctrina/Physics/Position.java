@@ -30,4 +30,5 @@ public class Position {
     public void addY(int value) {
         y += value;
     }
+    
 }

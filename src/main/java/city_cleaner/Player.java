@@ -14,7 +14,7 @@ public class Player extends ControllableEntity{
 
     public Player(MovementController controller) {
         super(controller);
-        position = new Position(300, 300);
+        position = new Position(200, 200);
         teleport(position);
         size = new Size(16, 16);
         setDimension(size);

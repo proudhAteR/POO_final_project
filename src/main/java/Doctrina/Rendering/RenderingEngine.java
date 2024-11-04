@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-
 public class RenderingEngine {
 
     private static RenderingEngine instance;

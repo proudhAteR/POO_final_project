@@ -10,6 +10,7 @@ public class Canvas {
 
     public Canvas(Graphics2D graphics) {
         this.graphics = graphics;
+        graphics.setFont(new Font("Roboto", Font.PLAIN, 50));
     }
 
     public void drawString(String text, int x, int y, Paint paint) {

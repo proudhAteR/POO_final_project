@@ -2,15 +2,19 @@ package Doctrina.Core;
 
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
+import Doctrina.Physics.Size;;
 
 public abstract class Game {
     private boolean playing = true;
     private final RenderingEngine renderingEngine;
     protected Camera camera;
+    protected Size windowSize;
    
 
     public Game() {
         renderingEngine = RenderingEngine.getInstance();
+        windowSize = renderingEngine.getScreen().getSize();
+        camera = new Camera(windowSize);
     }
 
     public void stop() {
@@ -32,6 +36,10 @@ public abstract class Game {
             gameTime.synchronize();
         }
         renderingEngine.stop();
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 
     protected abstract void initialize();
