@@ -48,11 +48,12 @@ public class Screen {
         if (frameIsVisible) {
             frame.setVisible(true);
         }
-        //fullscreenDisplayMode = findClosestDisplayMode(width, height);
-        System.out.println("Fullscreen Mode: " + fullscreenDisplayMode.getWidth() + "x" + fullscreenDisplayMode.getHeight());
+        // fullscreenDisplayMode = findClosestDisplayMode(width, height);
+        System.out.println(
+                "Fullscreen Mode: " + fullscreenDisplayMode.getWidth() + "x" + fullscreenDisplayMode.getHeight());
     }
 
-    public Size getSize(){
+    public Size getSize() {
         return new Size(getWidth(), getHeight());
     }
 
@@ -72,7 +73,7 @@ public class Screen {
         if (device.isFullScreenSupported()) {
             device.setFullScreenWindow(frame);
         }
-        //device.setDisplayMode(fullscreenDisplayMode);
+        // device.setDisplayMode(fullscreenDisplayMode);
         frame.setLocationRelativeTo(null);
         isFullscreenMode = true;
     }
@@ -81,32 +82,36 @@ public class Screen {
         if (device.isFullScreenSupported()) {
             device.setFullScreenWindow(null);
         }
-        //device.setDisplayMode(windowedDisplayMode);
+        // device.setDisplayMode(windowedDisplayMode);
         frame.setLocationRelativeTo(null);
         isFullscreenMode = false;
     }
 
-    private DisplayMode findClosestDisplayMode(int width, int height) {
-        DisplayMode[] displayModes = device.getDisplayModes();
-        int desiredResolution = width * height;
-        int[] availableResolutions = new int[displayModes.length];
-        for (int i = 0; i < displayModes.length; i++) {
-            availableResolutions[i] = displayModes[i].getWidth() * displayModes[i].getHeight();
-        }
-        return displayModes[closestIndexOfValue(desiredResolution, availableResolutions)];
-    }
-
-    private int closestIndexOfValue(int value, int[] list) {
-        int closestIndex = -1;
-        for (int i = 0, min = Integer.MAX_VALUE; i < list.length; ++i) {
-            final int difference = Math.abs(list[i] - value);
-            if (difference < min) {
-                min = difference;
-                closestIndex = i;
-            }
-        }
-        return closestIndex;
-    }
+    /*
+     * private DisplayMode findClosestDisplayMode(int width, int height) {
+     * DisplayMode[] displayModes = device.getDisplayModes();
+     * int desiredResolution = width * height;
+     * int[] availableResolutions = new int[displayModes.length];
+     * for (int i = 0; i < displayModes.length; i++) {
+     * availableResolutions[i] = displayModes[i].getWidth() *
+     * displayModes[i].getHeight();
+     * }
+     * return displayModes[closestIndexOfValue(desiredResolution,
+     * availableResolutions)];
+     * }
+     * 
+     * private int closestIndexOfValue(int value, int[] list) {
+     * int closestIndex = -1;
+     * for (int i = 0, min = Integer.MAX_VALUE; i < list.length; ++i) {
+     * final int difference = Math.abs(list[i] - value);
+     * if (difference < min) {
+     * min = difference;
+     * closestIndex = i;
+     * }
+     * }
+     * return closestIndex;
+     * }
+     */
 
     private void initializeFrame() {
         frame = new JFrame();

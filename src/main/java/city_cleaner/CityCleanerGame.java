@@ -33,9 +33,10 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void draw(Canvas canvas) {
+        canvas.drawBlueScreen();
         world.draw(canvas);
         player.draw(canvas);
-        drawCamPosition(canvas);
+        //drawCamPosition(canvas);
     }
 
 }
