@@ -9,10 +9,11 @@ import Doctrina.Core.Game;
 public class CityCleanerGame extends Game {
     private GamePad gamePad;
     private Player player;
-
-    // private World world;
+    private World world;
     @Override
     protected void initialize() {
+        world = new World();
+        world.load();
         gamePad = new GamePad();
         player = new Player(gamePad, Color.MAGENTA);
         RenderingEngine.getInstance().getScreen().fullscreen();
@@ -32,10 +33,9 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void draw(Canvas canvas) {
-        canvas.drawBlueScreen();
+        world.draw(canvas);
         player.draw(canvas);
-        canvas.drawString(String.valueOf(camera.getPosition().getY()), 0, 48, Color.WHITE);
-        canvas.drawString(String.valueOf(camera.getPosition().getX()), 120, 48, Color.WHITE);
+        drawCamPosition(canvas);
     }
 
 }

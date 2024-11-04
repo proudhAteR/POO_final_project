@@ -4,12 +4,15 @@ import java.awt.*;
 
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;
+import Doctrina.Core.Camera;
 
 public class Canvas {
     private Graphics2D graphics;
+    private Camera camera;
 
-    public Canvas(Graphics2D graphics) {
+    public Canvas(Graphics2D graphics, Camera camera) {
         this.graphics = graphics;
+        this.camera = camera;
         graphics.setFont(new Font("Roboto", Font.PLAIN, 50));
     }
 
@@ -33,7 +36,7 @@ public class Canvas {
     }
 
     public void drawRectangle(StaticEntity entity) {
-        drawRectangle(entity,entity.getColor());
+        drawRectangle(entity, entity.getColor());
     }
 
     public void drawRectangle(Rectangle rect, Paint paint) {
@@ -47,10 +50,10 @@ public class Canvas {
     }
 
     public void drawImage(Image image, int x, int y) {
-        graphics.drawImage(image, x, y, null);
+        graphics.drawImage(image, x - camera.getPosition().getX(), y -  camera.getPosition().getY(), null);
     }
 
     public void drawImage(Image image, Position position) {
-        graphics.drawImage(image,position.getX(), position.getY(), null);
+        graphics.drawImage(image, position.getX() , position.getY(), null);
     }
 }

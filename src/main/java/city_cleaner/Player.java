@@ -14,12 +14,12 @@ public class Player extends ControllableEntity{
 
     public Player(MovementController controller) {
         super(controller);
-        position = new Position(200, 200);
+        position = new Position(400, 300);
         teleport(position);
         size = new Size(16, 16);
         setDimension(size);
         properties = new SpriteProperties(3, 16, 0);
-        setSpeed(2);
+        setSpeed(1);
         load();
     }
     public void load() {

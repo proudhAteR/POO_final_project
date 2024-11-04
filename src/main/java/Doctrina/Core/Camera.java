@@ -14,14 +14,11 @@ public class Camera {
         this.windowSize = windowSize;
     }
 
-    public Camera(Size windowSize, StaticEntity e) {
-        focusOn(e);
-        this.windowSize = windowSize;
-    }
-
     public void update() {
-        this.position.setX(entity.getX() - windowSize.getWidth() / 2);
-        this.position.setY(entity.getY() - windowSize.getHeight() / 2);
+        if (entity != null) {
+            this.position.setX(entity.getX() - windowSize.getWidth() / 2);
+            this.position.setY(entity.getY() - windowSize.getHeight() / 2);
+        }
     }
 
     public Position getPosition() {

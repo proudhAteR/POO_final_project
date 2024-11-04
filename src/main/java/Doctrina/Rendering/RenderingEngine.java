@@ -1,19 +1,28 @@
 package Doctrina.Rendering;
 
 import javax.swing.*;
+
+import Doctrina.Core.Camera;
+import Doctrina.Physics.Size;
+
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+
 public class RenderingEngine {
 
     private static RenderingEngine instance;
     private JPanel panel;
     private BufferedImage bufferedImage;
     private Screen screen;
+    private static Size windowSize;
+    private static Camera camera;
 
     public static RenderingEngine getInstance() {
         if (instance == null) {
             instance = new RenderingEngine();
+            windowSize = instance.getScreen().getSize();
+            camera = new Camera(windowSize);
         }
         return instance;
     }
@@ -38,7 +47,11 @@ public class RenderingEngine {
 
         Graphics2D buffer = bufferedImage.createGraphics();
         buffer.setRenderingHints(buildRenderingHints());
-        return new Canvas(buffer);
+        return new Canvas(buffer, camera);
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 
     public void drawOnScreen() {

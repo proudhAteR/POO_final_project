@@ -1,24 +1,26 @@
 package Doctrina.Core;
 
+import java.awt.Color;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
-import Doctrina.Physics.Size;;
 
 public abstract class Game {
     private boolean playing = true;
     private final RenderingEngine renderingEngine;
     protected Camera camera;
-    protected Size windowSize;
-   
 
     public Game() {
         renderingEngine = RenderingEngine.getInstance();
-        windowSize = renderingEngine.getScreen().getSize();
-        camera = new Camera(windowSize);
+        camera = renderingEngine.getCamera();
     }
 
     public void stop() {
         playing = false;
+    }
+
+    protected void drawCamPosition(Canvas canvas) {
+        canvas.drawString(String.valueOf(renderingEngine.getCamera().getPosition().getY()), 0, 48, Color.WHITE);
+        canvas.drawString(String.valueOf(renderingEngine.getCamera().getPosition().getX()), 136, 48, Color.WHITE);
     }
 
     public final void start() {
@@ -36,10 +38,6 @@ public abstract class Game {
             gameTime.synchronize();
         }
         renderingEngine.stop();
-    }
-
-    public Camera getCamera() {
-        return camera;
     }
 
     protected abstract void initialize();
