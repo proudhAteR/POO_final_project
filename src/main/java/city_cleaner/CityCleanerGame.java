@@ -36,7 +36,7 @@ public class CityCleanerGame extends Game {
         canvas.drawBlueScreen();
         world.draw(canvas);
         player.draw(canvas);
-        //drawCamPosition(canvas);
+        drawCamPosition(canvas, player);
     }
 
 }

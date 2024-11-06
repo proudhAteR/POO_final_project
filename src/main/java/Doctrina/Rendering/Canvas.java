@@ -54,6 +54,10 @@ public class Canvas {
     }
 
     public void drawImage(Image image, Position position) {
-        graphics.drawImage(image, position.getX() , position.getY(), null);
+        drawImage(image, position.getX() , position.getY());
+    }
+
+    public void drawImageTest(Image image, int x, int y) {
+        graphics.drawImage(image, x, y, null);
     }
 }

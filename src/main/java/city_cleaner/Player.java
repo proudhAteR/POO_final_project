@@ -8,8 +8,8 @@ import Doctrina.Physics.Size;
 
 import java.awt.Color;
 
-public class Player extends ControllableEntity{
-        protected static final String SPRITE_PATH = "images/sprite_sheets/male.png";
+public class Player extends ControllableEntity {
+    protected static final String SPRITE_PATH = "images/sprite_sheets/male.png";
     private SpriteProperties properties;
 
     public Player(MovementController controller) {
@@ -19,24 +19,25 @@ public class Player extends ControllableEntity{
         size = new Size(16, 16);
         setDimension(size);
         properties = new SpriteProperties(3, 16, 0);
-        setSpeed(1);
+        setSpeed(3);
         load();
     }
+
     public void load() {
         loadSpriteSheet(SPRITE_PATH);
         loadAnimationFrames(properties);
     }
 
-    public Player (MovementController controller, Color color){
+    public Player(MovementController controller, Color color) {
         this(controller);
         this.color = color;
     }
+
     public void update() {
         super.update();
         moveWithController();
 
         checkMovement();
     }
-    
 
 }
