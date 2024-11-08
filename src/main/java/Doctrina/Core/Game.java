@@ -12,12 +12,10 @@ public abstract class Game {
     private boolean playing = true;
     private final RenderingEngine renderingEngine;
     protected Camera camera;
-    protected ArrayList<Trace> traces;
 
 
     public Game() {
         renderingEngine = RenderingEngine.getInstance();
-        traces = new ArrayList<>();
         camera = renderingEngine.getCamera();
     }
 

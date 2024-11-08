@@ -1,7 +1,7 @@
 package city_cleaner;
-import Doctrina.Entities.Hostile;
-import Doctrina.Entities.MovableEntity;
-import Doctrina.Entities.Sight;
+import Doctrina.Core.Camera;
+import Doctrina.Core.Trace;
+import Doctrina.Entities.*;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;
@@ -30,9 +30,14 @@ public class Enemy extends MovableEntity implements Hostile {
     }
 
     @Override
-    public void follow() {
-
+    public void follow(MovableEntity entity) {
+        for(Trace trace : entity.getTraces()){
+            if(sight.intersects(trace)){
+                teleport(trace.getPosition());
+            }
+        }
     }
+
 
     @Override
     public void update() {

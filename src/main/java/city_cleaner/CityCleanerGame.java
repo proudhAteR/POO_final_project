@@ -24,6 +24,7 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void update() {
+        enemy.follow(player);
         if (gamePad.isQuitPressed()) {
             stop();
         }
@@ -38,11 +39,11 @@ public class CityCleanerGame extends Game {
             lastMovementTime--;
         }
         if (lastMovementTime == 0) {
-            traces.add(new Trace(new Position(player.getX(), player.getY()), player));
+            player.getTraces().add(new Trace(new Position(player.getX(), player.getY()), player));
             lastMovementTime = 30;
 
-            if (traces.size() > 4) {
-                traces.removeFirst();
+            if (player.getTraces().size() > 4) {
+                player.getTraces().removeFirst();
             }
         }
     }
@@ -51,7 +52,7 @@ public class CityCleanerGame extends Game {
     protected void draw(Canvas canvas) {
         canvas.drawBlueScreen();
         enemy.draw(canvas);
-        for (Trace trace : traces) {
+        for (Trace trace : player.getTraces()) {
             trace.placeTrace(canvas);
         }
         player.draw(canvas);

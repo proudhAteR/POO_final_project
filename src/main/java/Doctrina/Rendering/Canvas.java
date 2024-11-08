@@ -27,16 +27,9 @@ public class Canvas {
         graphics.fillOval(x, y, width, height);
     }
 
-    public void drawCircle(Position position, Size size, StaticEntity entity) {
-        int centerX = position.getX() - camera.getPosition().getX() - (entity.getWidth() + size.getWidth()) / 6;
-        int centerY = position.getY() - camera.getPosition().getY() - (entity.getHeight() + size.getHeight()) / 6;
-
-        drawCircle(centerX, centerY, size.getWidth(), size.getHeight());
-    }
-
     public void drawRectangle(int x, int y, int width, int height, Paint paint) {
         graphics.setPaint(paint);
-        graphics.fillRect(x, y, width, height);
+        graphics.fillRect(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
     }
 
     public void drawRectangle(StaticEntity entity, Paint paint) {
@@ -47,10 +40,6 @@ public class Canvas {
         drawRectangle(entity, entity.getColor());
     }
 
-    public void drawRectangle(Position pos, StaticEntity entity) {
-        drawRectangle(pos.getX() - camera.getPosition().getX() + entity.getWidth() / 2,
-                pos.getY() - camera.getPosition().getY() + entity.getHeight() / 2, 6, 6, Color.PINK);
-    }
 
     public void drawRectangle(Rectangle rect, Paint paint) {
         drawRectangle(rect.x, rect.y, rect.width, rect.height, paint);
@@ -59,7 +48,7 @@ public class Canvas {
     public void drawBlueScreen() {
         int width = 800;
         int height = 600;
-        drawRectangle(0, 0, width, height, Color.BLUE);
+        drawRectangle(camera.getPosition().getX(), camera.getPosition().getY(), width, height, Color.BLUE);
     }
 
     public void drawImage(Image image, int x, int y) {

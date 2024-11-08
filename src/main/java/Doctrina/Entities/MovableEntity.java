@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import Doctrina.Controllers.Direction;
+import Doctrina.Core.Trace;
 import Doctrina.Physics.Collision;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.ResourcesManager;
@@ -23,6 +25,7 @@ public abstract class MovableEntity extends StaticEntity {
     private int lastY = Integer.MIN_VALUE;
     private boolean moved;
     private final Collision collision;
+    protected ArrayList<Trace> traces;
 
     protected Image[][] frames = new Image[4][];
     private final ResourcesManager resourcesManager;
@@ -30,8 +33,12 @@ public abstract class MovableEntity extends StaticEntity {
     private BufferedImage image;
 
     public MovableEntity() {
+        traces = new ArrayList<>();
         collision = new Collision(this);
         resourcesManager = new ResourcesManager();
+    }
+    public ArrayList<Trace> getTraces(){
+        return traces;
     }
 
     public void update() {
