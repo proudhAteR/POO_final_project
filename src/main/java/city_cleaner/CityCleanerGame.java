@@ -6,6 +6,8 @@ import Doctrina.Core.Game;
 import Doctrina.Core.Trace;
 import Doctrina.Physics.Position;
 
+import java.awt.*;
+
 public class CityCleanerGame extends Game {
     private GamePad gamePad;
     private Player player;
@@ -24,29 +26,18 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void update() {
-        enemy.follow(player);
         if (gamePad.isQuitPressed()) {
             stop();
         }
         player.update();
+        lastMovementTime = player.handleMovement(lastMovementTime);
+        enemy.follow(player);
         enemy.update();
         camera.update();
-        handlePlayerMovement();
+
     }
 
-    private void handlePlayerMovement() {
-        if (player.hasMoved()) {
-            lastMovementTime--;
-        }
-        if (lastMovementTime == 0) {
-            player.getTraces().add(new Trace(new Position(player.getX(), player.getY()), player));
-            lastMovementTime = 30;
 
-            if (player.getTraces().size() > 4) {
-                player.getTraces().removeFirst();
-            }
-        }
-    }
 
     @Override
     protected void draw(Canvas canvas) {
@@ -55,6 +46,7 @@ public class CityCleanerGame extends Game {
         for (Trace trace : player.getTraces()) {
             trace.placeTrace(canvas);
         }
+        player.drawHitBox(canvas, Color.PINK);
         player.draw(canvas);
         // drawCamPosition(canvas, player);
     }

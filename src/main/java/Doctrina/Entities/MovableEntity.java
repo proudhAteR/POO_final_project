@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import Doctrina.Controllers.Direction;
 import Doctrina.Core.Trace;
 import Doctrina.Physics.Collision;
+import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.ResourcesManager;
 import Doctrina.Rendering.SpriteProperties;
@@ -89,6 +90,17 @@ public abstract class MovableEntity extends StaticEntity {
         move();
     }
 
+    protected void moveTo(Position position) {
+        int dx = this.position.getX() - position.getX();
+        int dy = this.position.getY() - position.getY();
+
+        this.direction = (Math.abs(dx) > Math.abs(dy)) ?
+                (dx > 0 ? Direction.LEFT : Direction.RIGHT) :
+                (dy > 0 ? Direction.UP : Direction.DOWN);
+
+        move(direction);
+    }
+
     public void moveUp() {
         move(Direction.UP);
     }
@@ -130,12 +142,6 @@ public abstract class MovableEntity extends StaticEntity {
             return getRightHitBox();
         }
         return getBounds();
-    }
-
-    @Override
-    public void drawHitBox(Canvas canvas, Color color) {
-        Rectangle rect = getHitBox();
-        canvas.drawRectangle(rect, color);
     }
 
     @Override

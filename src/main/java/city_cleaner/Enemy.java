@@ -32,9 +32,12 @@ public class Enemy extends MovableEntity implements Hostile {
     @Override
     public void follow(MovableEntity entity) {
         for(Trace trace : entity.getTraces()){
-            if(sight.intersects(trace)){
-                teleport(trace.getPosition());
+            if(sight.intersects(trace.getBounds())){
+                moveTo(trace.getPosition());
             }
+        }
+        if(sight.intersects(entity.getBounds())){
+            moveTo(entity.getPosition());
         }
     }
 
@@ -42,7 +45,7 @@ public class Enemy extends MovableEntity implements Hostile {
     @Override
     public void update() {
         super.update();
-        moveRight();
+        move();
         checkMovement();
     }
     @Override
