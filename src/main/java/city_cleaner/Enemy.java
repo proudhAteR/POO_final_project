@@ -1,6 +1,5 @@
 package city_cleaner;
-import Doctrina.Core.Camera;
-import Doctrina.Core.Trace;
+import Doctrina.Core.Step;
 import Doctrina.Entities.*;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
@@ -10,7 +9,6 @@ import Doctrina.Rendering.SpriteProperties;
 public class Enemy extends MovableEntity implements Hostile {
     protected String ENEMY_SPRITE_SPATH= "images/sprite_sheets/Z_Walk.png";
     private final SpriteProperties props;
-    private final Sight sight;
 
     public Enemy(){
         position = new Position(0, 0);
@@ -25,15 +23,18 @@ public class Enemy extends MovableEntity implements Hostile {
 
     @Override
     public void attack() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'attack'");
+        System.out.println("attack");
     }
 
     @Override
     public void follow(MovableEntity entity) {
-        for(Trace trace : entity.getTraces()){
-            if(sight.intersects(trace.getBounds())){
-                moveTo(trace.getPosition());
+        for(Step step : entity.getSteps()){
+            if(sight.intersects(step.getBounds())){
+                moveTo(step.getPosition());
+                if (this.getHitBox().intersects(step.getBounds())) {
+                    entity.getSteps().remove(step);
+                }
+                break;
             }
         }
         if(sight.intersects(entity.getBounds())){

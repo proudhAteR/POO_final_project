@@ -12,6 +12,7 @@ public abstract class StaticEntity{
     protected Position position;
     protected Size size;
     protected Color color;
+    protected Sight sight;
 
     public abstract void draw(Canvas canvas);
 

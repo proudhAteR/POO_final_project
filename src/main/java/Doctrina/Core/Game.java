@@ -8,7 +8,8 @@ import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
 
 public abstract class Game {
-    protected long lastMovementTime = 30;
+    private final int BASE_MOVEMENT_TIME = 20;
+    protected int lastMovementTime = BASE_MOVEMENT_TIME;
     private boolean playing = true;
     private final RenderingEngine renderingEngine;
     protected Camera camera;
@@ -47,7 +48,9 @@ public abstract class Game {
         }
         renderingEngine.stop();
     }
-
+    public void resetMovementTime() {
+        lastMovementTime = BASE_MOVEMENT_TIME;
+    }
     protected abstract void initialize();
 
     protected abstract void update();

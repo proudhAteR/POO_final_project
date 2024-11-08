@@ -19,7 +19,7 @@ public class Player extends ControllableEntity {
         size = new Size(32, 32);
         setDimension(size);
         properties = new SpriteProperties(4, 32, 0);
-        setSpeed(2);
+        setSpeed(3);
         load();
     }
 

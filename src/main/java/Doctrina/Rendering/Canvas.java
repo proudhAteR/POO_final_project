@@ -1,6 +1,7 @@
 package Doctrina.Rendering;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;
@@ -57,5 +58,9 @@ public class Canvas {
 
     public void drawImage(Image image, Position position) {
         drawImage(image, position.getX(), position.getY());
+    }
+
+    public void drawCircle(Ellipse2D bounds, StaticEntity entity) {
+        drawCircle((int) bounds.getX() - camera.getPosition().getX(), (int) bounds.getY() - camera.getPosition().getY(), (int) bounds.getHeight(), (int) bounds.getWidth());
     }
 }
