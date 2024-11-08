@@ -16,6 +16,11 @@
             <artifactId>basicplayer</artifactId>
             <version>3.0.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.mapeditor</groupId>
+            <artifactId>libtiled</artifactId>
+            <version>1.4.2</version>
+        </dependency>
     </dependencies>
     <resources>
      <resource>

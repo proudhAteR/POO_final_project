@@ -2,6 +2,7 @@ package Doctrina.Entities;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
 
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;

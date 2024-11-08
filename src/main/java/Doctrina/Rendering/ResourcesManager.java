@@ -12,6 +12,7 @@ import city_cleaner.SFX;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class ResourcesManager {
 
@@ -19,7 +20,7 @@ public class ResourcesManager {
         Image image;
         try {
             image = ImageIO.read(
-                    getClass().getClassLoader().getResourceAsStream(imagePath));
+                    Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(imagePath)));
         } catch (IOException e) {
             System.out.println(e);
             e.printStackTrace();
@@ -40,7 +41,7 @@ public class ResourcesManager {
         try {
             Clip clip = AudioSystem.getClip();
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
-                    this.getClass().getClassLoader().getResourceAsStream(soundPath));
+                    Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(soundPath)));
             clip.open(audioInputStream);
             clip.start();
             clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -53,12 +54,13 @@ public class ResourcesManager {
         try {
             Clip clip = AudioSystem.getClip();
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
-                    this.getClass().getClassLoader().getResourceAsStream(effect.getPath()));
+                    Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(effect.getPath())));
             clip.open(audioInputStream);
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
 }

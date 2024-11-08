@@ -6,14 +6,24 @@
     "activeFile": "",
     "expandedProjectPaths": [
     ],
-    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "#base_tiles": {
+            "scaleInDock": 1
+        },
+        "#test_tiles": {
+            "scaleInDock": 1
+        }
     },
-    "map.fixedSize": false,
-    "map.width": 25,
+    "last.exportedFilePath": "/Users/christianboleku/Library/CloudStorage/OneDrive-CegepdeSorel-Tracy/24A/POO2/city_cleaner_game/src/main/resources/images/map",
+    "last.imagePath": "/Users/christianboleku/Library/CloudStorage/OneDrive-CegepdeSorel-Tracy/24A/POO2/city_cleaner_game/src/main/resources/images/map/Atlas",
+    "map.height": 50,
+    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "map.renderOrder": "3",
+    "map.width": 38,
     "openFiles": [
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
-    ]
+    ],
+    "tileset.embedInMap": true
 }

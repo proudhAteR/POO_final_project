@@ -14,7 +14,7 @@ import Doctrina.Rendering.SpriteProperties;
 public abstract class MovableEntity extends StaticEntity {
 
     protected int speed = 5;
-    private static final int ANIMATION_SPEED = 6;
+    private static final int ANIMATION_SPEED = 10;
 
     protected int currentAnimationFrame = 1;
     protected int nextFrame = ANIMATION_SPEED;
@@ -22,10 +22,10 @@ public abstract class MovableEntity extends StaticEntity {
     private int lastX = Integer.MIN_VALUE;
     private int lastY = Integer.MIN_VALUE;
     private boolean moved;
-    private Collision collision;
+    private final Collision collision;
 
     protected Image[][] frames = new Image[4][];
-    private ResourcesManager resourcesManager;
+    private final ResourcesManager resourcesManager;
 
     private BufferedImage image;
 
@@ -40,7 +40,7 @@ public abstract class MovableEntity extends StaticEntity {
 
     public void move() {
         int allowedSpeed = collision.getAllowedSpeed();
-        position.addX(direction.calculateVelocityX(allowedSpeed)); 
+        position.addX(direction.calculateVelocityX(allowedSpeed));
         position.addY(direction.calculateVelocityY(allowedSpeed));
 
         moved = (position.getX() != lastX || position.getY() != lastY);
@@ -128,18 +128,16 @@ public abstract class MovableEntity extends StaticEntity {
     @Override
     public void drawHitBox(Canvas canvas, Color color) {
         Rectangle rect = getHitBox();
-
         canvas.drawRectangle(rect, color);
     }
 
     @Override
     public void draw(Canvas canvas) {
-
         switch (direction) {
             case DOWN -> canvas.drawImage(frames[0][currentAnimationFrame], position);
-            case LEFT -> canvas.drawImage(frames[1][currentAnimationFrame], position);
+            case UP -> canvas.drawImage(frames[1][currentAnimationFrame], position);
             case RIGHT -> canvas.drawImage(frames[2][currentAnimationFrame], position);
-            case UP -> canvas.drawImage(frames[3][currentAnimationFrame], position);
+            case LEFT -> canvas.drawImage(frames[3][currentAnimationFrame], position);
 
         }
     }
@@ -149,7 +147,7 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     private Rectangle getLowerHitBox() {
-        return new Rectangle(position.getX(), position.getY()  + size.getHeight(), size.getWidth(), speed);
+        return new Rectangle(position.getX(), position.getY() + size.getHeight(), size.getWidth(), speed);
     }
 
     private Rectangle getLeftHitBox() {

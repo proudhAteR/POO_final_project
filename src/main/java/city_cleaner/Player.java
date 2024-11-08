@@ -9,34 +9,33 @@ import Doctrina.Physics.Size;
 import java.awt.Color;
 
 public class Player extends ControllableEntity {
-    protected static final String SPRITE_PATH = "images/sprite_sheets/male.png";
-    private SpriteProperties properties;
+    protected static final String PLAYER_SPRITE_PATH = "images/sprite_sheets/walk.png";
+    private final SpriteProperties properties;
 
     public Player(MovementController controller) {
         super(controller);
-        position = new Position(400, 300);
+        position = new Position(0, 0);
         teleport(position);
-        size = new Size(16, 16);
+        size = new Size(32, 32);
         setDimension(size);
-        properties = new SpriteProperties(3, 16, 0);
+        properties = new SpriteProperties(4, 32, 0);
         setSpeed(3);
         load();
     }
 
     public void load() {
-        loadSpriteSheet(SPRITE_PATH);
+        loadSpriteSheet(PLAYER_SPRITE_PATH);
         loadAnimationFrames(properties);
     }
-
     public Player(MovementController controller, Color color) {
         this(controller);
         this.color = color;
     }
+    
 
     public void update() {
         super.update();
         moveWithController();
-
         checkMovement();
     }
 

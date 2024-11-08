@@ -8,6 +8,9 @@ public class Size {
         this.height = height;
         this.width = width;
     }
+    public Size multiply(int num){
+        return new Size(this.height * num, this.width * num);
+    }
 
     public void setHeight(int height) {
         this.height = height;

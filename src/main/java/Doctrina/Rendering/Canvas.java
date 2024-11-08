@@ -4,11 +4,12 @@ import java.awt.*;
 
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;
+import Doctrina.Physics.Size;
 import Doctrina.Core.Camera;
 
 public class Canvas {
-    private Graphics2D graphics;
-    private Camera camera;
+    private final Graphics2D graphics;
+    private final Camera camera;
 
     public Canvas(Graphics2D graphics, Camera camera) {
         this.graphics = graphics;
@@ -21,9 +22,16 @@ public class Canvas {
         graphics.drawString(text, x, y);
     }
 
-    public void drawCircle(int x, int y, int radius, Paint paint) {
-        graphics.setPaint(paint);
-        graphics.fillOval(x, y, radius * 2, radius * 2);
+    public void drawCircle(int x, int y, int height, int width) {
+        graphics.setPaint(new Color(0, 255, 255, 128));
+        graphics.fillOval(x, y, width, height);
+    }
+
+    public void drawCircle(Position position, Size size, StaticEntity entity) {
+        int centerX = position.getX() - camera.getPosition().getX() - (entity.getWidth() + size.getWidth()) / 6;
+        int centerY = position.getY() - camera.getPosition().getY() - (entity.getHeight() + size.getHeight()) / 6;
+
+        drawCircle(centerX, centerY, size.getWidth(), size.getHeight());
     }
 
     public void drawRectangle(int x, int y, int width, int height, Paint paint) {
@@ -39,6 +47,11 @@ public class Canvas {
         drawRectangle(entity, entity.getColor());
     }
 
+    public void drawRectangle(Position pos, StaticEntity entity) {
+        drawRectangle(pos.getX() - camera.getPosition().getX() + entity.getWidth() / 2,
+                pos.getY() - camera.getPosition().getY() + entity.getHeight() / 2, 6, 6, Color.PINK);
+    }
+
     public void drawRectangle(Rectangle rect, Paint paint) {
         drawRectangle(rect.x, rect.y, rect.width, rect.height, paint);
     }
@@ -50,14 +63,10 @@ public class Canvas {
     }
 
     public void drawImage(Image image, int x, int y) {
-        graphics.drawImage(image, x - camera.getPosition().getX(), y -  camera.getPosition().getY(), null);
+        graphics.drawImage(image, x - camera.getPosition().getX(), y - camera.getPosition().getY(), null);
     }
 
     public void drawImage(Image image, Position position) {
-        drawImage(image, position.getX() , position.getY());
-    }
-
-    public void drawImageTest(Image image, int x, int y) {
-        graphics.drawImage(image, x, y, null);
+        drawImage(image, position.getX(), position.getY());
     }
 }
