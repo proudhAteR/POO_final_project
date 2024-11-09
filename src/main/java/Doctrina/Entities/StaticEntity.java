@@ -2,7 +2,6 @@ package Doctrina.Entities;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.geom.Ellipse2D;
 
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
@@ -13,6 +12,7 @@ public abstract class StaticEntity{
     protected Size size;
     protected Color color;
     protected Sight sight;
+    protected Action action;
 
     public abstract void draw(Canvas canvas);
 
@@ -41,6 +41,9 @@ public abstract class StaticEntity{
 
     public Rectangle getBounds() {
         return new Rectangle(position.getX(), position.getY(), size.getWidth(), size.getHeight());
+    }
+    public void attack() {
+        this.action = Action.ATTACK;
     }
 
     public void drawHitBox(Canvas canvas, Color color) {

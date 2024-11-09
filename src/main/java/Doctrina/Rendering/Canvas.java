@@ -5,7 +5,6 @@ import java.awt.geom.Ellipse2D;
 
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;
-import Doctrina.Physics.Size;
 import Doctrina.Core.Camera;
 
 public class Canvas {

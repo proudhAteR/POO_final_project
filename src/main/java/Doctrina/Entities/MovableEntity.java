@@ -1,13 +1,14 @@
 package Doctrina.Entities;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Map;
 
 import Doctrina.Controllers.Direction;
-import Doctrina.Core.Trace;
+import Doctrina.Core.Step;
 import Doctrina.Physics.Collision;
 import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;
@@ -17,28 +18,30 @@ import Doctrina.Rendering.SpriteProperties;
 public abstract class MovableEntity extends StaticEntity {
 
     protected int speed = 5;
-    private static final int ANIMATION_SPEED = 10;
+    private static final int ANIMATION_SPEED = 8;
 
     protected int currentAnimationFrame = 1;
     protected int nextFrame = ANIMATION_SPEED;
-    protected Direction direction = Direction.RIGHT;
+    protected Direction direction = Direction.DOWN;
     private int lastX = Integer.MIN_VALUE;
     private int lastY = Integer.MIN_VALUE;
     private boolean moved;
     private final Collision collision;
-    protected ArrayList<Trace> traces;
+    protected ArrayList<Step> traces;
 
-    protected Image[][] frames = new Image[4][];
+    private final Map<Action, Image[][]> actionFrames = new EnumMap<>(Action.class);
     private final ResourcesManager resourcesManager;
 
-    private BufferedImage image;
+    protected BufferedImage image;
 
     public MovableEntity() {
         traces = new ArrayList<>();
         collision = new Collision(this);
         resourcesManager = new ResourcesManager();
+        action = Action.IDLE;
     }
-    public ArrayList<Trace> getTraces(){
+
+    public ArrayList<Step> getSteps() {
         return traces;
     }
 
@@ -47,17 +50,21 @@ public abstract class MovableEntity extends StaticEntity {
     };
 
     public void move() {
-        int allowedSpeed = collision.getAllowedSpeed();
-        position.addX(direction.calculateVelocityX(allowedSpeed));
-        position.addY(direction.calculateVelocityY(allowedSpeed));
+        if (!isAttacking()) {
+            int allowedSpeed = collision.getAllowedSpeed();
+            position.addX(direction.calculateVelocityX(allowedSpeed));
+            position.addY(direction.calculateVelocityY(allowedSpeed));
+            moved = (position.getX() != lastX || position.getY() != lastY);
+            action = hasMoved() ? Action.MOVE : Action.IDLE;
 
-        moved = (position.getX() != lastX || position.getY() != lastY);
+            lastX = position.getX();
+            lastY = position.getY();
+        }
 
-        lastX = position.getX();
-        lastY = position.getY();
     }
 
     protected void resetAnimationFrame() {
+        action = Action.IDLE;
         this.currentAnimationFrame = 1;
     }
 
@@ -67,22 +74,36 @@ public abstract class MovableEntity extends StaticEntity {
 
     protected void updateAnimationFrame() {
         currentAnimationFrame++;
-        if (currentAnimationFrame >= frames[0].length) {
+        if (currentAnimationFrame >= actionFrames.get(this.action)[0].length) {
             currentAnimationFrame = 0;
+            if (isAttacking()) {
+                setAction(Action.IDLE);
+            }
         }
         nextFrame = ANIMATION_SPEED;
     }
 
-    protected void loadAnimationFrames(SpriteProperties properties) {
+    protected boolean isAttacking() {
+        return action == Action.ATTACK;
+    }
+
+    protected void loadAnimationFrames(SpriteProperties properties, Action action) {
+        Image[][] frames = new Image[4][];
         for (int i = 0; i < Direction.values().length; i++) {
             frames[i] = resourcesManager.extractFrames(properties.getFrameCount(), properties.getXOff(),
                     properties.getYOff(), this, image);
             properties.setYOff(this.size.getHeight());
         }
+        actionFrames.put(action, frames);
+        resetImage();
     }
 
     protected void loadSpriteSheet(String spritePath) {
         image = (BufferedImage) resourcesManager.getImage(spritePath);
+    }
+
+    private void resetImage() {
+        image = null;
     }
 
     public void move(Direction direction) {
@@ -90,13 +111,16 @@ public abstract class MovableEntity extends StaticEntity {
         move();
     }
 
+    public void setAction(Action action) {
+        this.action = action;
+    }
+
     protected void moveTo(Position position) {
         int dx = this.position.getX() - position.getX();
         int dy = this.position.getY() - position.getY();
 
-        this.direction = (Math.abs(dx) > Math.abs(dy)) ?
-                (dx > 0 ? Direction.LEFT : Direction.RIGHT) :
-                (dy > 0 ? Direction.UP : Direction.DOWN);
+        this.direction = (Math.abs(dx) > Math.abs(dy)) ? (dx > 0 ? Direction.LEFT : Direction.RIGHT)
+                : (dy > 0 ? Direction.UP : Direction.DOWN);
 
         move(direction);
     }
@@ -118,13 +142,18 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     protected void checkMovement() {
-        if (hasMoved()) {
-            this.nextFrame--;
-            if (isNextFrameZero()) {
-                updateAnimationFrame();
-            }
+        if (isAttacking() || hasMoved()) {
+            updateAnimation();
         } else {
             resetAnimationFrame();
+        }
+
+    }
+
+    private void updateAnimation() {
+        nextFrame--;
+        if (isNextFrameZero()) {
+            updateAnimationFrame();
         }
     }
 
@@ -146,6 +175,11 @@ public abstract class MovableEntity extends StaticEntity {
 
     @Override
     public void draw(Canvas canvas) {
+        //drawHitBox(canvas, Color.PINK);
+        drawFrames(canvas, actionFrames.get(this.action));
+    }
+
+    private void drawFrames(Canvas canvas, Image[][] frames) {
         switch (direction) {
             case DOWN -> canvas.drawImage(frames[0][currentAnimationFrame], position);
             case UP -> canvas.drawImage(frames[1][currentAnimationFrame], position);

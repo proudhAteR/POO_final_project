@@ -3,6 +3,8 @@ package Doctrina.Controllers;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
+import net.java.games.input.ControllerEvent;
+import net.java.games.input.ControllerListener;
 
 import Doctrina.Rendering.RenderingEngine;
 
@@ -24,14 +26,12 @@ public abstract class Controller implements KeyListener  {
         pressedKeys.remove(keyCode);
     }
 
-
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if( pressedKeys.containsKey(keyCode) ){
             pressedKeys.put(keyCode, true);
         }
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();

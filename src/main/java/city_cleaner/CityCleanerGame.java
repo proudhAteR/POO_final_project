@@ -16,8 +16,8 @@ public class CityCleanerGame extends Game {
         gamePad = new GamePad();
         player = new Player(gamePad);
         enemy = new Enemy();
-        enemy.teleport(new Position(10,10));
-        //RenderingEngine.getInstance().getScreen().fullscreen();
+        enemy.teleport(new Position(10, 10));
+        RenderingEngine.getInstance().getScreen().fullscreen();
         RenderingEngine.getInstance().getScreen().hideCursor();
         camera.focusOn(player);
     }
@@ -30,9 +30,13 @@ public class CityCleanerGame extends Game {
         player.update();
         handlePlayerMovement();
         enemy.follow(player);
+
+        if (gamePad.isFirePressed()) {
+            player.attack();
+        }
+
         if (enemy.getHitBox().intersects(player.getBounds())) {
             enemy.attack();
-
         }
         enemy.update();
         camera.update();
@@ -57,12 +61,15 @@ public class CityCleanerGame extends Game {
     protected void draw(Canvas canvas) {
         canvas.drawBlueScreen();
         enemy.draw(canvas);
-        /*for (Trace trace : player.getTraces()) {
-            trace.placeTrace(canvas);
-        }*/
-        //player.drawHitBox(canvas, Color.PINK);
+        /*
+         * for (Step trace : player.getSteps()) {
+         * trace.placeStep(canvas);
+         * }
+         */
+        // player.drawHitBox(canvas, Color.PINK);
         player.draw(canvas);
         // drawCamPosition(canvas, player);
+
     }
 
 }

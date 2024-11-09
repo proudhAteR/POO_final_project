@@ -2,7 +2,6 @@ package city_cleaner;
 
 import java.awt.Image;
 
-import org.mapeditor.core.Map;
 import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.ResourcesManager;
