@@ -12,10 +12,10 @@ public class Sight {
     Position position;
     StaticEntity entity;
 
-    public Sight(Size size, Position position, StaticEntity entity) {
+    public Sight(Size size,StaticEntity entity) {
         this.size = size;
         this.entity = entity;
-        this.position = position;
+        this.position = entity.position;
     }
 
     public void draw(Canvas canvas) {
@@ -27,6 +27,11 @@ public class Sight {
     }
 
     private Ellipse2D getBounds() {
-        return new Ellipse2D.Double(position.getX() - entity.getWidth() * 2.4, position.getY() - entity.getHeight() * 2.4 , size.getWidth(), size.getHeight());
+        return new Ellipse2D.Double(
+            position.getX() - size.getWidth() / 2 ,
+            position.getY() - size.getHeight() / 2 ,
+            size.getWidth() + entity.getWidth(),
+            size.getHeight() + entity.getHeight()
+        );    
     }
 }

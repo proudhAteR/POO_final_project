@@ -53,6 +53,9 @@ public abstract class StaticEntity{
     public boolean canMove() {
         return this instanceof MovableEntity;
     }
+    public Sight getSight() {
+        return sight;
+    }
 
     public Color getColor() {
         return this.color;

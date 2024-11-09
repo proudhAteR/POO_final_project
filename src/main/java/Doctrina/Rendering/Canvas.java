@@ -24,7 +24,7 @@ public class Canvas {
 
     public void drawCircle(int x, int y, int height, int width) {
         graphics.setPaint(new Color(0, 255, 255, 128));
-        graphics.fillOval(x, y, width, height);
+        graphics.fillOval(x - camera.getPosition().getX(), y  - camera.getPosition().getY(), width, height);
     }
 
     public void drawRectangle(int x, int y, int width, int height, Paint paint) {
@@ -60,6 +60,6 @@ public class Canvas {
     }
 
     public void drawCircle(Ellipse2D bounds, StaticEntity entity) {
-        drawCircle((int) bounds.getX() - camera.getPosition().getX(), (int) bounds.getY() - camera.getPosition().getY(), (int) bounds.getHeight(), (int) bounds.getWidth());
+        drawCircle((int) bounds.getX() , (int) bounds.getY(), (int) bounds.getHeight(), (int) bounds.getWidth());
     }
 }

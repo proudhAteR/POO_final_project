@@ -3,8 +3,8 @@ package city_cleaner;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
 import Doctrina.Core.Game;
-import Doctrina.Core.Step;
 import Doctrina.Physics.Position;
+import Doctrina.Core.*;;;
 
 public class CityCleanerGame extends Game {
     private GamePad gamePad;
@@ -28,9 +28,7 @@ public class CityCleanerGame extends Game {
             stop();
         }
         player.update();
-        handlePlayerMovement();
         enemy.follow(player);
-
         if (gamePad.isFirePressed()) {
             player.attack();
         }
@@ -43,30 +41,18 @@ public class CityCleanerGame extends Game {
 
     }
 
-    private void handlePlayerMovement() {
-        if (player.hasMoved()) {
-            lastMovementTime--;
-        }
-        if (lastMovementTime == 0) {
-            player.getSteps().add(new Step(new Position(player.getX(), player.getY()), player));
-            resetMovementTime();
-            if (player.getSteps().size() > 4) {
-                player.getSteps().removeFirst();
-            }
-        }
-
-    }
-
     @Override
     protected void draw(Canvas canvas) {
         canvas.drawBlueScreen();
+        enemy.getSight().draw(canvas);
         enemy.draw(canvas);
         /*
-         * for (Step trace : player.getSteps()) {
-         * trace.placeStep(canvas);
-         * }
-         */
+         * 
+         */for (Step trace : player.getSteps()) {
+          trace.placeStep(canvas);
+          }
         // player.drawHitBox(canvas, Color.PINK);
+        player.getSight().draw(canvas);
         player.draw(canvas);
         // drawCamPosition(canvas, player);
 
