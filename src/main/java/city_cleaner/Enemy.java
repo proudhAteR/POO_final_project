@@ -14,10 +14,11 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
             "images/sprite_sheets/z_idle.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
-        new SpriteProperties(10, 32, 0),
-        new SpriteProperties(8, 32, 0),
-        new SpriteProperties(5, 32, 0)
-};
+            new SpriteProperties(10, 32, 0),
+            new SpriteProperties(8, 32, 0),
+            new SpriteProperties(5, 32, 0)
+    };
+
     public Enemy() {
         canCollide(this);
         position = new Position(0, 0);
@@ -31,19 +32,47 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
 
     @Override
     public void follow(MovableEntity entity) {
+        if (isEntityInSight(entity)) {
+            if (hasReachedEntity(entity)) {
+                return;
+            }
+            if (hasReachedStep(entity)) {
+                removeStep(entity);
+            } else {
+                moveToEntity(entity);
+            }
+        }
+    }
+
+    private boolean isEntityInSight(MovableEntity entity) {
+        return sight.intersects(entity.getBounds());
+    }
+
+    private boolean hasReachedEntity(MovableEntity entity) {
+        return this.getBounds().intersects(entity.getBounds());
+    }
+
+    private boolean hasReachedStep(MovableEntity entity) {
         for (Step step : entity.getSteps()) {
             if (sight.intersects(step.getBounds())) {
                 moveTo(step.getPosition());
-                if (this.getHitBox().intersects(step.getBounds())) {
-                    entity.getSteps().remove(step);
-                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void removeStep(MovableEntity entity) {
+        for (Step step : entity.getSteps()) {
+            if (this.getHitBox().intersects(step.getBounds())) {
+                entity.getSteps().remove(step);
                 break;
             }
         }
-        if (sight.intersects(entity.getBounds()) && !this.getBounds().intersects(entity.getBounds())) {
-            moveTo(entity.getPosition());
-        }
-       
+    }
+
+    private void moveToEntity(MovableEntity entity) {
+        moveTo(entity.getPosition());
     }
 
     @Override
