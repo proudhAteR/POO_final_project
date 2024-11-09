@@ -24,6 +24,13 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void update() {
+        if (gamePad.isDebugPressed()) {
+            if (!GameConfig.debugMode()) {
+                GameConfig.setDebugMode(true);
+            }else{
+                GameConfig.setDebugMode(false);
+            }
+        }
         if (gamePad.isQuitPressed()) {
             stop();
         }
@@ -44,17 +51,16 @@ public class CityCleanerGame extends Game {
     @Override
     protected void draw(Canvas canvas) {
         canvas.drawBlueScreen();
-        enemy.getSight().draw(canvas);
+        if (GameConfig.debugMode()) {
+            enemy.getSight().draw(canvas);
+            player.getSight().draw(canvas);
+            for (Step trace : player.getSteps()) {
+                trace.placeStep(canvas);
+            }
+            GameConfig.drawCamPosition(RenderingEngine.getInstance(), canvas, player);
+        }
         enemy.draw(canvas);
-        /*
-         * 
-         */for (Step trace : player.getSteps()) {
-          trace.placeStep(canvas);
-          }
-        // player.drawHitBox(canvas, Color.PINK);
-        player.getSight().draw(canvas);
         player.draw(canvas);
-        // drawCamPosition(canvas, player);
 
     }
 

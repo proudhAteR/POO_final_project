@@ -14,7 +14,7 @@ public class Canvas {
     public Canvas(Graphics2D graphics, Camera camera) {
         this.graphics = graphics;
         this.camera = camera;
-        graphics.setFont(new Font("Roboto", Font.PLAIN, 50));
+        graphics.setFont(new Font("Kenney Future Narrow", Font.PLAIN, 25));
     }
 
     public void drawString(String text, int x, int y, Paint paint) {
