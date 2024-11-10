@@ -12,6 +12,7 @@ import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
 
 //!! BUG : Animation frames out of bounds happening from time to time
+// TODO : When enemy is hit by a bullet make it so it moves to the bullet direction
 public class Enemy extends MovableEntity implements Hostile, Collidable {
     protected final String[] SPRITE_PATHS = {
             "images/sprite_sheets/z_walk.png",
@@ -40,7 +41,6 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
     @Override
     public void follow(MovableEntity entity) {
         if (isEntityInSight(entity) || isStepInSight(entity)) {
-            
             moveToEntity(entity);
             removeStep(entity);
         }
@@ -54,7 +54,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
     private boolean isStepInSight(MovableEntity entity) {
         Step closestStep = null;
         double closestDistance = Double.MAX_VALUE;
-    
+
         for (Step step : entity.getSteps()) {
             if (sight.intersects(step.getBounds())) {
                 double distance = calculateDistance(this.getPosition(), step.getPosition());
@@ -64,15 +64,15 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
                 }
             }
         }
-    
+
         if (closestStep != null) {
             moveTo(closestStep.getPosition());
             return true;
         }
-    
+
         return false;
     }
-    
+
     private double calculateDistance(Position p1, Position p2) {
         double dx = p2.getX() - p1.getX();
         double dy = p2.getY() - p1.getY();

@@ -45,6 +45,7 @@ public class CityCleanerGame extends Game {
         enemy.follow(player);
         for (MovableEntity e : entities) {
             if (e instanceof Bullet) {
+                enemy.follow(e);
                 for (StaticEntity other : entities) {
                     if (e.intersectsWith(other)) {
                         destroyed.add(e);
@@ -57,6 +58,7 @@ public class CityCleanerGame extends Game {
         if (!destroyed.isEmpty()) {
             DestroyableManager.destroyAll(destroyed);
             entities.removeAll(destroyed);
+            destroyed.clear();
         }
         camera.update();
 
