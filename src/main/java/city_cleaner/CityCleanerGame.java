@@ -11,6 +11,7 @@ import Doctrina.Entities.StaticEntity;
 import Doctrina.Entities.Properties.DestroyableManager;
 import Doctrina.Physics.Position;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import Doctrina.Core.*;
@@ -90,10 +91,9 @@ public class CityCleanerGame extends Game {
         }
     }
 
-    
-
     @Override
-    protected void draw(Canvas canvas) {
+    protected void draw(Canvas canvas) { 
+        canvas.drawScreen(Color.black);
         if (GameConfig.debugMode()) {
             enemy.getSight().draw(canvas);
             player.getSight().draw(canvas);
@@ -102,10 +102,13 @@ public class CityCleanerGame extends Game {
             }
             GameConfig.drawCamPosition(RenderingEngine.getInstance(), canvas, player);
         }
+        canvas.clip(player.getSight().getBounds());
+        canvas.drawScreen(Color.blue);    
         for (MovableEntity e : entities) {
             e.draw(canvas);
         }
-        canvas.drawBlueScreen();
+        
+       
     }
 
 }

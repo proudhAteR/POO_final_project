@@ -2,6 +2,7 @@ package Doctrina.Rendering;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;
@@ -24,12 +25,20 @@ public class Canvas {
 
     public void drawCircle(int x, int y, int height, int width) {
         graphics.setPaint(new Color(0, 255, 255, 128));
-        graphics.fillOval(x - camera.getPosition().getX(), y  - camera.getPosition().getY(), width, height);
+        graphics.fillOval(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
     }
 
     public void drawRectangle(int x, int y, int width, int height, Paint paint) {
         graphics.setPaint(paint);
         graphics.fillRect(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
+    }
+
+    public void clip(Ellipse2D bounds) {
+        GeneralPath clipPath = new GeneralPath();
+        clipPath.append(new Ellipse2D.Double(bounds.getX() - camera.getPosition().getX(), bounds.getY() - camera.getPosition().getY(), bounds.getWidth(), bounds.getHeight()), false);
+        graphics.clip(clipPath);
+        // clip((int) bounds.getX(), (int) bounds.getY(), (int) bounds.getHeight(),
+        // (int) bounds.getWidth());
     }
 
     public void drawRectangle(StaticEntity entity, Paint paint) {
@@ -40,15 +49,14 @@ public class Canvas {
         drawRectangle(entity, entity.getColor());
     }
 
-
     public void drawRectangle(Rectangle rect, Paint paint) {
         drawRectangle(rect.x, rect.y, rect.width, rect.height, paint);
     }
 
-    public void drawBlueScreen() {
+    public void drawScreen(Color color) {
         int width = 800;
         int height = 600;
-        drawRectangle(camera.getPosition().getX(), camera.getPosition().getY(), width, height, Color.BLUE);
+        drawRectangle(camera.getPosition().getX(), camera.getPosition().getY(), width, height, color);
     }
 
     public void drawImage(Image image, int x, int y) {
@@ -60,6 +68,6 @@ public class Canvas {
     }
 
     public void drawCircle(Ellipse2D bounds, StaticEntity entity) {
-        drawCircle((int) bounds.getX() , (int) bounds.getY(), (int) bounds.getHeight(), (int) bounds.getWidth());
+        drawCircle((int) bounds.getX(), (int) bounds.getY(), (int) bounds.getHeight(), (int) bounds.getWidth());
     }
 }

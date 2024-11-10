@@ -27,7 +27,7 @@ public class Sight {
         return this.getBounds().intersects(bounds);
     }
 
-    private Ellipse2D getBounds() {
+    public Ellipse2D getBounds() {
         return new Ellipse2D.Double(
             position.getX() - size.getWidth() / 2 ,
             position.getY() - size.getHeight() / 2 ,
