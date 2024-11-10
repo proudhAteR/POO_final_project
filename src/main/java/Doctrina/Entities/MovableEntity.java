@@ -61,6 +61,21 @@ public abstract class MovableEntity extends StaticEntity {
         }
 
     }
+    protected void checkMovement() {
+        if (isAttacking() || hasMoved()) {
+            updateAnimation();
+        } else {
+            resetAnimationFrame();
+        }
+
+    }
+
+    private void updateAnimation() {
+        nextFrame--;
+        if (isNextFrameZero()) {
+            updateAnimationFrame();
+        }
+    }
 
     protected void resetAnimationFrame() {
         action = Action.IDLE;
@@ -83,6 +98,14 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     protected boolean isAttacking() {
+        return action == Action.ATTACK;
+    }
+
+    protected boolean isIdle() {
+        return action == Action.ATTACK;
+    }
+
+    protected boolean isMoving() {
         return action == Action.ATTACK;
     }
 
@@ -140,22 +163,6 @@ public abstract class MovableEntity extends StaticEntity {
         move(Direction.RIGHT);
     }
 
-    protected void checkMovement() {
-        if (isAttacking() || hasMoved()) {
-            updateAnimation();
-        } else {
-            resetAnimationFrame();
-        }
-
-    }
-
-    private void updateAnimation() {
-        nextFrame--;
-        if (isNextFrameZero()) {
-            updateAnimationFrame();
-        }
-    }
-
     public Rectangle getHitBox() {
         if (isGoingUp()) {
             return getUpperHitBox();
@@ -174,7 +181,7 @@ public abstract class MovableEntity extends StaticEntity {
 
     @Override
     public void draw(Canvas canvas) {
-        //drawHitBox(canvas, Color.PINK);
+        // drawHitBox(canvas, Color.PINK);
         drawFrames(canvas, actionFrames.get(this.action));
     }
 

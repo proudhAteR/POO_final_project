@@ -14,6 +14,7 @@ public class CityCleanerGame extends Game {
     @Override
     protected void initialize() {
         gamePad = new GamePad();
+        gamePad.useWASDKeys();
         player = new Player(gamePad);
         enemy = new Enemy();
         enemy.teleport(new Position(10, 10));

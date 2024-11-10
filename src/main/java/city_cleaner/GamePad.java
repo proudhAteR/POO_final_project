@@ -6,7 +6,7 @@ import Doctrina.Controllers.MovementController;
 public class GamePad extends MovementController{
     private int quitKey = KeyEvent.VK_Q;
     private int fireKey = KeyEvent.VK_SPACE;
-    private int debug = KeyEvent.VK_A;
+    private int debug = KeyEvent.VK_1;
     public GamePad(){
         bindKeys(fireKey);
         bindKeys(quitKey);
