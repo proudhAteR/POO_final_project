@@ -14,9 +14,11 @@ public class Player extends ControllableEntity implements Collidable {
     protected final String[] SPRITE_PATHS = {
             "images/sprite_sheets/walk.png",
             "images/sprite_sheets/shoot.png",
+            "images/sprite_sheets/stab.png",
             "images/sprite_sheets/idle.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
+            new SpriteProperties(4, 32, 0),
             new SpriteProperties(4, 32, 0),
             new SpriteProperties(4, 32, 0),
             new SpriteProperties(2, 32, 0)

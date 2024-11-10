@@ -45,10 +45,13 @@ public abstract class StaticEntity{
     public void attack() {
         this.action = Action.ATTACK;
     }
+    public void closeAttack() {
+        this.action = Action.CLOSE_ATTACK;
+    }
 
-    public void drawHitBox(Canvas canvas, Color color) {
+    public void drawHitBox(Canvas canvas) {
         Rectangle rect = getBounds();
-        canvas.drawRectangle(rect, color);
+        canvas.drawRectangle(rect, new Color(255, 105, 180, 128));
     }
     public boolean canMove() {
         return this instanceof MovableEntity;

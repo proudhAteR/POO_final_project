@@ -4,7 +4,7 @@ import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
 import Doctrina.Core.Game;
 import Doctrina.Physics.Position;
-import Doctrina.Core.*;;;
+import Doctrina.Core.*;
 
 public class CityCleanerGame extends Game {
     private GamePad gamePad;
@@ -39,6 +39,9 @@ public class CityCleanerGame extends Game {
         enemy.follow(player);
         if (gamePad.isFirePressed()) {
             player.attack();
+        }
+        if (gamePad.isStabPressed()) {
+            player.closeAttack();
         }
 
         if (enemy.getHitBox().intersects(player.getBounds())) {

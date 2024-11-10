@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 public class GamePad extends MovementController{
     private int quitKey = KeyEvent.VK_Q;
     private int fireKey = MouseEvent.BUTTON1;
+    private int stabKey = MouseEvent.BUTTON2;
     private int debug = KeyEvent.VK_1;
     public GamePad(){
         bindKeys(quitKey);
@@ -20,5 +21,8 @@ public class GamePad extends MovementController{
     }
     public boolean isFirePressed(){
         return isMousePressed(fireKey);
+    }
+    public boolean isStabPressed(){
+        return isMousePressed(stabKey);
     }
 }

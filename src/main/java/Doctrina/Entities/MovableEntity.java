@@ -26,7 +26,6 @@ public abstract class MovableEntity extends StaticEntity {
     protected Direction direction = Direction.DOWN;
     private int lastX = Integer.MIN_VALUE;
     private int lastY = Integer.MIN_VALUE;
-    private Action previousAction = Action.IDLE;
     private boolean moved;
     private final Collision collision;
     protected ArrayList<Step> traces;
@@ -74,14 +73,6 @@ public abstract class MovableEntity extends StaticEntity {
 
     }
 
-    private boolean changedAction() {
-        if (this.action != previousAction) {
-            this.action = previousAction;
-            return true;
-        }
-        return false;
-    }
-
     private void updateAnimation() {
         nextFrame--;
         if (isNextFrameZero()) {
@@ -110,7 +101,7 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     protected boolean isAttacking() {
-        return action == Action.ATTACK;
+        return action == Action.ATTACK || action == Action.CLOSE_ATTACK;
     }
 
     protected boolean isIdle() {
@@ -194,7 +185,7 @@ public abstract class MovableEntity extends StaticEntity {
     @Override
     public void draw(Canvas canvas) {
         if (GameConfig.debugMode()) {
-            drawHitBox(canvas, Color.PINK);
+            drawHitBox(canvas);
         }
         drawFrames(canvas, actionFrames.get(this.action));
     }
