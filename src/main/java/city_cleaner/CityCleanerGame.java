@@ -6,20 +6,27 @@ import city_cleaner.Contoller.GamePad;
 import city_cleaner.Entities.Enemy;
 import city_cleaner.Entities.Player;
 import Doctrina.Core.Game;
+import Doctrina.Entities.MovableEntity;
 import Doctrina.Physics.Position;
+
+import java.util.ArrayList;
+
 import Doctrina.Core.*;
 
 public class CityCleanerGame extends Game {
     private GamePad gamePad;
     private Player player;
     private Enemy enemy;
+    private ArrayList<MovableEntity> entities;
 
     @Override
     protected void initialize() {
+        entities = new ArrayList<>();
         gamePad = new GamePad();
-        gamePad.useWASDKeys();
         player = new Player(gamePad);
+        entities.add(player);
         enemy = new Enemy();
+        entities.add(enemy);
         enemy.teleport(new Position(10, 10));
         RenderingEngine.getInstance().getScreen().fullscreen();
         RenderingEngine.getInstance().getScreen().hideCursor();
@@ -28,20 +35,30 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void update() {
+        handleAction();
+
+        enemy.follow(player);
+        for (MovableEntity e : entities) {
+            e.update();
+        }
+        camera.update();
+
+    }
+
+    private void handleAction() {
         if (gamePad.isDebugPressed()) {
             if (!GameConfig.debugMode()) {
                 GameConfig.setDebugMode(true);
-            }else{
+            } else {
                 GameConfig.setDebugMode(false);
             }
         }
         if (gamePad.isQuitPressed()) {
             stop();
         }
-        player.update();
-        enemy.follow(player);
-        if (gamePad.isFirePressed()) {
+        if (gamePad.isFirePressed() && player.canFire()) {
             player.attack();
+            entities.add(player.fire());
         }
         if (gamePad.isStabPressed()) {
             player.closeAttack();
@@ -50,9 +67,6 @@ public class CityCleanerGame extends Game {
         if (enemy.getHitBox().intersects(player.getBounds())) {
             enemy.attack();
         }
-        enemy.update();
-        camera.update();
-
     }
 
     @Override
@@ -66,8 +80,9 @@ public class CityCleanerGame extends Game {
             }
             GameConfig.drawCamPosition(RenderingEngine.getInstance(), canvas, player);
         }
-        enemy.draw(canvas);
-        player.draw(canvas);
+        for (MovableEntity e : entities) {
+            e.draw(canvas);
+        }
 
     }
 

@@ -20,7 +20,7 @@ import Doctrina.Rendering.SpriteProperties;
 public abstract class MovableEntity extends StaticEntity {
 
     protected int speed = 0;
-    private static final int ANIMATION_SPEED = 10;
+    protected static final int ANIMATION_SPEED = 10;
     protected int currentAnimationFrame = 1;
     protected int nextFrame = ANIMATION_SPEED;
     protected Direction direction = Direction.DOWN;
