@@ -11,6 +11,7 @@ import Doctrina.Controllers.Direction;
 import Doctrina.Core.GameConfig;
 import Doctrina.Core.Step;
 import Doctrina.Entities.Properties.Action;
+import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Collision;
 import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;
@@ -36,6 +37,8 @@ public abstract class MovableEntity extends StaticEntity {
     protected BufferedImage image;
 
     public MovableEntity() {
+        sight = new Sight(this);
+        sight.setSize(size);
         traces = new ArrayList<>();
         collision = new Collision(this);
         resourcesManager = new ResourcesManager();

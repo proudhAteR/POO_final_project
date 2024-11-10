@@ -35,10 +35,9 @@ public class Canvas {
 
     public void clip(Ellipse2D bounds) {
         GeneralPath clipPath = new GeneralPath();
-        clipPath.append(new Ellipse2D.Double(bounds.getX() - camera.getPosition().getX(), bounds.getY() - camera.getPosition().getY(), bounds.getWidth(), bounds.getHeight()), false);
+        clipPath.append(new Ellipse2D.Double(bounds.getX() - camera.getPosition().getX(),
+                bounds.getY() - camera.getPosition().getY(), bounds.getWidth(), bounds.getHeight()), false);
         graphics.clip(clipPath);
-        // clip((int) bounds.getX(), (int) bounds.getY(), (int) bounds.getHeight(),
-        // (int) bounds.getWidth());
     }
 
     public void drawRectangle(StaticEntity entity, Paint paint) {

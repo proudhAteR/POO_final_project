@@ -9,7 +9,7 @@ import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;
 
-public abstract class StaticEntity{
+public abstract class StaticEntity {
     protected Position position;
     protected Size size;
     protected Color color;
@@ -23,9 +23,10 @@ public abstract class StaticEntity{
         this.position.setY(y);
     }
 
-    public void teleport(Position position){
+    public void teleport(Position position) {
         teleport(position.getX(), position.getY());
     }
+
     public Position getPosition() {
         return position;
     }
@@ -44,9 +45,11 @@ public abstract class StaticEntity{
     public Rectangle getBounds() {
         return new Rectangle(position.getX(), position.getY(), size.getWidth(), size.getHeight());
     }
+
     public void attack() {
         this.action = Action.ATTACK;
     }
+
     public void closeAttack() {
         this.action = Action.CLOSE_ATTACK;
     }
@@ -55,11 +58,13 @@ public abstract class StaticEntity{
         Rectangle rect = getBounds();
         canvas.drawRectangle(rect, new Color(255, 105, 180, 128));
     }
+
     public boolean canMove() {
         return this instanceof MovableEntity;
     }
+
     public Sight getSight() {
-        return sight;
+        return this.sight;
     }
 
     public Color getColor() {

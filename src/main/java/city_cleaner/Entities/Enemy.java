@@ -30,10 +30,10 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
     public Enemy() {
         canCollide(this);
         position = new Position(0, 0);
-        teleport(position);
         size = new Size(32, 32);
         setDimension(size);
-        sight = new Sight(this.size.multiply(4), this);
+        sight = new Sight(this);
+        sight.setSize(size.multiply(4));
         setSpeed(1);
         load();
     }

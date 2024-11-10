@@ -13,36 +13,34 @@ import Doctrina.Physics.Position;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 
 import Doctrina.Core.*;
 
 public class CityCleanerGame extends Game {
     private GamePad gamePad;
     private Player player;
-    private Enemy enemy;
+    private ArrayList<Enemy> enemies;
     private ArrayList<MovableEntity> entities;
     private ArrayList<StaticEntity> destroyed;
 
     @Override
     protected void initialize() {
-        entities = new ArrayList<>();
-        destroyed = new ArrayList<>();
-        gamePad = new GamePad();
-        player = new Player(gamePad);
-        entities.add(player);
-        enemy = new Enemy();
-        entities.add(enemy);
-        enemy.teleport(new Position(10, 10));
-        RenderingEngine.getInstance().getScreen().fullscreen();
-        RenderingEngine.getInstance().getScreen().hideCursor();
-        camera.focusOn(player);
+        initializeEntities();
+        initializePlayer();
+        initializeEnemies();
+        configureRenderingEngine();
+        configureCamera();
     }
 
     @Override
     protected void update() {
         handleAction();
-        enemy.follow(player);
+
         for (MovableEntity e : entities) {
+            if (e instanceof Enemy) {
+                ((Enemy) e).follow(player);
+            }
             if (e instanceof Bullet) {
                 checkCollisions(e);
             }
@@ -55,6 +53,34 @@ public class CityCleanerGame extends Game {
         }
         camera.update();
 
+    }
+
+    @Override
+    protected void draw(Canvas canvas) {
+        canvas.drawScreen(Color.black);
+        if (GameConfig.debugMode()) {
+            renderDebugInfos(canvas);
+        }
+        canvas.clip(player.getSight().getBounds());
+        canvas.drawScreen(Color.blue);
+        for (MovableEntity e : entities) {
+            e.draw(canvas);
+        }
+
+    }
+
+    private void renderDebugInfos(Canvas canvas) {
+        for (StaticEntity e : entities) {
+            if (e instanceof Player) {
+                for (Step trace : ((MovableEntity) e).getSteps()) {
+                    trace.placeStep(canvas);
+                }
+            } else {
+                e.getSight().draw(canvas);
+            }
+        }
+        GameConfig.drawCamPosition(RenderingEngine.getInstance(), canvas, player);
+        GameConfig.drawCount(enemies, canvas);
     }
 
     private void checkCollisions(MovableEntity e) {
@@ -86,29 +112,46 @@ public class CityCleanerGame extends Game {
             player.closeAttack();
         }
 
-        if (enemy.isReachable(player)) {
-            enemy.attack();
+        for (Enemy enemy : enemies) {
+            if (enemy.isReachable(player)) {
+                enemy.attack();
+            }
         }
     }
 
-    @Override
-    protected void draw(Canvas canvas) { 
-        canvas.drawScreen(Color.black);
-        if (GameConfig.debugMode()) {
-            enemy.getSight().draw(canvas);
-            player.getSight().draw(canvas);
-            for (Step trace : player.getSteps()) {
-                trace.placeStep(canvas);
-            }
-            GameConfig.drawCamPosition(RenderingEngine.getInstance(), canvas, player);
+    private void initializeEntities() {
+        entities = new ArrayList<>();
+        destroyed = new ArrayList<>();
+    }
+
+    private void initializePlayer() {
+        gamePad = new GamePad();
+        player = new Player(gamePad);
+        entities.add(player);
+    }
+
+    private void initializeEnemies() {
+        enemies = new ArrayList<>();
+        for (int i = 0; i <= 2; i++) {
+            Enemy enemy = new Enemy();
+            entities.add(enemy);
+            enemy.canCollide(enemy);
+            enemy.teleport(randomPosition());
         }
-        canvas.clip(player.getSight().getBounds());
-        canvas.drawScreen(Color.blue);    
-        for (MovableEntity e : entities) {
-            e.draw(canvas);
-        }
-        
-       
+    }
+
+    private Position randomPosition() {
+        Random random = new Random();
+        return new Position(random.nextInt(400), random.nextInt(300));
+    }
+
+    private void configureRenderingEngine() {
+        RenderingEngine.getInstance().getScreen().fullscreen();
+        RenderingEngine.getInstance().getScreen().hideCursor();
+    }
+
+    private void configureCamera() {
+        camera.focusOn(player);
     }
 
 }
