@@ -1,7 +1,8 @@
-package Doctrina.Entities;
+package Doctrina.Entities.Properties;
 
 import java.util.Collection;
 
+import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.CollidableRepository;
 
 public class DestroyableManager {

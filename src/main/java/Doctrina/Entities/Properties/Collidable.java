@@ -1,5 +1,6 @@
-package Doctrina.Entities;
+package Doctrina.Entities.Properties;
 
+import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.CollidableRepository;
 
 public interface Collidable {

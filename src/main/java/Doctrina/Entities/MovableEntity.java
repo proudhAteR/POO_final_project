@@ -6,11 +6,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
-import java.awt.Color;
 
 import Doctrina.Controllers.Direction;
 import Doctrina.Core.GameConfig;
 import Doctrina.Core.Step;
+import Doctrina.Entities.Properties.Action;
 import Doctrina.Physics.Collision;
 import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;

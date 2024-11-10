@@ -3,6 +3,8 @@ package Doctrina.Entities;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import Doctrina.Entities.Properties.Action;
+import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;

@@ -2,6 +2,9 @@ package city_cleaner;
 
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
+import city_cleaner.Contoller.GamePad;
+import city_cleaner.Entities.Enemy;
+import city_cleaner.Entities.Player;
 import Doctrina.Core.Game;
 import Doctrina.Physics.Position;
 import Doctrina.Core.*;

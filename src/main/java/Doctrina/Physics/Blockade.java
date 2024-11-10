@@ -2,8 +2,8 @@ package Doctrina.Physics;
 
 import java.awt.Color;
 
-import Doctrina.Entities.Collidable;
 import Doctrina.Entities.StaticEntity;
+import Doctrina.Entities.Properties.Collidable;
 import Doctrina.Rendering.Canvas;
 
 public class Blockade extends StaticEntity implements Collidable{

@@ -1,11 +1,11 @@
-package city_cleaner;
+package city_cleaner.Entities;
 
 import Doctrina.Controllers.MovementController;
-import Doctrina.Entities.Action;
-import Doctrina.Entities.Collidable;
 import Doctrina.Rendering.SpriteProperties;
 import Doctrina.Entities.ControllableEntity;
-import Doctrina.Entities.Sight;
+import Doctrina.Entities.Properties.Action;
+import Doctrina.Entities.Properties.Collidable;
+import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import java.awt.Color;

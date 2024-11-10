@@ -1,6 +1,7 @@
-package Doctrina.Entities;
+package Doctrina.Entities.Properties;
 
 
+import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;
@@ -15,7 +16,7 @@ public class Sight {
     public Sight(Size size,StaticEntity entity) {
         this.size = size;
         this.entity = entity;
-        this.position = entity.position;
+        this.position = entity.getPosition();
     }
 
     public void draw(Canvas canvas) {

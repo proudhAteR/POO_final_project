@@ -1,4 +1,4 @@
-package city_cleaner;
+package city_cleaner.Contoller;
 
 import java.awt.event.KeyEvent;
 import Doctrina.Controllers.MovementController;

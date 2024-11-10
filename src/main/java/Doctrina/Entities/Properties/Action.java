@@ -1,4 +1,4 @@
-package Doctrina.Entities;
+package Doctrina.Entities.Properties;
 
 
 public enum Action {
