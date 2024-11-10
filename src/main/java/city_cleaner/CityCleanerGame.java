@@ -3,10 +3,13 @@ package city_cleaner;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
 import city_cleaner.Contoller.GamePad;
+import city_cleaner.Entities.Bullet;
 import city_cleaner.Entities.Enemy;
 import city_cleaner.Entities.Player;
 import Doctrina.Core.Game;
 import Doctrina.Entities.MovableEntity;
+import Doctrina.Entities.StaticEntity;
+import Doctrina.Entities.Properties.DestroyableManager;
 import Doctrina.Physics.Position;
 
 import java.util.ArrayList;
@@ -18,10 +21,12 @@ public class CityCleanerGame extends Game {
     private Player player;
     private Enemy enemy;
     private ArrayList<MovableEntity> entities;
+    private ArrayList<StaticEntity> destroyed;
 
     @Override
     protected void initialize() {
         entities = new ArrayList<>();
+        destroyed = new ArrayList<>();
         gamePad = new GamePad();
         player = new Player(gamePad);
         entities.add(player);
@@ -39,7 +44,19 @@ public class CityCleanerGame extends Game {
 
         enemy.follow(player);
         for (MovableEntity e : entities) {
+            if (e instanceof Bullet) {
+                for (MovableEntity other : entities) {
+                    if (e.intersectsWith(other)) {
+                        destroyed.add(e);
+                        break;
+                    }
+                }
+            }
             e.update();
+        }
+        if (!destroyed.isEmpty()) {
+            DestroyableManager.destroyAll(destroyed);
+            entities.removeAll(destroyed);
         }
         camera.update();
 
