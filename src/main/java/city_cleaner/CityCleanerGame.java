@@ -6,7 +6,6 @@ import city_cleaner.Contoller.GamePad;
 import city_cleaner.Entities.Bullet;
 import city_cleaner.Entities.Enemy;
 import city_cleaner.Entities.Player;
-import Doctrina.Core.Game;
 import Doctrina.Entities.MovableEntity;
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Entities.Properties.DestroyableManager;
@@ -41,17 +40,10 @@ public class CityCleanerGame extends Game {
     @Override
     protected void update() {
         handleAction();
-
         enemy.follow(player);
         for (MovableEntity e : entities) {
             if (e instanceof Bullet) {
-                enemy.follow(e);
-                for (StaticEntity other : entities) {
-                    if (e.intersectsWith(other)) {
-                        destroyed.add(e);
-                        break;
-                    }
-                }
+                checkCollisions(e);
             }
             e.update();
         }
@@ -62,6 +54,16 @@ public class CityCleanerGame extends Game {
         }
         camera.update();
 
+    }
+
+    private void checkCollisions(MovableEntity e) {
+        for (StaticEntity other : entities) {
+            if (e.intersectsWith(other)) {
+                ((MovableEntity) other).move(e.getDirection().getOppositeDirection());
+                destroyed.add(e);
+                break;
+            }
+        }
     }
 
     private void handleAction() {
@@ -83,14 +85,15 @@ public class CityCleanerGame extends Game {
             player.closeAttack();
         }
 
-        if (enemy.getHitBox().intersects(player.getBounds())) {
+        if (enemy.isReachable(player)) {
             enemy.attack();
         }
     }
 
+    
+
     @Override
     protected void draw(Canvas canvas) {
-        canvas.drawBlueScreen();
         if (GameConfig.debugMode()) {
             enemy.getSight().draw(canvas);
             player.getSight().draw(canvas);
@@ -102,7 +105,7 @@ public class CityCleanerGame extends Game {
         for (MovableEntity e : entities) {
             e.draw(canvas);
         }
-
+        canvas.drawBlueScreen();
     }
 
 }

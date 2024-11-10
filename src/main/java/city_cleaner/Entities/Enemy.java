@@ -46,12 +46,15 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
         }
 
     }
+    public boolean isReachable(StaticEntity e) {
+        return getHitBox().intersects(e.getBounds());
+    }
 
-    private boolean isEntityInSight(MovableEntity entity) {
+    public boolean isEntityInSight(MovableEntity entity) {
         return sight.intersects(entity.getBounds());
     }
 
-    private boolean isStepInSight(MovableEntity entity) {
+    public boolean isStepInSight(MovableEntity entity) {
         Step closestStep = null;
         double closestDistance = Double.MAX_VALUE;
 
