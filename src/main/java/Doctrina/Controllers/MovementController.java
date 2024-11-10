@@ -1,6 +1,7 @@
 package Doctrina.Controllers;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 public class MovementController extends Controller {
     private int upKey = KeyEvent.VK_UP;
@@ -86,5 +87,20 @@ public class MovementController extends Controller {
     @Override
     public void keyTyped(KeyEvent e) {
 
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+       
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+       
     }
 }

@@ -6,8 +6,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
+import java.awt.Color;
 
 import Doctrina.Controllers.Direction;
+import Doctrina.Core.GameConfig;
 import Doctrina.Core.Step;
 import Doctrina.Physics.Collision;
 import Doctrina.Physics.Position;
@@ -24,6 +26,7 @@ public abstract class MovableEntity extends StaticEntity {
     protected Direction direction = Direction.DOWN;
     private int lastX = Integer.MIN_VALUE;
     private int lastY = Integer.MIN_VALUE;
+    private Action previousAction = Action.IDLE;
     private boolean moved;
     private final Collision collision;
     protected ArrayList<Step> traces;
@@ -61,6 +64,7 @@ public abstract class MovableEntity extends StaticEntity {
         }
 
     }
+
     protected void checkMovement() {
         if (isAttacking() || hasMoved()) {
             updateAnimation();
@@ -68,6 +72,14 @@ public abstract class MovableEntity extends StaticEntity {
             resetAnimationFrame();
         }
 
+    }
+
+    private boolean changedAction() {
+        if (this.action != previousAction) {
+            this.action = previousAction;
+            return true;
+        }
+        return false;
     }
 
     private void updateAnimation() {
@@ -181,7 +193,9 @@ public abstract class MovableEntity extends StaticEntity {
 
     @Override
     public void draw(Canvas canvas) {
-        // drawHitBox(canvas, Color.PINK);
+        if (GameConfig.debugMode()) {
+            drawHitBox(canvas, Color.PINK);
+        }
         drawFrames(canvas, actionFrames.get(this.action));
     }
 
