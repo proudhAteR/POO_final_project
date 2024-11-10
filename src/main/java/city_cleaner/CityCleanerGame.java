@@ -45,7 +45,7 @@ public class CityCleanerGame extends Game {
         enemy.follow(player);
         for (MovableEntity e : entities) {
             if (e instanceof Bullet) {
-                for (MovableEntity other : entities) {
+                for (StaticEntity other : entities) {
                     if (e.intersectsWith(other)) {
                         destroyed.add(e);
                         break;
