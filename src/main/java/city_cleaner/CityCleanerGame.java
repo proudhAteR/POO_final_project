@@ -63,8 +63,7 @@ public class CityCleanerGame extends Game {
         }
         canvas.clip(player.getSight().getBounds());
         canvas.drawScreen(Color.blue);
-        
-        
+
         for (MovableEntity e : entities) {
             e.draw(canvas);
         }
