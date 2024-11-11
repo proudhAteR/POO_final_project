@@ -36,13 +36,12 @@ public class CityCleanerGame extends Game {
     @Override
     protected void update() {
         handleAction();
-
         for (MovableEntity e : entities) {
             if (e instanceof Enemy) {
                 ((Enemy) e).follow(player);
             }
             if (e instanceof Bullet) {
-                checkCollisions(e);
+                checkShotCollisions(e);
             }
             e.update();
         }
@@ -63,6 +62,8 @@ public class CityCleanerGame extends Game {
         }
         canvas.clip(player.getSight().getBounds());
         canvas.drawScreen(Color.blue);
+        
+        
         for (MovableEntity e : entities) {
             e.draw(canvas);
         }
@@ -76,14 +77,17 @@ public class CityCleanerGame extends Game {
                     trace.placeStep(canvas);
                 }
             } else {
-                e.getSight().draw(canvas);
+                if (!(e instanceof Bullet)) {
+                    e.getSight().draw(canvas);
+                }
             }
         }
-        GameConfig.drawCamPosition(RenderingEngine.getInstance(), canvas, player);
+        GameConfig.drawCamPosition(RenderingEngine.getInstance(), canvas);
+        GameConfig.drawCamFocusPosition(RenderingEngine.getInstance(), canvas);
         GameConfig.drawCount(enemies, canvas);
     }
 
-    private void checkCollisions(MovableEntity e) {
+    private void checkShotCollisions(MovableEntity e) {
         for (StaticEntity other : entities) {
             if (e.intersectsWith(other)) {
                 ((MovableEntity) other).move(e.getDirection().getOppositeDirection());
@@ -94,28 +98,35 @@ public class CityCleanerGame extends Game {
     }
 
     private void handleAction() {
-        if (gamePad.isDebugPressed()) {
-            if (!GameConfig.debugMode()) {
-                GameConfig.setDebugMode(true);
-            } else {
-                GameConfig.setDebugMode(false);
+        handleUserAction();
+        handlePlayerAction();
+        handleEnemyAction();
+    }
+
+    private void handleEnemyAction() {
+        for (Enemy enemy : enemies) {
+            if (enemy.isReachable(player)) {
+                enemy.attack();
             }
+        }
+    }
+
+    private void handleUserAction() {
+        if (gamePad.isDebugPressed()) {
+            GameConfig.toggleDebug();
         }
         if (gamePad.isQuitPressed()) {
             stop();
         }
+    }
+
+    private void handlePlayerAction() {
         if (gamePad.isFirePressed() && player.canFire()) {
             player.attack();
             entities.add(player.fire());
         }
         if (gamePad.isStabPressed()) {
             player.closeAttack();
-        }
-
-        for (Enemy enemy : enemies) {
-            if (enemy.isReachable(player)) {
-                enemy.attack();
-            }
         }
     }
 
@@ -135,6 +146,7 @@ public class CityCleanerGame extends Game {
         for (int i = 0; i <= 2; i++) {
             Enemy enemy = new Enemy();
             entities.add(enemy);
+            enemies.add(enemy);
             enemy.canCollide(enemy);
             enemy.teleport(randomPosition());
         }

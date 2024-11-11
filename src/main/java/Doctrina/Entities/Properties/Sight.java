@@ -33,6 +33,4 @@ public class Sight {
                 size.getWidth() + entity.getWidth(),
                 size.getHeight() + entity.getHeight());
     }
-
-    // !BUG : Size returns null sometimes (happens a lot more in debug mode)
 }

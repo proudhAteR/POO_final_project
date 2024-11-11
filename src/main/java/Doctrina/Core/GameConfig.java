@@ -17,9 +17,14 @@ public class GameConfig {
         debugModeEnable = value;
     }
 
-    public static void drawCamPosition(RenderingEngine renderingEngine, Canvas canvas, StaticEntity e) {
+    public static void drawCamPosition(RenderingEngine renderingEngine, Canvas canvas) {
         canvas.drawString(String.valueOf(renderingEngine.getCamera().getPosition().getY()), 20, 40, Color.WHITE);
         canvas.drawString(String.valueOf(renderingEngine.getCamera().getPosition().getX()), 120, 40, Color.WHITE);
+    }
+
+    public static void drawCamFocusPosition(RenderingEngine renderingEngine, Canvas canvas){
+        Camera camera = renderingEngine.getCamera();
+        StaticEntity e = camera.getEntityOnFocus();
         canvas.drawString(String.valueOf(e.getPosition().getY()), 20, 80, Color.WHITE);
         canvas.drawString(String.valueOf(e.getPosition().getX()), 120, 80, Color.WHITE);
     }
@@ -28,4 +33,11 @@ public class GameConfig {
         canvas.drawString(String.valueOf(list.size()), 20, 120, Color.WHITE);
     }
 
+    public static void toggleDebug() {
+        if (!debugMode()) {
+            setDebugMode(true);
+        } else {
+            setDebugMode(false);
+        }
+    }
 }

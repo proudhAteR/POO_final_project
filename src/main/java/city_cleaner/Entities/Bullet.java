@@ -5,6 +5,7 @@ import java.awt.Color;
 import Doctrina.Controllers.Direction;
 import Doctrina.Entities.MovableEntity;
 import Doctrina.Entities.Properties.Projetable;
+import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;
@@ -21,6 +22,8 @@ public class Bullet extends MovableEntity implements Projetable {
     private void initialize(MovableEntity e) {
         size = new Size(2, 4);
         position = new Position(0, 0);
+        sight = new Sight(e);
+        sight.setSize(new Size(0, 0));
         setDimension(size);
         teleport(position);
         positionProjectileAtEntity(e);

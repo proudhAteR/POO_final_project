@@ -28,4 +28,7 @@ public class Camera {
     public void focusOn(StaticEntity entity) {
         this.entity = entity;
     }
+    public StaticEntity getEntityOnFocus() {
+        return entity;
+    }
 }
