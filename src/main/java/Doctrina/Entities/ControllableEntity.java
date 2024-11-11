@@ -1,7 +1,7 @@
 package Doctrina.Entities;
 
 import Doctrina.Controllers.MovementController;
-import Doctrina.Core.Step;
+import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Position;
 
 public abstract class ControllableEntity extends MovableEntity {

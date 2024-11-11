@@ -2,9 +2,6 @@ package Doctrina.Rendering;
 
 import javax.swing.*;
 
-import Doctrina.Core.Camera;
-import Doctrina.Physics.Size;
-
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -16,14 +13,12 @@ public class RenderingEngine {
     private JPanel panel;
     private BufferedImage bufferedImage;
     private Screen screen;
-    private static Size windowSize;
     private static Camera camera;
 
     public static RenderingEngine getInstance() {
         if (instance == null) {
             instance = new RenderingEngine();
-            windowSize = instance.getScreen().getSize();
-            camera = new Camera(windowSize);
+            camera = Camera.getInstance();
         }
         return instance;
     }

@@ -6,7 +6,6 @@ import java.awt.geom.GeneralPath;
 
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;
-import Doctrina.Core.Camera;
 
 public class Canvas {
     private final Graphics2D graphics;

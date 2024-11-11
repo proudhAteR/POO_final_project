@@ -1,6 +1,7 @@
 package Doctrina.Core;
 
 import Doctrina.Entities.StaticEntity;
+import Doctrina.Rendering.Camera;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
 import java.awt.Color;

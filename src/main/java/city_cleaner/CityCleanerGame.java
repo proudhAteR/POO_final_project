@@ -9,6 +9,7 @@ import city_cleaner.Entities.Player;
 import Doctrina.Entities.MovableEntity;
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Entities.Properties.DestroyableManager;
+import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Position;
 
 import java.awt.Color;

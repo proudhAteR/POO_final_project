@@ -1,17 +1,24 @@
-package Doctrina.Core;
+package Doctrina.Rendering;
 
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;;
 
 public class Camera {
-    Position position;
-    Size windowSize;
-    StaticEntity entity;
+    private static Camera instance;
+    private Position position;
+    private Size windowSize;
+    private StaticEntity entity;
 
-    public Camera(Size windowSize) {
+    private Camera() {
         this.position = new Position(0, 0);
-        this.windowSize = windowSize;
+        this.windowSize = RenderingEngine.getInstance().getScreen().getSize();
+    }
+    public static Camera getInstance(){
+        if (instance == null) {
+            instance = new Camera();
+        }
+        return instance;
     }
 
     public void update() {

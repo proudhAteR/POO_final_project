@@ -1,4 +1,4 @@
-package Doctrina.Core;
+package Doctrina.Entities.Properties;
 
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;

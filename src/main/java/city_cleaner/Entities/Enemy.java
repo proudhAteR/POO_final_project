@@ -1,11 +1,11 @@
 package city_cleaner.Entities;
 
-import Doctrina.Core.Step;
 import Doctrina.Entities.*;
 import Doctrina.Entities.Properties.Action;
 import Doctrina.Entities.Properties.Collidable;
 import Doctrina.Entities.Properties.Hostile;
 import Doctrina.Entities.Properties.Sight;
+import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;
