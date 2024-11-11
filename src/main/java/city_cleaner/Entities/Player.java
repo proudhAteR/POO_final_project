@@ -30,7 +30,7 @@ public class Player extends ControllableEntity implements Collidable {
 
     public Player(MovementController controller) {
         super(controller);
-        INITIAL_COOLDOWN = (int) ( MovableEntity.ANIMATION_SPEED * 4.5);
+        INITIAL_COOLDOWN = (int) ( MovableEntity.ANIMATION_SPEED * 4);
         canCollide(this);
         position = new Position(0, 0);
         teleport(position);

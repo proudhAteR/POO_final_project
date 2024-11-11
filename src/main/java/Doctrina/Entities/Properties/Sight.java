@@ -19,7 +19,7 @@ public class Sight {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawCircle(getBounds(), entity);
+        canvas.drawCircle(getBounds());
     }
 
     public boolean intersects(Rectangle bounds) {

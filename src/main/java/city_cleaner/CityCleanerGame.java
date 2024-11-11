@@ -19,6 +19,7 @@ import java.util.Random;
 import Doctrina.Core.*;
 
 public class CityCleanerGame extends Game {
+    private World world;
     private GamePad gamePad;
     private Player player;
     private ArrayList<Enemy> enemies;
@@ -27,6 +28,7 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void initialize() {
+        world = new World();
         initializeEntities();
         initializePlayer();
         initializeEnemies();
@@ -62,12 +64,10 @@ public class CityCleanerGame extends Game {
             renderDebugInfos(canvas);
         }
         canvas.clip(player.getSight().getBounds());
-        canvas.drawScreen(Color.blue);
-
+        world.draw(canvas);
         for (MovableEntity e : entities) {
             e.draw(canvas);
         }
-
     }
 
     private void renderDebugInfos(Canvas canvas) {

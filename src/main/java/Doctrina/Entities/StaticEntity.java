@@ -15,6 +15,7 @@ public abstract class StaticEntity {
     protected Color color;
     protected Sight sight;
     protected Action action;
+    protected int health;
 
     public abstract void draw(Canvas canvas);
 
@@ -85,6 +86,9 @@ public abstract class StaticEntity {
 
     public int getHeight() {
         return size.getHeight();
+    }
+    public int getHealth() {
+        return health;
     }
 
 }

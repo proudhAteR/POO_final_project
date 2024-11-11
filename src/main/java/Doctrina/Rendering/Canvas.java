@@ -26,7 +26,10 @@ public class Canvas {
         graphics.setPaint(new Color(0, 255, 255, 128));
         graphics.fillOval(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
     }
-
+    public void drawCircle(int x, int y, int height, int width, Color color) {
+        graphics.setPaint(color);
+        graphics.fillOval(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
+    }
     public void drawRectangle(int x, int y, int width, int height, Paint paint) {
         graphics.setPaint(paint);
         graphics.fillRect(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
@@ -65,7 +68,7 @@ public class Canvas {
         drawImage(image, position.getX(), position.getY());
     }
 
-    public void drawCircle(Ellipse2D bounds, StaticEntity entity) {
+    public void drawCircle(Ellipse2D bounds) {
         drawCircle((int) bounds.getX(), (int) bounds.getY(), (int) bounds.getHeight(), (int) bounds.getWidth());
     }
 }
