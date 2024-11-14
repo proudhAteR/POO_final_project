@@ -4,8 +4,7 @@ public enum Direction {
     LEFT(-1, 0),
     RIGHT(1, 0),
     UP(0, -1),
-    DOWN(0, 1),
-    ;
+    DOWN(0, 1);
 
     private final int velocityX;
     private final int velocityY;
@@ -25,11 +24,11 @@ public enum Direction {
 
     public Direction getOppositeDirection() {
         return switch (this) {
-                    case UP -> DOWN;
-                    case DOWN -> UP;
-                    case LEFT -> RIGHT;
-                    case RIGHT -> LEFT;
-            
+            case UP -> DOWN;
+            case DOWN -> UP;
+            case LEFT -> RIGHT;
+            case RIGHT -> LEFT;
+
         };
     }
 
