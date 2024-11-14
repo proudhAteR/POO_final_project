@@ -7,6 +7,7 @@ public class AttackProperties {
     public AttackProperties(int damage, int range){
         this.damage = damage;
         this.range = range;
+
     }
 
     public int getDamage() {
@@ -15,14 +16,6 @@ public class AttackProperties {
 
     public int getRange() {
         return range;
-    }
-
-    public void setRange(int range) {
-        this.range = range;
-    }
-
-    public void decreaseRange() {
-        this.range--;
     }
 
    

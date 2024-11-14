@@ -10,7 +10,6 @@ import java.util.Map;
 import Doctrina.Controllers.Direction;
 import Doctrina.Core.GameConfig;
 import Doctrina.Entities.Properties.Action;
-import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Collision;
@@ -55,7 +54,7 @@ public abstract class MovableEntity extends StaticEntity {
     };
 
     public void move() {
-        if (!isAttacking() && !isDying()) {
+        if (!isAttacking()) {
             int allowedSpeed = collision.getAllowedSpeed();
             position.addX(direction.calculateVelocityX(allowedSpeed));
             position.addY(direction.calculateVelocityY(allowedSpeed));
@@ -68,12 +67,8 @@ public abstract class MovableEntity extends StaticEntity {
 
     }
 
-    public boolean isDying() {
-        return this.action == Action.DYING;
-    }
-
-    protected void animationManager() {
-        if (!isIdle()) {
+    protected void checkMovement() {
+        if (isAttacking() || hasMoved()) {
             updateAnimation();
         } else {
             resetAnimationFrame();
@@ -89,8 +84,8 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     protected void resetAnimationFrame() {
+        action = Action.IDLE;
         this.currentAnimationFrame = 1;
-        setAction(Action.IDLE);
     }
 
     protected boolean isNextFrameZero() {
@@ -99,7 +94,7 @@ public abstract class MovableEntity extends StaticEntity {
 
     protected void updateAnimationFrame() {
         currentAnimationFrame++;
-        if (isLastAnimationFrame()) {
+        if (currentAnimationFrame >= actionFrames.get(this.action)[0].length) {
             currentAnimationFrame = 0;
             if (isAttacking()) {
                 setAction(Action.IDLE);
@@ -108,20 +103,16 @@ public abstract class MovableEntity extends StaticEntity {
         nextFrame = ANIMATION_SPEED;
     }
 
-    private boolean isLastAnimationFrame() {
-        return currentAnimationFrame >= actionFrames.get(this.action)[0].length;
-    }
-
     protected boolean isAttacking() {
         return action == Action.ATTACK || action == Action.CLOSE_ATTACK;
     }
 
     protected boolean isIdle() {
-        return action == Action.IDLE;
+        return action == Action.ATTACK;
     }
 
     protected boolean isMoving() {
-        return action == Action.MOVE;
+        return action == Action.ATTACK;
     }
 
     protected void loadAnimationFrames(SpriteProperties properties, Action action) {
@@ -150,10 +141,6 @@ public abstract class MovableEntity extends StaticEntity {
 
     public void setAction(Action action) {
         this.action = action;
-    }
-
-    public void die() {
-        this.action = Action.DYING;
     }
 
     protected void moveTo(Position position) {
@@ -273,13 +260,5 @@ public abstract class MovableEntity extends StaticEntity {
 
     public Direction setDirection(Direction direction) {
         return this.direction = direction;
-    }
-
-    public AttackProperties getAttackProperties() {
-        return this.attackProperties;
-    }
-
-    public Action getAction() {
-        return action;
     }
 }

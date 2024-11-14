@@ -8,7 +8,6 @@ import city_cleaner.Entities.Enemy;
 import city_cleaner.Entities.Player;
 import Doctrina.Entities.MovableEntity;
 import Doctrina.Entities.StaticEntity;
-import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.DestroyableManager;
 import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Position;
@@ -42,19 +41,12 @@ public class CityCleanerGame extends Game {
         handleAction();
         for (MovableEntity e : entities) {
             if (e instanceof Enemy) {
-                if (!e.isDying()) {
-                    ((Enemy) e).follow(player);
-                }
+                ((Enemy) e).follow(player);
             }
             if (e instanceof Bullet) {
                 checkShotCollisions(e);
-                e.getAttackProperties().decreaseRange();
-                if (e.getAttackProperties().getRange() <= 0) {
-                    destroyed.add(e);
-                }
             }
             e.update();
-
         }
         if (!destroyed.isEmpty()) {
             DestroyableManager.destroyAll(destroyed);
@@ -113,11 +105,8 @@ public class CityCleanerGame extends Game {
 
     private void handleEnemyAction() {
         for (Enemy enemy : enemies) {
-            if (enemy.isReachable(player) && !enemy.isDying()) {
+            if (enemy.isReachable(player)) {
                 enemy.attack();
-                if (enemy.getHitBox().intersects(player.getBounds())) {
-                    player.getHurt(enemy.getAttackProperties().getDamage());
-                }
             }
         }
     }
@@ -138,22 +127,6 @@ public class CityCleanerGame extends Game {
         }
         if (gamePad.isStabPressed()) {
             player.closeAttack();
-            for (MovableEntity e : entities) {
-                if (e instanceof Enemy) {
-                    if (player.getHitBox().intersects(e.getBounds())) {
-                        handlePlayerStab(e);
-                    }
-                }
-
-            }
-        }
-    }
-
-    private void handlePlayerStab(MovableEntity enemy) {
-        int damage = player.getAttackProperties().getDamage();
-        enemy.getHurt(damage);
-        if (enemy.getHealth() <= 0) {
-            enemy.die();
         }
     }
 
@@ -165,7 +138,6 @@ public class CityCleanerGame extends Game {
     private void initializePlayer() {
         gamePad = new GamePad();
         player = new Player(gamePad);
-        player.setAttackProperties(new AttackProperties(10, 0));
         entities.add(player);
     }
 
@@ -173,7 +145,6 @@ public class CityCleanerGame extends Game {
         enemies = new ArrayList<>();
         for (int i = 0; i <= 2; i++) {
             Enemy enemy = new Enemy();
-            enemy.setAttackProperties(new AttackProperties(10, 0));
             entities.add(enemy);
             enemies.add(enemy);
             enemy.canCollide(enemy);

@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import Doctrina.Controllers.Direction;
 import Doctrina.Entities.MovableEntity;
-import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Projetable;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
@@ -15,7 +14,6 @@ public class Bullet extends MovableEntity implements Projetable {
 
     public Bullet(MovableEntity e) {
         setSpeed(10);
-        attackProperties = new AttackProperties(10, 20);
         this.direction = e.getDirection();
         initialize(e);
         color = Color.PINK;
@@ -45,9 +43,8 @@ public class Bullet extends MovableEntity implements Projetable {
 
             case RIGHT, LEFT -> {
                 this.setDimension(new Size(values[0], values[1]));
-                this.getPosition()
-                        .setX(entity.getDirection() == Direction.RIGHT ? entity.getX() + (entity.getWidth() + 1)
-                                : entity.getX() - 1);
+                this.getPosition().setX(entity.getDirection() == Direction.RIGHT ? entity.getX() + (entity.getWidth() + 1)
+                        : entity.getX() - 1);
                 this.getPosition().setY(entity.getY() + entity.getHeight() / 2 - getHeight() / 2);
             }
             case DOWN, UP -> {
