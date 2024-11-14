@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 
 import Doctrina.Entities.Properties.Action;
+import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
@@ -16,6 +17,7 @@ public abstract class StaticEntity {
     protected Sight sight;
     protected Action action;
     protected int health;
+    protected AttackProperties attackProperties;
 
     public abstract void draw(Canvas canvas);
 
@@ -52,6 +54,7 @@ public abstract class StaticEntity {
             this.action = Action.ATTACK;
         }
     }
+
     protected boolean isAttacking() {
         return action == Action.ATTACK || action == Action.CLOSE_ATTACK;
     }
@@ -64,8 +67,7 @@ public abstract class StaticEntity {
         return action == Action.MOVE;
     }
 
-
-    protected boolean isDying() {
+    public boolean isDying() {
         return action == Action.DYING;
     }
 
@@ -110,4 +112,16 @@ public abstract class StaticEntity {
         return health;
     }
 
+    public void getHurt(int number) {
+        this.health -= number;
+    }
+    public void die() {
+        this.action = Action.DYING;
+    }
+    public void setAttackProperties(AttackProperties attackProperties) {
+        this.attackProperties = attackProperties;
+    }
+    public AttackProperties getAttackProperties() {
+        return this.attackProperties;
+    }
 }

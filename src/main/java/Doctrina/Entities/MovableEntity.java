@@ -79,7 +79,7 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     protected void resetAnimationFrame() {
-        currentAnimationFrame = 0;
+        this.currentAnimationFrame = 0;
         action = Action.IDLE;
     }
 
@@ -245,4 +245,6 @@ public abstract class MovableEntity extends StaticEntity {
     public Direction setDirection(Direction direction) {
         return this.direction = direction;
     }
+
+   
 }
