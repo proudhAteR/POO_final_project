@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 
 import Doctrina.Entities.Properties.Action;
+import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
@@ -15,6 +16,7 @@ public abstract class StaticEntity {
     protected Color color;
     protected Sight sight;
     protected Action action;
+    protected AttackProperties attackProperties;
     protected int health;
 
     public abstract void draw(Canvas canvas);
@@ -54,7 +56,12 @@ public abstract class StaticEntity {
     public void closeAttack() {
         this.action = Action.CLOSE_ATTACK;
     }
-
+    public void getHurt(int number){
+        this.health -= number;
+    }
+    public void setAttackProperties(AttackProperties attackProperties) {
+        this.attackProperties = attackProperties;
+    }
     public void drawHitBox(Canvas canvas) {
         Rectangle rect = getBounds();
         canvas.drawRectangle(rect, new Color(255, 105, 180, 128));

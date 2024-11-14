@@ -12,23 +12,26 @@ import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
 
 //!! BUG : Animation frames out of bounds happening from time to time
-// TODO : When enemy is hit by a bullet make it so it moves to the bullet direction
+//TODO : Make sure that the death animation only plays one time
 public class Enemy extends MovableEntity implements Hostile, Collidable {
     protected final String[] SPRITE_PATHS = {
             "images/sprite_sheets/z_walk.png",
             "images/sprite_sheets/Attack.png",
             "images/sprite_sheets/Attack.png",
-            "images/sprite_sheets/z_idle.png"
+            "images/sprite_sheets/z_idle.png",
+            "images/sprite_sheets/z_death.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
             new SpriteProperties(10, 32, 0),
             new SpriteProperties(8, 32, 0),
             new SpriteProperties(8, 32, 0),
-            new SpriteProperties(5, 32, 0)
+            new SpriteProperties(5, 32, 0),
+            new SpriteProperties(7, 32, 0)
     };
 
     public Enemy() {
         canCollide(this);
+        health = 10;
         position = new Position(0, 0);
         size = new Size(32, 32);
         setDimension(size);
@@ -46,6 +49,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
         }
 
     }
+
     public boolean isReachable(StaticEntity e) {
         return getHitBox().intersects(e.getBounds());
     }
@@ -99,7 +103,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
     public void update() {
         super.update();
         move();
-        checkMovement();
+        animationManager();
     }
 
     public void load() {

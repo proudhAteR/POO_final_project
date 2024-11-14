@@ -17,20 +17,23 @@ public class Player extends ControllableEntity implements Collidable {
             "images/sprite_sheets/walk.png",
             "images/sprite_sheets/shoot.png",
             "images/sprite_sheets/stab.png",
-            "images/sprite_sheets/idle.png"
+            "images/sprite_sheets/idle.png",
+            "images/sprite_sheets/death.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
             new SpriteProperties(4, 32, 0),
             new SpriteProperties(4, 32, 0),
             new SpriteProperties(4, 32, 0),
-            new SpriteProperties(2, 32, 0)
+            new SpriteProperties(2, 32, 0),
+            new SpriteProperties(4, 32, 0)
     };
     private int cooldown = 0;
     private final int INITIAL_COOLDOWN;
 
     public Player(MovementController controller) {
         super(controller);
-        INITIAL_COOLDOWN = (int) ( MovableEntity.ANIMATION_SPEED * 4);
+        health = 100;
+        INITIAL_COOLDOWN = (int) (MovableEntity.ANIMATION_SPEED * 4);
         canCollide(this);
         position = new Position(0, 0);
         teleport(position);
@@ -67,9 +70,10 @@ public class Player extends ControllableEntity implements Collidable {
         super.update();
         moveWithController();
         cooldown = !canFire() ? --cooldown : cooldown;
-        checkMovement();
+        animationManager();
         handleMovement();
     }
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
