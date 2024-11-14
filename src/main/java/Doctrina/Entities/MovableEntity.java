@@ -67,13 +67,8 @@ public abstract class MovableEntity extends StaticEntity {
 
     }
 
-    private boolean isDying() {
-        return action == Action.DYING;
-    }
-
-    protected void checkMovement() {
+    protected void animationManager() {
         updateAnimation();
-
     }
 
     private void updateAnimation() {
@@ -84,8 +79,8 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     protected void resetAnimationFrame() {
+        currentAnimationFrame = 0;
         action = Action.IDLE;
-        this.currentAnimationFrame = 0;
     }
 
     protected boolean isNextFrameZero() {
@@ -102,18 +97,6 @@ public abstract class MovableEntity extends StaticEntity {
 
     private boolean isLastAnimationFrame() {
         return currentAnimationFrame >= actionFrames.get(this.action)[0].length;
-    }
-
-    protected boolean isAttacking() {
-        return action == Action.ATTACK || action == Action.CLOSE_ATTACK;
-    }
-
-    protected boolean isIdle() {
-        return action == Action.IDLE;
-    }
-
-    protected boolean isMoving() {
-        return action == Action.MOVE;
     }
 
     protected void loadAnimationFrames(SpriteProperties properties, Action action) {

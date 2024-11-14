@@ -32,7 +32,7 @@ public class Player extends ControllableEntity implements Collidable {
 
     public Player(MovementController controller) {
         super(controller);
-        INITIAL_COOLDOWN = (int) ( MovableEntity.ANIMATION_SPEED * 4);
+        INITIAL_COOLDOWN = (int) (MovableEntity.ANIMATION_SPEED * 4);
         canCollide(this);
         position = new Position(0, 0);
         teleport(position);
@@ -69,9 +69,10 @@ public class Player extends ControllableEntity implements Collidable {
         super.update();
         moveWithController();
         cooldown = !canFire() ? --cooldown : cooldown;
-        checkMovement();
+        animationManager();
         handleMovement();
     }
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);

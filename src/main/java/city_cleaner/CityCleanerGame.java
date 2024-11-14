@@ -18,6 +18,10 @@ import java.util.Random;
 
 import Doctrina.Core.*;
 
+//TODO : add the attack props and start the combat system
+
+//TODO : add ange and damage to the player's gun
+
 public class CityCleanerGame extends Game {
     private World world;
     private GamePad gamePad;

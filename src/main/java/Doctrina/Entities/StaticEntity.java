@@ -48,7 +48,25 @@ public abstract class StaticEntity {
     }
 
     public void attack() {
-        this.action = Action.ATTACK;
+        if (!this.isDying()) {
+            this.action = Action.ATTACK;
+        }
+    }
+    protected boolean isAttacking() {
+        return action == Action.ATTACK || action == Action.CLOSE_ATTACK;
+    }
+
+    protected boolean isIdle() {
+        return action == Action.IDLE;
+    }
+
+    protected boolean isMoving() {
+        return action == Action.MOVE;
+    }
+
+
+    protected boolean isDying() {
+        return action == Action.DYING;
     }
 
     public void closeAttack() {
@@ -87,6 +105,7 @@ public abstract class StaticEntity {
     public int getHeight() {
         return size.getHeight();
     }
+
     public int getHealth() {
         return health;
     }
