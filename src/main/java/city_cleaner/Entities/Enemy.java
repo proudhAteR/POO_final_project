@@ -18,13 +18,15 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
             "images/sprite_sheets/z_walk.png",
             "images/sprite_sheets/Attack.png",
             "images/sprite_sheets/Attack.png",
-            "images/sprite_sheets/z_idle.png"
+            "images/sprite_sheets/z_idle.png",
+            "images/sprite_sheets/z_death.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
             new SpriteProperties(10, 32, 0),
             new SpriteProperties(8, 32, 0),
             new SpriteProperties(8, 32, 0),
-            new SpriteProperties(5, 32, 0)
+            new SpriteProperties(5, 32, 0),
+            new SpriteProperties(7, 32, 0)
     };
 
     public Enemy() {

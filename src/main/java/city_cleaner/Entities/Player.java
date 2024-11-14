@@ -17,13 +17,15 @@ public class Player extends ControllableEntity implements Collidable {
             "images/sprite_sheets/walk.png",
             "images/sprite_sheets/shoot.png",
             "images/sprite_sheets/stab.png",
-            "images/sprite_sheets/idle.png"
+            "images/sprite_sheets/idle.png",
+            "images/sprite_sheets/death.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
             new SpriteProperties(4, 32, 0),
             new SpriteProperties(4, 32, 0),
             new SpriteProperties(4, 32, 0),
-            new SpriteProperties(2, 32, 0)
+            new SpriteProperties(2, 32, 0),
+            new SpriteProperties(4, 32, 0)
     };
     private int cooldown = 0;
     private final int INITIAL_COOLDOWN;

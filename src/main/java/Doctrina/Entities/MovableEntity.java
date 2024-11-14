@@ -54,7 +54,7 @@ public abstract class MovableEntity extends StaticEntity {
     };
 
     public void move() {
-        if (!isAttacking()) {
+        if (!isAttacking() && !isDying()) {
             int allowedSpeed = collision.getAllowedSpeed();
             position.addX(direction.calculateVelocityX(allowedSpeed));
             position.addY(direction.calculateVelocityY(allowedSpeed));
@@ -67,12 +67,12 @@ public abstract class MovableEntity extends StaticEntity {
 
     }
 
+    private boolean isDying() {
+        return action == Action.DYING;
+    }
+
     protected void checkMovement() {
-        if (isAttacking() || hasMoved()) {
-            updateAnimation();
-        } else {
-            resetAnimationFrame();
-        }
+        updateAnimation();
 
     }
 
@@ -85,7 +85,7 @@ public abstract class MovableEntity extends StaticEntity {
 
     protected void resetAnimationFrame() {
         action = Action.IDLE;
-        this.currentAnimationFrame = 1;
+        this.currentAnimationFrame = 0;
     }
 
     protected boolean isNextFrameZero() {
@@ -94,13 +94,14 @@ public abstract class MovableEntity extends StaticEntity {
 
     protected void updateAnimationFrame() {
         currentAnimationFrame++;
-        if (currentAnimationFrame >= actionFrames.get(this.action)[0].length) {
-            currentAnimationFrame = 0;
-            if (isAttacking()) {
-                setAction(Action.IDLE);
-            }
+        if (isLastAnimationFrame()) {
+            resetAnimationFrame();
         }
         nextFrame = ANIMATION_SPEED;
+    }
+
+    private boolean isLastAnimationFrame() {
+        return currentAnimationFrame >= actionFrames.get(this.action)[0].length;
     }
 
     protected boolean isAttacking() {
@@ -108,11 +109,11 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     protected boolean isIdle() {
-        return action == Action.ATTACK;
+        return action == Action.IDLE;
     }
 
     protected boolean isMoving() {
-        return action == Action.ATTACK;
+        return action == Action.MOVE;
     }
 
     protected void loadAnimationFrames(SpriteProperties properties, Action action) {
