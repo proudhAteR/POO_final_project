@@ -25,5 +25,13 @@ public class AttackProperties {
         this.range--;
     }
 
+    public void decreaseDamage(){
+        this.damage--;
+    }
+
+    public void decreaseProps(){
+        this.damage--;
+        this.range --;
+    }
    
 }

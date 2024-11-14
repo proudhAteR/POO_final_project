@@ -48,7 +48,7 @@ public class CityCleanerGame extends Game {
             }
             if (e instanceof Bullet) {
                 checkShotCollisions(e);
-                e.getAttackProperties().decreaseRange();
+                e.getAttackProperties().decreaseProps();
                 if (e.getAttackProperties().getRange() <= 0) {
                     destroyed.add(e);
                 }
@@ -165,15 +165,15 @@ public class CityCleanerGame extends Game {
     private void initializePlayer() {
         gamePad = new GamePad();
         player = new Player(gamePad);
-        player.setAttackProperties(new AttackProperties(10, 0));
+        player.setAttackProperties(new AttackProperties(50, 0));
         entities.add(player);
     }
 
     private void initializeEnemies() {
         enemies = new ArrayList<>();
-        for (int i = 0; i <= 2; i++) {
+        for (int i = 0; i < 3; i++) {
             Enemy enemy = new Enemy();
-            enemy.setAttackProperties(new AttackProperties(10, 0));
+            enemy.setAttackProperties(new AttackProperties(100, 0));
             entities.add(enemy);
             enemies.add(enemy);
             enemy.canCollide(enemy);

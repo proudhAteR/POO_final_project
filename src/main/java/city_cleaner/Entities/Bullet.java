@@ -15,7 +15,7 @@ public class Bullet extends MovableEntity implements Projetable {
 
     public Bullet(MovableEntity e) {
         setSpeed(10);
-        attackProperties = new AttackProperties(10, 20);
+        attackProperties = new AttackProperties(50, 20);
         this.direction = e.getDirection();
         initialize(e);
         color = Color.PINK;

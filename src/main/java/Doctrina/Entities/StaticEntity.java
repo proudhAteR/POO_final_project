@@ -50,9 +50,10 @@ public abstract class StaticEntity {
     }
 
     public void attack() {
-        if (!this.isDying()) {
-            this.action = Action.ATTACK;
+        if (isDying()) {
+            return;
         }
+        this.action = Action.ATTACK;
     }
 
     protected boolean isAttacking() {
