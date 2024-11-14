@@ -12,7 +12,7 @@ import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
 
 //!! BUG : Animation frames out of bounds happening from time to time
-//TODO : Make it so the death animation only plays one time
+//TODO : Make sure that the death animation only plays one time
 public class Enemy extends MovableEntity implements Hostile, Collidable {
     protected final String[] SPRITE_PATHS = {
             "images/sprite_sheets/z_walk.png",
