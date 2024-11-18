@@ -39,7 +39,7 @@ public class Player extends ControllableEntity implements Collidable {
         teleport(position);
         size = new Size(32, 32);
         sight = new Sight(this);
-        sight.setSize(this.size.multiply(2));
+        sight.setSize(this.size.multiply(4));
         setDimension(size);
         setSpeed(4);
         load();
@@ -79,8 +79,12 @@ public class Player extends ControllableEntity implements Collidable {
         super.draw(canvas);
         int cooldownWidth = (cooldown * getWidth()) / INITIAL_COOLDOWN;
         if (!canFire()) {
-            canvas.drawRectangle(this.getX(), getY() - 5, cooldownWidth, 2, Color.pink);
+            drawShootCoolDown(canvas, cooldownWidth);
         }
+    }
+
+    private void drawShootCoolDown(Canvas canvas, int cooldownWidth) {
+        canvas.drawRectangle(this.getX(), getY() - 5, cooldownWidth, 2, Color.pink);
     }
 
 }

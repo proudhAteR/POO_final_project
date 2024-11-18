@@ -30,7 +30,6 @@ public abstract class MovableEntity extends StaticEntity {
     private boolean moved;
     private final Collision collision;
     protected ArrayList<Step> traces;
-    protected boolean isDead;
 
     private final Map<Action, Image[][]> actionFrames = new EnumMap<>(Action.class);
     private final ResourcesManager resourcesManager;
@@ -110,6 +109,13 @@ public abstract class MovableEntity extends StaticEntity {
         nextFrame = ANIMATION_SPEED;
     }
 
+    public void attack() {
+        if (isDying()) {
+            return;
+        }
+        this.action = Action.ATTACK;
+    }
+
     @Override
     public void draw(Canvas canvas) {
         if (GameConfig.debugMode()) {
@@ -140,15 +146,10 @@ public abstract class MovableEntity extends StaticEntity {
             properties.setYOff(this.size.getHeight());
         }
         actionFrames.put(action, frames);
-        resetImage();
     }
 
     protected void loadSpriteSheet(String spritePath) {
         image = (BufferedImage) resourcesManager.getImage(spritePath);
-    }
-
-    private void resetImage() {
-        image = null;
     }
 
     public void move(Direction direction) {

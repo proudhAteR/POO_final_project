@@ -34,14 +34,14 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
         size = new Size(32, 32);
         setDimension(size);
         sight = new Sight(this);
-        sight.setSize(size.multiply(4));
+        sight.setSize(size.multiply(5));
         setSpeed(1);
         load();
     }
 
     @Override
     public void follow(MovableEntity entity) {
-        if (this.isDying()) {
+        if (this.isDying() || isDead) {
             return;
         }
         if (isEntityInSight(entity) || isStepInSight(entity)) {
@@ -102,9 +102,11 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
 
     @Override
     public void update() {
-        super.update();
-        move();
-        updateAnimation();
+        if (!isDead) {
+            super.update();
+            move();
+            updateAnimation();
+        }
     }
 
     public void load() {

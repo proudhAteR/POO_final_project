@@ -18,6 +18,7 @@ public abstract class StaticEntity {
     protected Action action;
     protected int health;
     protected AttackProperties attackProperties;
+    protected boolean isDead;
 
     public abstract void draw(Canvas canvas);
 
@@ -47,13 +48,6 @@ public abstract class StaticEntity {
 
     public Rectangle getBounds() {
         return new Rectangle(position.getX(), position.getY(), size.getWidth(), size.getHeight());
-    }
-
-    public void attack() {
-        if (isDying()) {
-            return;
-        }
-        this.action = Action.ATTACK;
     }
 
     protected boolean isAttacking() {
@@ -112,16 +106,22 @@ public abstract class StaticEntity {
     public int getHealth() {
         return health;
     }
+    public boolean died(){
+        return isDead;
+    }
 
     public void getHurt(int number) {
         this.health -= number;
     }
+
     public void die() {
         this.action = Action.DYING;
     }
+
     public void setAttackProperties(AttackProperties attackProperties) {
         this.attackProperties = attackProperties;
     }
+
     public AttackProperties getAttackProperties() {
         return this.attackProperties;
     }

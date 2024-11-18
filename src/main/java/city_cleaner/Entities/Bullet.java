@@ -1,35 +1,37 @@
 package city_cleaner.Entities;
 
-import java.awt.Color;
-
 import Doctrina.Controllers.Direction;
 import Doctrina.Entities.MovableEntity;
+import Doctrina.Entities.Properties.Action;
 import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Projetable;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;
+import Doctrina.Rendering.SpriteProperties;
 
 public class Bullet extends MovableEntity implements Projetable {
+    private final String SPRITE_PATH = "images/sprite_sheets/Bullet.png";
+    private final SpriteProperties SPRITE_PROPS = new SpriteProperties(4, 32, 0);
 
     public Bullet(MovableEntity e) {
         setSpeed(10);
+        action = Action.MOVE;
         attackProperties = new AttackProperties(50, 20);
         this.direction = e.getDirection();
         initialize(e);
-        color = Color.PINK;
     }
 
     private void initialize(MovableEntity e) {
-        size = new Size(2, 4);
+        size = new Size(32, 32);
         position = new Position(0, 0);
         sight = new Sight(e);
         sight.setSize(new Size(0, 0));
         setDimension(size);
         teleport(position);
+        load();
         positionProjectileAtEntity(e);
-
     }
 
     @Override
@@ -38,13 +40,10 @@ public class Bullet extends MovableEntity implements Projetable {
     }
 
     private void placeAtCenter(MovableEntity entity) {
-        int[] values = new int[2];
-        values = invertValues(getWidth(), getHeight());
 
         switch (entity.getDirection()) {
 
             case RIGHT, LEFT -> {
-                this.setDimension(new Size(values[0], values[1]));
                 this.getPosition()
                         .setX(entity.getDirection() == Direction.RIGHT ? entity.getX() + (entity.getWidth() + 1)
                                 : entity.getX() - 1);
@@ -65,7 +64,8 @@ public class Bullet extends MovableEntity implements Projetable {
 
     @Override
     public void load() {
-
+        loadSpriteSheet(SPRITE_PATH);
+        loadAnimationFrames(SPRITE_PROPS, Action.MOVE);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class Bullet extends MovableEntity implements Projetable {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRectangle(this);
+        super.draw(canvas);
     }
 
 }
