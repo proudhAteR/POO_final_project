@@ -39,7 +39,7 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void update() {
-        handleAction();
+        actionsHandler();
         for (MovableEntity e : entities) {
             if (e instanceof Enemy) {
                 if (!e.isDying()) {
@@ -49,7 +49,7 @@ public class CityCleanerGame extends Game {
             if (e instanceof Bullet) {
                 checkShotCollisions(e);
                 e.getAttackProperties().decreaseProps();
-                if (isBulletOutOfRange(e)) {
+                if (isAttackOutOfRange(e)) {
                     destroyed.add(e);
                 }
             }
@@ -65,7 +65,7 @@ public class CityCleanerGame extends Game {
 
     }
 
-    private boolean isBulletOutOfRange(MovableEntity e) {
+    private boolean isAttackOutOfRange(MovableEntity e) {
         return e.getAttackProperties().getRange() <= 0;
     }
 
@@ -75,11 +75,19 @@ public class CityCleanerGame extends Game {
         if (GameConfig.debugMode()) {
             renderDebugInfos(canvas);
         }
-        canvas.clip(player.getSight().getBounds());
-        world.draw(canvas);
+        renderWorld(canvas);
+        renderEntities(canvas);
+    }
+
+    private void renderEntities(Canvas canvas) {
         for (MovableEntity e : entities) {
             e.draw(canvas);
         }
+    }
+
+    private void renderWorld(Canvas canvas) {
+        canvas.clip(player.getSight().getBounds());
+        world.draw(canvas);
     }
 
     private void renderDebugInfos(Canvas canvas) {
@@ -109,7 +117,7 @@ public class CityCleanerGame extends Game {
         }
     }
 
-    private void handleAction() {
+    private void actionsHandler() {
         handleUserAction();
         handlePlayerAction();
         handleEnemyAction();

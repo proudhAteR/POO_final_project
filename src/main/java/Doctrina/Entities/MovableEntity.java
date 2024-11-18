@@ -71,6 +71,16 @@ public abstract class MovableEntity extends StaticEntity {
 
     }
 
+    protected void moveTo(Position position) {
+        int dx = this.position.getX() - position.getX();
+        int dy = this.position.getY() - position.getY();
+
+        this.direction = (Math.abs(dx) > Math.abs(dy)) ? (dx > 0 ? Direction.LEFT : Direction.RIGHT)
+                : (dy > 0 ? Direction.UP : Direction.DOWN);
+
+        move(direction);
+    }
+
     protected void updateAnimation() {
         nextFrame--;
         if (isNextFrameZero() && !isDead) {
@@ -98,6 +108,24 @@ public abstract class MovableEntity extends StaticEntity {
             }
         }
         nextFrame = ANIMATION_SPEED;
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        if (GameConfig.debugMode()) {
+            drawHitBox(canvas);
+        }
+        drawFrames(canvas, actionFrames.get(this.action));
+    }
+
+    private void drawFrames(Canvas canvas, Image[][] frames) {
+        switch (direction) {
+            case DOWN -> canvas.drawImage(frames[0][currentAnimationFrame], position);
+            case UP -> canvas.drawImage(frames[1][currentAnimationFrame], position);
+            case RIGHT -> canvas.drawImage(frames[2][currentAnimationFrame], position);
+            case LEFT -> canvas.drawImage(frames[3][currentAnimationFrame], position);
+
+        }
     }
 
     private boolean isLastAnimationFrame() {
@@ -132,16 +160,6 @@ public abstract class MovableEntity extends StaticEntity {
         this.action = action;
     }
 
-    protected void moveTo(Position position) {
-        int dx = this.position.getX() - position.getX();
-        int dy = this.position.getY() - position.getY();
-
-        this.direction = (Math.abs(dx) > Math.abs(dy)) ? (dx > 0 ? Direction.LEFT : Direction.RIGHT)
-                : (dy > 0 ? Direction.UP : Direction.DOWN);
-
-        move(direction);
-    }
-
     public void moveUp() {
         move(Direction.UP);
     }
@@ -172,24 +190,6 @@ public abstract class MovableEntity extends StaticEntity {
             return getRightHitBox();
         }
         return getBounds();
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        if (GameConfig.debugMode()) {
-            drawHitBox(canvas);
-        }
-        drawFrames(canvas, actionFrames.get(this.action));
-    }
-
-    private void drawFrames(Canvas canvas, Image[][] frames) {
-        switch (direction) {
-            case DOWN -> canvas.drawImage(frames[0][currentAnimationFrame], position);
-            case UP -> canvas.drawImage(frames[1][currentAnimationFrame], position);
-            case RIGHT -> canvas.drawImage(frames[2][currentAnimationFrame], position);
-            case LEFT -> canvas.drawImage(frames[3][currentAnimationFrame], position);
-
-        }
     }
 
     private Rectangle getUpperHitBox() {
