@@ -104,7 +104,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
     public void update() {
         super.update();
         move();
-        animationManager();
+        updateAnimation();
     }
 
     public void load() {

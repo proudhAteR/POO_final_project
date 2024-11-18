@@ -49,7 +49,7 @@ public class CityCleanerGame extends Game {
             if (e instanceof Bullet) {
                 checkShotCollisions(e);
                 e.getAttackProperties().decreaseProps();
-                if (e.getAttackProperties().getRange() <= 0) {
+                if (isBulletOutOfRange(e)) {
                     destroyed.add(e);
                 }
             }
@@ -63,6 +63,10 @@ public class CityCleanerGame extends Game {
         }
         camera.update();
 
+    }
+
+    private boolean isBulletOutOfRange(MovableEntity e) {
+        return e.getAttackProperties().getRange() <= 0;
     }
 
     @Override

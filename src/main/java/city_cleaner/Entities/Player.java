@@ -70,7 +70,7 @@ public class Player extends ControllableEntity implements Collidable {
         super.update();
         moveWithController();
         cooldown = !canFire() ? --cooldown : cooldown;
-        animationManager();
+        updateAnimation();
         handleMovement();
     }
 

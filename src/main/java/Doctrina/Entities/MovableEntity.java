@@ -30,6 +30,7 @@ public abstract class MovableEntity extends StaticEntity {
     private boolean moved;
     private final Collision collision;
     protected ArrayList<Step> traces;
+    protected boolean isDead;
 
     private final Map<Action, Image[][]> actionFrames = new EnumMap<>(Action.class);
     private final ResourcesManager resourcesManager;
@@ -59,6 +60,9 @@ public abstract class MovableEntity extends StaticEntity {
             position.addX(direction.calculateVelocityX(allowedSpeed));
             position.addY(direction.calculateVelocityY(allowedSpeed));
             moved = (position.getX() != lastX || position.getY() != lastY);
+            if (!hasMoved()) {
+                resetAnimationFrame();
+            }
             action = hasMoved() ? Action.MOVE : Action.IDLE;
 
             lastX = position.getX();
@@ -67,13 +71,9 @@ public abstract class MovableEntity extends StaticEntity {
 
     }
 
-    protected void animationManager() {
-        updateAnimation();
-    }
-
-    private void updateAnimation() {
+    protected void updateAnimation() {
         nextFrame--;
-        if (isNextFrameZero()) {
+        if (isNextFrameZero() && !isDead) {
             updateAnimationFrame();
         }
     }
@@ -87,10 +87,15 @@ public abstract class MovableEntity extends StaticEntity {
         return nextFrame == 0;
     }
 
-    protected void updateAnimationFrame() {
+    private void updateAnimationFrame() {
         currentAnimationFrame++;
         if (isLastAnimationFrame()) {
-            resetAnimationFrame();
+            if (isDying()) {
+                currentAnimationFrame--;
+                isDead = true;
+            } else {
+                resetAnimationFrame();
+            }
         }
         nextFrame = ANIMATION_SPEED;
     }
@@ -246,5 +251,4 @@ public abstract class MovableEntity extends StaticEntity {
         return this.direction = direction;
     }
 
-   
 }
