@@ -14,11 +14,11 @@ import java.awt.Color;
 
 public class Player extends ControllableEntity implements Collidable {
     protected final String[] SPRITE_PATHS = {
-            "images/sprite_sheets/walk.png",
-            "images/sprite_sheets/shoot.png",
-            "images/sprite_sheets/stab.png",
-            "images/sprite_sheets/idle.png",
-            "images/sprite_sheets/death.png"
+            "images/sprite_sheets/player/walk.png",
+            "images/sprite_sheets/player/shoot.png",
+            "images/sprite_sheets/player/stab.png",
+            "images/sprite_sheets/player/idle.png",
+            "images/sprite_sheets/player/death.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
             new SpriteProperties(4, 32, 0),

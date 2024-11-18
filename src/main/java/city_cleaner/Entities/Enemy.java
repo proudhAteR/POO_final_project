@@ -14,11 +14,11 @@ import Doctrina.Rendering.SpriteProperties;
 //!! BUG : Animation frames out of bounds happening from time to time
 public class Enemy extends MovableEntity implements Hostile, Collidable {
     protected final String[] SPRITE_PATHS = {
-            "images/sprite_sheets/z_walk.png",
-            "images/sprite_sheets/Attack.png",
-            "images/sprite_sheets/Attack.png",
-            "images/sprite_sheets/z_idle.png",
-            "images/sprite_sheets/z_death.png"
+            "images/sprite_sheets/zombies/z_walk.png",
+            "images/sprite_sheets/zombies/Attack.png",
+            "images/sprite_sheets/zombies/Attack.png",
+            "images/sprite_sheets/zombies/z_idle.png",
+            "images/sprite_sheets/zombies/z_death.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
             new SpriteProperties(10, 32, 0),

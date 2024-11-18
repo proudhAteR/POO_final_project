@@ -41,10 +41,9 @@ public class CityCleanerGame extends Game {
     protected void update() {
         actionsHandler();
         for (MovableEntity e : entities) {
+            e.update();
             if (e instanceof Enemy) {
-                if (!e.isDying()) {
-                    ((Enemy) e).follow(player);
-                }
+                ((Enemy) e).follow(player);
             }
             if (e instanceof Bullet) {
                 checkShotCollisions(e);
@@ -53,8 +52,6 @@ public class CityCleanerGame extends Game {
                     destroyed.add(e);
                 }
             }
-            e.update();
-
         }
         if (!destroyed.isEmpty()) {
             DestroyableManager.destroyAll(destroyed);
