@@ -53,6 +53,11 @@ public class CityCleanerGame extends Game {
                 }
             }
         }
+        for (Enemy e : enemies) {
+            if (e.died() && !player.getSight().intersects(e.getBounds())) {
+                destroyed.add(e);
+            }
+        }
         if (!destroyed.isEmpty()) {
             DestroyableManager.destroyAll(destroyed);
             entities.removeAll(destroyed);
@@ -93,6 +98,7 @@ public class CityCleanerGame extends Game {
                 for (Step trace : ((MovableEntity) e).getSteps()) {
                     trace.placeStep(canvas);
                 }
+                e.getSight().draw(canvas);
             } else {
                 if (!(e instanceof Bullet)) {
                     e.getSight().draw(canvas);
@@ -198,7 +204,7 @@ public class CityCleanerGame extends Game {
     }
 
     private void configureRenderingEngine() {
-        RenderingEngine.getInstance().getScreen().fullscreen();
+        // RenderingEngine.getInstance().getScreen().fullscreen();
         RenderingEngine.getInstance().getScreen().hideCursor();
     }
 

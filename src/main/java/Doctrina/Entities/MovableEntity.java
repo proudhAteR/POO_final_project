@@ -18,6 +18,7 @@ import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.ResourcesManager;
 import Doctrina.Rendering.SpriteProperties;
 
+//!Latency in the movement animation
 public abstract class MovableEntity extends StaticEntity {
 
     protected int speed = 0;

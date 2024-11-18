@@ -26,7 +26,9 @@ public abstract class StaticEntity {
         this.position.setX(x);
         this.position.setY(y);
     }
-
+    public void setHealth(int health){
+        this.health = health;
+    }
     public void teleport(Position position) {
         teleport(position.getX(), position.getY());
     }

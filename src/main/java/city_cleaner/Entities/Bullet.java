@@ -13,12 +13,12 @@ import Doctrina.Rendering.SpriteProperties;
 
 public class Bullet extends MovableEntity implements Projetable {
     private final String SPRITE_PATH = "images/sprite_sheets/Bullet.png";
-    private final SpriteProperties SPRITE_PROPS = new SpriteProperties(4, 32, 0);
+    private final SpriteProperties SPRITE_PROPS = new SpriteProperties(4, 0, 0);
 
     public Bullet(MovableEntity e) {
         setSpeed(10);
         action = Action.MOVE;
-        attackProperties = new AttackProperties(50, 20);
+        attackProperties = new AttackProperties(50, 25);
         this.direction = e.getDirection();
         initialize(e);
     }
@@ -40,10 +40,13 @@ public class Bullet extends MovableEntity implements Projetable {
     }
 
     private void placeAtCenter(MovableEntity entity) {
+        int[] values = new int[2];
+        values = invertValues(getWidth(), getHeight());
 
         switch (entity.getDirection()) {
 
             case RIGHT, LEFT -> {
+                this.setDimension(new Size(values[0], values[1]));
                 this.getPosition()
                         .setX(entity.getDirection() == Direction.RIGHT ? entity.getX() + (entity.getWidth() + 1)
                                 : entity.getX() - 1);

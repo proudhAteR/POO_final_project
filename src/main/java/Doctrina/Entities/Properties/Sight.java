@@ -33,4 +33,11 @@ public class Sight {
                 size.getWidth() + entity.getWidth(),
                 size.getHeight() + entity.getHeight());
     }
+
+    @Override
+    public String toString() {
+        Ellipse2D bounds = this.getBounds();
+        return "X = " + bounds.getX() + "," + "Y = " + bounds.getY() + "," + "W = " + bounds.getWidth() + "," + "H = "
+                + bounds.getHeight();
+    }
 }
