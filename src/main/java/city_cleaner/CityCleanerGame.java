@@ -98,7 +98,6 @@ public class CityCleanerGame extends Game {
                 for (Step trace : ((MovableEntity) e).getSteps()) {
                     trace.placeStep(canvas);
                 }
-                e.getSight().draw(canvas);
             } else {
                 if (!(e instanceof Bullet)) {
                     e.getSight().draw(canvas);
@@ -169,8 +168,12 @@ public class CityCleanerGame extends Game {
     private void handlePlayerStab(MovableEntity enemy) {
         int damage = player.getAttackProperties().getDamage();
         enemy.getHurt(damage);
-        if (enemy.getHealth() <= 0) {
-            enemy.die();
+        checkDeath(enemy);
+    }
+
+    private void checkDeath(StaticEntity e) {
+        if (e.getHealth() <= 0) {
+            e.die();
         }
     }
 
@@ -204,7 +207,7 @@ public class CityCleanerGame extends Game {
     }
 
     private void configureRenderingEngine() {
-        // RenderingEngine.getInstance().getScreen().fullscreen();
+        RenderingEngine.getInstance().getScreen().fullscreen();
         RenderingEngine.getInstance().getScreen().hideCursor();
     }
 
