@@ -148,7 +148,7 @@ public class CityCleanerGame extends Game {
             if (enemy.isReachable(player) && !enemy.isDying()) {
                 enemy.attack();
                 if (enemy.getHitBox().intersects(player.getBounds())) {
-                    player.getHurt(enemy.getAttackProperties().getDamage());
+                    handleAttack(player, enemy.getAttackProperties().getDamage());
                 }
             }
         }
@@ -181,9 +181,9 @@ public class CityCleanerGame extends Game {
         }
     }
 
-    private void handleAttack(MovableEntity enemy, int damage) {
-        enemy.getHurt(damage);
-        checkDeath(enemy);
+    private void handleAttack(MovableEntity entity, int damage) {
+        entity.getHurt(damage);
+        checkDeath(entity);
     }
 
     private void checkDeath(StaticEntity e) {
@@ -208,7 +208,7 @@ public class CityCleanerGame extends Game {
         enemies = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             Enemy enemy = new Enemy();
-            enemy.setAttackProperties(new AttackProperties(100, 0));
+            enemy.setAttackProperties(new AttackProperties(0, 0));
             entities.add(enemy);
             enemies.add(enemy);
             enemy.canCollide(enemy);
