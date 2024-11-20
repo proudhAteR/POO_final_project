@@ -40,6 +40,21 @@ public class CityCleanerGame extends Game {
     @Override
     protected void update() {
         actionsHandler();
+        entitiesUpdate();
+        arraysUpdate();
+    }
+
+    @Override
+    protected void draw(Canvas canvas) {
+        canvas.drawScreen(Color.black);
+        if (GameConfig.debugMode()) {
+            renderDebugInfos(canvas);
+        }
+        renderWorld(canvas);
+        renderEntities(canvas);
+    }
+
+    private void entitiesUpdate() {
         for (MovableEntity e : entities) {
             e.update();
             if (e instanceof Enemy) {
@@ -53,6 +68,9 @@ public class CityCleanerGame extends Game {
                 }
             }
         }
+    }
+
+    private void arraysUpdate() {
         if (!enemies.isEmpty()) {
             decomposeTheDead();
         }
@@ -62,17 +80,6 @@ public class CityCleanerGame extends Game {
             destroyed.clear();
         }
         camera.update();
-
-    }
-
-    @Override
-    protected void draw(Canvas canvas) {
-        canvas.drawScreen(Color.black);
-        if (GameConfig.debugMode()) {
-            renderDebugInfos(canvas);
-        }
-        renderWorld(canvas);
-        renderEntities(canvas);
     }
 
     private boolean isAttackOutOfRange(MovableEntity e) {
