@@ -53,10 +53,8 @@ public class CityCleanerGame extends Game {
                 }
             }
         }
-        for (Enemy e : enemies) {
-            if (e.died() && !player.getSight().intersects(e.getBounds())) {
-                destroyed.add(e);
-            }
+        if (!enemies.isEmpty()) {
+            decomposeTheDead();
         }
         if (!destroyed.isEmpty()) {
             DestroyableManager.destroyAll(destroyed);
@@ -65,6 +63,16 @@ public class CityCleanerGame extends Game {
         }
         camera.update();
 
+    }
+
+    private void decomposeTheDead() {
+        for (Enemy e : enemies) {
+            if (e.died() && !player.getSight().intersects(e.getBounds())) {
+                enemies.remove(e);
+                destroyed.add(e);
+                break;
+            }
+        }
     }
 
     private boolean isAttackOutOfRange(MovableEntity e) {
