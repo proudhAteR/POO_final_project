@@ -17,7 +17,7 @@ public class Bullet extends MovableEntity implements Projetable {
 
     public Bullet(MovableEntity e) {
         setSpeed(10);
-        action = Action.MOVE;
+        action = Action.MOVING;
         attackProperties = new AttackProperties(50, 25);
         this.direction = e.getDirection();
         initialize(e);
@@ -68,7 +68,7 @@ public class Bullet extends MovableEntity implements Projetable {
     @Override
     public void load() {
         loadSpriteSheet(SPRITE_PATH);
-        loadAnimationFrames(SPRITE_PROPS, Action.MOVE);
+        loadAnimationFrames(SPRITE_PROPS, Action.MOVING);
     }
 
     @Override

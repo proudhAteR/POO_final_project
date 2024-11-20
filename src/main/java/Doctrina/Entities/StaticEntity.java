@@ -26,9 +26,11 @@ public abstract class StaticEntity {
         this.position.setX(x);
         this.position.setY(y);
     }
-    public void setHealth(int health){
+
+    public void setHealth(int health) {
         this.health = health;
     }
+
     public void teleport(Position position) {
         teleport(position.getX(), position.getY());
     }
@@ -53,7 +55,7 @@ public abstract class StaticEntity {
     }
 
     protected boolean isAttacking() {
-        return action == Action.ATTACK || action == Action.CLOSE_ATTACK;
+        return action == Action.ATTACKING || action == Action.CLOSE_ATTACKING;
     }
 
     protected boolean isIdle() {
@@ -61,7 +63,7 @@ public abstract class StaticEntity {
     }
 
     protected boolean isMoving() {
-        return action == Action.MOVE;
+        return action == Action.MOVING;
     }
 
     public boolean isDying() {
@@ -69,7 +71,7 @@ public abstract class StaticEntity {
     }
 
     public void closeAttack() {
-        this.action = Action.CLOSE_ATTACK;
+        this.action = Action.CLOSE_ATTACKING;
     }
 
     public void drawHitBox(Canvas canvas) {
@@ -108,7 +110,8 @@ public abstract class StaticEntity {
     public int getHealth() {
         return health;
     }
-    public boolean died(){
+
+    public boolean died() {
         return isDead;
     }
 

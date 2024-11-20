@@ -18,7 +18,8 @@ import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.ResourcesManager;
 import Doctrina.Rendering.SpriteProperties;
 
-//!Latency in the movement animation
+//!BUG : Latency in the movement animation
+//!BUG : Animation frames out of bounds happening from time to time
 public abstract class MovableEntity extends StaticEntity {
 
     protected int speed = 0;
@@ -63,7 +64,7 @@ public abstract class MovableEntity extends StaticEntity {
             if (!hasMoved()) {
                 resetAnimationFrame();
             }
-            action = hasMoved() ? Action.MOVE : Action.IDLE;
+            action = hasMoved() ? Action.MOVING : Action.IDLE;
 
             lastX = position.getX();
             lastY = position.getY();
@@ -114,7 +115,7 @@ public abstract class MovableEntity extends StaticEntity {
         if (isDying()) {
             return;
         }
-        this.action = Action.ATTACK;
+        this.action = Action.ATTACKING;
     }
 
     @Override

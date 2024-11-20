@@ -11,7 +11,6 @@ import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
 
-//!! BUG : Animation frames out of bounds happening from time to time
 public class Enemy extends MovableEntity implements Hostile, Collidable {
     protected final String[] SPRITE_PATHS = {
             "images/sprite_sheets/zombies/z_walk.png",
