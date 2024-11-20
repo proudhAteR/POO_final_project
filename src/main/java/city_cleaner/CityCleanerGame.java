@@ -65,20 +65,6 @@ public class CityCleanerGame extends Game {
 
     }
 
-    private void decomposeTheDead() {
-        for (Enemy e : enemies) {
-            if (e.died() && !player.getSight().intersects(e.getBounds())) {
-                enemies.remove(e);
-                destroyed.add(e);
-                break;
-            }
-        }
-    }
-
-    private boolean isAttackOutOfRange(MovableEntity e) {
-        return e.getAttackProperties().getRange() <= 0;
-    }
-
     @Override
     protected void draw(Canvas canvas) {
         canvas.drawScreen(Color.black);
@@ -87,6 +73,20 @@ public class CityCleanerGame extends Game {
         }
         renderWorld(canvas);
         renderEntities(canvas);
+    }
+
+    private boolean isAttackOutOfRange(MovableEntity e) {
+        return e.getAttackProperties().getRange() <= 0;
+    }
+
+    private void decomposeTheDead() {
+        for (Enemy e : enemies) {
+            if (e.died() && !player.getSight().intersects(e.getBounds())) {
+                enemies.remove(e);
+                destroyed.add(e);
+                break;
+            }
+        }
     }
 
     private void renderEntities(Canvas canvas) {
@@ -199,7 +199,7 @@ public class CityCleanerGame extends Game {
 
     private void initializeEnemies() {
         enemies = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             Enemy enemy = new Enemy();
             enemy.setAttackProperties(new AttackProperties(100, 0));
             entities.add(enemy);
