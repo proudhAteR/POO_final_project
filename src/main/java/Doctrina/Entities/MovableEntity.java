@@ -218,6 +218,13 @@ public abstract class MovableEntity extends StaticEntity {
         return getHitBox().intersects(other.getBounds());
     }
 
+    public boolean intersectsWith(Step step) {
+        if (step == null) {
+            return false;
+        }
+        return getHitBox().intersects(step.getBounds());
+    }
+
     private boolean isGoingUp() {
         return direction == Direction.UP;
     }

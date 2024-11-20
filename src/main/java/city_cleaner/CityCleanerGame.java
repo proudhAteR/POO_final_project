@@ -19,7 +19,6 @@ import java.util.Random;
 
 import Doctrina.Core.*;
 
-//TODO: handle the case of enemies blocking each other
 public class CityCleanerGame extends Game {
     private World world;
     private GamePad gamePad;
