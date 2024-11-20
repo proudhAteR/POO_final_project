@@ -52,7 +52,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
     }
 
     public boolean isReachable(StaticEntity e) {
-        return getHitBox().intersects(e.getBounds());
+        return intersectsWith(e);
     }
 
     public boolean isEntityInSight(MovableEntity entity) {
@@ -89,7 +89,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
 
     private void removeStep(MovableEntity entity) {
         for (Step step : entity.getSteps()) {
-            if (this.getHitBox().intersects(step.getBounds())) {
+            if (this.intersectsWith(step)) {
                 entity.getSteps().remove(step);
                 break;
             }

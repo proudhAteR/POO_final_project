@@ -147,7 +147,7 @@ public class CityCleanerGame extends Game {
         for (Enemy enemy : enemies) {
             if (enemy.isReachable(player) && !enemy.isDying()) {
                 enemy.attack();
-                if (enemy.getHitBox().intersects(player.getBounds())) {
+                if (enemy.intersectsWith(player)) {
                     handleAttack(player, enemy.getAttackProperties().getDamage());
                 }
             }
@@ -172,7 +172,7 @@ public class CityCleanerGame extends Game {
             player.closeAttack();
             for (MovableEntity e : entities) {
                 if (e instanceof Enemy) {
-                    if (player.getHitBox().intersects(e.getBounds())) {
+                    if (player.intersectsWith(e)) {
                         handleAttack(e, player.getAttackProperties().getDamage());
                     }
                 }

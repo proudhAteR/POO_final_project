@@ -5,7 +5,7 @@ import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;
 import java.awt.*;
 
-public class Step {
+public class Step extends StaticEntity{
     Position position;
     StaticEntity entity;
 
@@ -22,5 +22,13 @@ public class Step {
 
     public Rectangle getBounds() {
         return new Rectangle(position.getX() + entity.getWidth() /2, position.getY() + entity.getHeight() /2, 6, 6);
+    }
+    @Override
+    public void draw(Canvas canvas) {
+        
+    }
+    @Override
+    public void load() {
+        
     }
 }
