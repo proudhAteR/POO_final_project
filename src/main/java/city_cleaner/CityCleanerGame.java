@@ -110,11 +110,12 @@ public class CityCleanerGame extends Game {
     }
 
     private void checkShotCollisions(Bullet e) {
-        for (StaticEntity other : entities) {
+        for (MovableEntity other : entities) {
             if (e.intersectsWith(other)) {
                 if (!other.died()) {
-                    ((MovableEntity) other).move(e.getDirection().getOppositeDirection());
+                    (other).move(e.getDirection().getOppositeDirection());
                 }
+                handleAttack(other, e.getAttackProperties().getDamage());
                 destroyed.add(e);
                 break;
             }
@@ -157,7 +158,7 @@ public class CityCleanerGame extends Game {
             for (MovableEntity e : entities) {
                 if (e instanceof Enemy) {
                     if (player.getHitBox().intersects(e.getBounds())) {
-                        handlePlayerStab(e);
+                        handleAttack(e, player.getAttackProperties().getDamage());
                     }
                 }
 
@@ -165,8 +166,7 @@ public class CityCleanerGame extends Game {
         }
     }
 
-    private void handlePlayerStab(MovableEntity enemy) {
-        int damage = player.getAttackProperties().getDamage();
+    private void handleAttack(MovableEntity enemy, int damage) {
         enemy.getHurt(damage);
         checkDeath(enemy);
     }
