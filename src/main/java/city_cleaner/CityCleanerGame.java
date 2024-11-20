@@ -109,14 +109,14 @@ public class CityCleanerGame extends Game {
         GameConfig.drawCount(enemies, canvas);
     }
 
-    private void checkShotCollisions(Bullet e) {
+    private void checkShotCollisions(Bullet bullet) {
         for (MovableEntity other : entities) {
-            if (e.intersectsWith(other)) {
+            if (bullet.intersectsWith(other)) {
                 if (!other.died()) {
-                    (other).move(e.getDirection().getOppositeDirection());
+                    (other).move(bullet.getDirection().getOppositeDirection());
                 }
-                handleAttack(other, e.getAttackProperties().getDamage());
-                destroyed.add(e);
+                handleAttack(other, bullet.getAttackProperties().getDamage());
+                destroyed.add(bullet);
                 break;
             }
         }
