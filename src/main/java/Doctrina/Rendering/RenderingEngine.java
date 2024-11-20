@@ -38,7 +38,8 @@ public class RenderingEngine {
     public void addKeyListener(KeyListener keyListener) {
         panel.addKeyListener(keyListener);
     }
-    public void addMouseListener(MouseListener mouseListener){
+
+    public void addMouseListener(MouseListener mouseListener) {
         panel.addMouseListener(mouseListener);
     }
 
