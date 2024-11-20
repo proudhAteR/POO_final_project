@@ -19,6 +19,7 @@ import java.util.Random;
 
 import Doctrina.Core.*;
 
+//TODO: handle the case of enemies blocking each other
 public class CityCleanerGame extends Game {
     private World world;
     private GamePad gamePad;
@@ -57,16 +58,17 @@ public class CityCleanerGame extends Game {
     private void entitiesUpdate() {
         for (MovableEntity e : entities) {
             e.update();
-            if (e instanceof Enemy) {
-                ((Enemy) e).follow(player);
-            }
             if (e instanceof Bullet) {
-                checkShotCollisions((Bullet) e);
-                e.getAttackProperties().decreaseProps();
-                if (isAttackOutOfRange(e)) {
-                    destroyed.add(e);
-                }
+                handleBullet((Bullet) e);
             }
+        }
+    }
+
+    private void handleBullet(Bullet bullet) {
+        checkShotCollisions(bullet);
+        bullet.getAttackProperties().decreaseProps();
+        if (isAttackOutOfRange(bullet)) {
+            destroyed.add(bullet);
         }
     }
 
@@ -145,6 +147,10 @@ public class CityCleanerGame extends Game {
 
     private void handleEnemyAction() {
         for (Enemy enemy : enemies) {
+            enemy.follow(player);
+            for (MovableEntity entity : entities) {
+                enemy.checkObstruction(entity);
+            }
             if (enemy.isReachable(player) && !enemy.isDying()) {
                 enemy.attack();
                 if (enemy.intersectsWith(player)) {
