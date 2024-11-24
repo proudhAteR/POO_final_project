@@ -38,7 +38,11 @@ public abstract class StaticEntity {
     public Position getPosition() {
         return position;
     }
-
+    public void checkDeath() {
+        if (getHealth() <= 0) {
+            die();
+        }
+    }
     public abstract void load();
 
     public void setDimension(Size size) {

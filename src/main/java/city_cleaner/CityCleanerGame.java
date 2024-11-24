@@ -185,13 +185,7 @@ public class CityCleanerGame extends Game {
 
     private void handleAttack(MovableEntity entity, int damage) {
         entity.getHurt(damage);
-        checkDeath(entity);
-    }
-
-    private void checkDeath(StaticEntity e) {
-        if (e.getHealth() <= 0) {
-            e.die();
-        }
+        entity.checkDeath();
     }
 
     private void initializeEntities() {
