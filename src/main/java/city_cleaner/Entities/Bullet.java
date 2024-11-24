@@ -2,6 +2,7 @@ package city_cleaner.Entities;
 
 import Doctrina.Controllers.Direction;
 import Doctrina.Entities.MovableEntity;
+import Doctrina.Entities.StaticEntity;
 import Doctrina.Entities.Properties.Action;
 import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Projetable;
@@ -37,6 +38,12 @@ public class Bullet extends MovableEntity implements Projetable {
     @Override
     public void positionProjectileAtEntity(MovableEntity entity) {
         placeAtCenter(entity);
+    }
+    public boolean touched(StaticEntity e){
+        if (intersectsWith(e)) {
+            return true;
+        }
+        return false;
     }
 
     private void placeAtCenter(MovableEntity entity) {

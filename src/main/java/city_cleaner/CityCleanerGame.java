@@ -131,7 +131,7 @@ public class CityCleanerGame extends Game {
 
     private void checkShotCollisions(Bullet bullet) {
         for (MovableEntity entity : entities) {
-            if (bullet.intersectsWith(entity)) {
+            if (bullet.touched(entity)) {
                 if (!entity.died()) {
                     (entity).move(bullet.getOppositeDirection());
                 }
