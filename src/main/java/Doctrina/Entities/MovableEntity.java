@@ -54,6 +54,12 @@ public abstract class MovableEntity extends StaticEntity {
     public void update() {
         moved = false;
     };
+    public boolean touched(StaticEntity e){
+        if (intersectsWith(e)) {
+            return true;
+        }
+        return false;
+    }
 
     public void move() {
         if (!isAttacking() && !isDying()) {

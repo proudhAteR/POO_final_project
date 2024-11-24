@@ -39,12 +39,6 @@ public class Bullet extends MovableEntity implements Projetable {
     public void positionProjectileAtEntity(MovableEntity entity) {
         placeAtCenter(entity);
     }
-    public boolean touched(StaticEntity e){
-        if (intersectsWith(e)) {
-            return true;
-        }
-        return false;
-    }
 
     private void placeAtCenter(MovableEntity entity) {
         int[] values = new int[2];

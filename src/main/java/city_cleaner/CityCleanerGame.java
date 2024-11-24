@@ -181,7 +181,7 @@ public class CityCleanerGame extends Game {
             player.closeAttack();
             for (MovableEntity e : entities) {
                 if (e instanceof Enemy) {
-                    if (player.intersectsWith(e)) {
+                    if (player.touched(e)) {
                         handleAttack(e, player.getAttackProperties().getDamage());
                     }
                 }
