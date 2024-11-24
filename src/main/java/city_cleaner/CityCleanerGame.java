@@ -126,7 +126,7 @@ public class CityCleanerGame extends Game {
         for (MovableEntity entity : entities) {
             if (bullet.intersectsWith(entity)) {
                 if (!entity.died()) {
-                    (entity).move(bullet.getDirection().getOppositeDirection());
+                    (entity).move(bullet.getOppositeDirection());
                 }
                 handleAttack(entity, bullet.getAttackProperties().getDamage());
                 destroyed.add(bullet);

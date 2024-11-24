@@ -218,6 +218,16 @@ public abstract class MovableEntity extends StaticEntity {
         return getHitBox().intersects(other.getBounds());
     }
 
+    public Direction getOppositeDirection() {
+        return switch (direction) {
+            case Direction.UP -> Direction.DOWN;
+            case Direction.DOWN -> Direction.UP;
+            case Direction.LEFT -> Direction.RIGHT;
+            case Direction.RIGHT -> Direction.LEFT;
+
+        };
+    }
+
     public boolean intersectsWith(Step step) {
         if (step == null) {
             return false;

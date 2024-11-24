@@ -53,7 +53,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
 
     public void checkObstruction(MovableEntity entity) {
         if (isReachable(entity) && !(entity instanceof Player)) {
-            move(entity.getDirection().getOppositeDirection());
+            move(entity.getOppositeDirection());
         }
 
     }
