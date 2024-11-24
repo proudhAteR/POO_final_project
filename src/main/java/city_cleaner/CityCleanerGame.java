@@ -123,12 +123,12 @@ public class CityCleanerGame extends Game {
     }
 
     private void checkShotCollisions(Bullet bullet) {
-        for (MovableEntity other : entities) {
-            if (bullet.intersectsWith(other)) {
-                if (!other.died()) {
-                    (other).move(bullet.getDirection().getOppositeDirection());
+        for (MovableEntity entity : entities) {
+            if (bullet.intersectsWith(entity)) {
+                if (!entity.died()) {
+                    (entity).move(bullet.getDirection().getOppositeDirection());
                 }
-                handleAttack(other, bullet.getAttackProperties().getDamage());
+                handleAttack(entity, bullet.getAttackProperties().getDamage());
                 destroyed.add(bullet);
                 break;
             }
