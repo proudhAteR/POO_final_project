@@ -66,10 +66,17 @@ public class CityCleanerGame extends Game {
     private void handleBullet(Bullet bullet) {
         AttackProperties props = bullet.getAttackProperties();
         checkShotCollisions(bullet);
-        props.decreaseProps();
-        if (props.isAttackOutOfRange()) {
-            destroyed.add(bullet);
+
+        if (!hasBeenDestroyed(bullet)) {
+            props.decreaseProps();
+            if (props.isAttackOutOfRange()) {
+                destroyed.add(bullet);
+            }
         }
+    }
+
+    private boolean hasBeenDestroyed(StaticEntity e) {
+        return destroyed.contains(e);
     }
 
     private void arraysUpdate() {
