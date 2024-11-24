@@ -33,5 +33,7 @@ public class AttackProperties {
         this.damage--;
         this.range --;
     }
-   
+    public boolean isAttackOutOfRange() {
+        return this.getRange() <= 0;
+    }
 }

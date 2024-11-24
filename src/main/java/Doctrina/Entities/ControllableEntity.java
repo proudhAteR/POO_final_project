@@ -38,7 +38,7 @@ public abstract class ControllableEntity extends MovableEntity {
         if (getLastMovementTime() == 0) {
             getSteps().add(new Step(new Position(getX(), getY()), this));
             resetMovementTime();
-            if (getSteps().size() > 3) {
+            if (getSteps().size() > getSpeed() + 2) {
                 getSteps().removeFirst();
             }
         }

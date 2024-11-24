@@ -66,7 +66,7 @@ public class CityCleanerGame extends Game {
     private void handleBullet(Bullet bullet) {
         checkShotCollisions(bullet);
         bullet.getAttackProperties().decreaseProps();
-        if (isAttackOutOfRange(bullet)) {
+        if (bullet.getAttackProperties().isAttackOutOfRange()) {
             destroyed.add(bullet);
         }
     }
@@ -81,10 +81,6 @@ public class CityCleanerGame extends Game {
             destroyed.clear();
         }
         camera.update();
-    }
-
-    private boolean isAttackOutOfRange(MovableEntity e) {
-        return e.getAttackProperties().getRange() <= 0;
     }
 
     private void decomposeTheDead() {
