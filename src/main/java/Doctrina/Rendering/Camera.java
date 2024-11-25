@@ -14,7 +14,8 @@ public class Camera {
         this.position = new Position(0, 0);
         this.windowSize = RenderingEngine.getInstance().getScreen().getSize();
     }
-    public static Camera getInstance(){
+
+    public static Camera getInstance() {
         if (instance == null) {
             instance = new Camera();
         }
@@ -32,10 +33,19 @@ public class Camera {
         return position;
     }
 
+    public Size getWindowSize() {
+        return windowSize;
+    }
+
     public void focusOn(StaticEntity entity) {
         this.entity = entity;
     }
+
     public StaticEntity getEntityOnFocus() {
-        return entity;
+        if (this.entity != null) {
+            return entity;
+        }
+        return null;
     }
+
 }

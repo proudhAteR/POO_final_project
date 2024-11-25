@@ -39,7 +39,7 @@ public class Player extends ControllableEntity implements Collidable {
         teleport(position);
         size = new Size(32, 32);
         sight = new Sight(this);
-        sight.setSize(this.size.multiply(3));
+        sight.setSize(this.size.multiply(6));
         setDimension(size);
         setSpeed(4);
         load();

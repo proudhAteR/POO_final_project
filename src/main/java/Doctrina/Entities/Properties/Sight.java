@@ -40,4 +40,8 @@ public class Sight {
         return "X = " + bounds.getX() + "," + "Y = " + bounds.getY() + "," + "W = " + bounds.getWidth() + "," + "H = "
                 + bounds.getHeight();
     }
+
+    public Size getSize() {
+       return size;
+    }
 }

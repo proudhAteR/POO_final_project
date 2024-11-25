@@ -13,7 +13,6 @@ import Doctrina.Entities.Properties.DestroyableManager;
 import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Position;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -46,12 +45,13 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void draw(Canvas canvas) {
-        canvas.drawScreen(Color.black);
+        world.draw(canvas);
+        renderEntities(canvas);
+        canvas.applyShaders(player.getSight().getBounds());
+
         if (GameConfig.debugMode()) {
             renderDebugInfos(canvas);
         }
-        renderWorld(canvas);
-        renderEntities(canvas);
     }
 
     private void entitiesUpdate() {
@@ -107,11 +107,6 @@ public class CityCleanerGame extends Game {
         }
     }
 
-    private void renderWorld(Canvas canvas) {
-        canvas.clip(player.getSight().getBounds());
-        world.draw(canvas);
-    }
-
     private void renderDebugInfos(Canvas canvas) {
         for (StaticEntity e : entities) {
             if (e instanceof Player) {
@@ -135,7 +130,7 @@ public class CityCleanerGame extends Game {
                 if (!entity.died()) {
                     (entity).move(bullet.getOppositeDirection());
                 }
-                handleAttack(entity, bullet.getAttackProperties().getDamage());
+                entity.receiveAttack(bullet.getAttackProperties().getDamage());
                 destroyed.add(bullet);
                 break;
             }
@@ -156,8 +151,8 @@ public class CityCleanerGame extends Game {
             }
             if (enemy.isReachable(player) && !enemy.isDying()) {
                 enemy.attack();
-                if (enemy.intersectsWith(player)) {
-                    handleAttack(player, enemy.getAttackProperties().getDamage());
+                if (enemy.touched(player)) {
+                    player.receiveAttack(enemy.getAttackProperties().getDamage());
                 }
             }
         }
@@ -182,17 +177,12 @@ public class CityCleanerGame extends Game {
             for (MovableEntity e : entities) {
                 if (e instanceof Enemy) {
                     if (player.touched(e)) {
-                        handleAttack(e, player.getAttackProperties().getDamage());
+                        e.receiveAttack(player.getAttackProperties().getDamage());
                     }
                 }
 
             }
         }
-    }
-
-    private void handleAttack(MovableEntity entity, int damage) {
-        entity.getHurt(damage);
-        entity.checkDeath();
     }
 
     private void initializeEntities() {

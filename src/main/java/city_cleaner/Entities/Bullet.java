@@ -2,7 +2,6 @@ package city_cleaner.Entities;
 
 import Doctrina.Controllers.Direction;
 import Doctrina.Entities.MovableEntity;
-import Doctrina.Entities.StaticEntity;
 import Doctrina.Entities.Properties.Action;
 import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Projetable;
