@@ -51,15 +51,20 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
 
     }
 
-    //TODO: Change this so the enemies move around the obtruction
-    public void checkObstruction(MovableEntity entity) {
-        if (isReachable(entity) && !(entity instanceof Player)) {
-            move(entity.getOppositeDirection());
+    // TODO: Change this so the enemies move around the obtruction
+    public void handleObstruction(MovableEntity entity) {
+        if (isObstructed(entity)) {
+            direction =  this.getOppositeDirection();
         }
-
     }
-    
 
+    private boolean isObstructed(MovableEntity entity) {
+        return isReachable(entity) && !isHuman(entity);
+    }
+
+    private boolean isHuman(MovableEntity entity) {
+        return entity instanceof Player;
+    }
 
     public boolean isReachable(StaticEntity e) {
         return intersectsWith(e);
@@ -84,11 +89,15 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
         }
 
         if (closestStep != null) {
-            moveTo(closestStep.getPosition());
+            moveToStep(closestStep);
             return true;
         }
 
         return false;
+    }
+
+    private void moveToStep(Step step) {
+        moveTo(step.getPosition());
     }
 
     private double calculateDistance(Position p1, Position p2) {

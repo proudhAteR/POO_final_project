@@ -128,7 +128,7 @@ public class CityCleanerGame extends Game {
         for (MovableEntity entity : entities) {
             if (bullet.touched(entity)) {
                 if (!entity.died()) {
-                    (entity).move(bullet.getOppositeDirection());
+                    (entity).moveTowards(bullet.getOppositeDirection());
                 }
                 entity.receiveAttack(bullet.getAttackProperties().getDamage());
                 destroyed.add(bullet);
@@ -147,7 +147,7 @@ public class CityCleanerGame extends Game {
         for (Enemy enemy : enemies) {
             enemy.follow(player);
             for (MovableEntity entity : entities) {
-                enemy.checkObstruction(entity);
+                enemy.handleObstruction(entity);
             }
             if (enemy.isReachable(player) && !enemy.isDying()) {
                 enemy.attack();

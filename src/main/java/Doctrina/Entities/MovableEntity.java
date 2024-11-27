@@ -91,7 +91,7 @@ public abstract class MovableEntity extends StaticEntity {
         this.direction = (Math.abs(dx) > Math.abs(dy)) ? (dx > 0 ? Direction.LEFT : Direction.RIGHT)
                 : (dy > 0 ? Direction.UP : Direction.DOWN);
 
-        move(direction);
+        moveTowards(direction);
     }
 
     protected void updateAnimation() {
@@ -166,7 +166,7 @@ public abstract class MovableEntity extends StaticEntity {
         image = (BufferedImage) resourcesManager.getImage(spritePath);
     }
 
-    public void move(Direction direction) {
+    public void moveTowards(Direction direction) {
         this.direction = direction;
         move();
     }
@@ -176,19 +176,19 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     public void moveUp() {
-        move(Direction.UP);
+        moveTowards(Direction.UP);
     }
 
     public void moveLeft() {
-        move(Direction.LEFT);
+        moveTowards(Direction.LEFT);
     }
 
     public void moveDown() {
-        move(Direction.DOWN);
+        moveTowards(Direction.DOWN);
     }
 
     public void moveRight() {
-        move(Direction.RIGHT);
+        moveTowards(Direction.RIGHT);
     }
 
     public Rectangle getHitBox() {

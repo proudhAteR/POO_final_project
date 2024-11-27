@@ -73,7 +73,7 @@ public class Bullet extends MovableEntity implements Projetable {
 
     @Override
     public void update() {
-        move(direction);
+        moveTowards(direction);
     }
 
     @Override
