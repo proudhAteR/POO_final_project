@@ -10,10 +10,14 @@ import Doctrina.Physics.Position;
 public class Canvas {
     private final Graphics2D graphics;
     private final Camera camera;
+    private final int screenWidth;
+    private final int screenHeight;;
 
     public Canvas(Graphics2D graphics, Camera camera) {
         this.graphics = graphics;
         this.camera = camera;
+        screenWidth = RenderingEngine.getInstance().getScreen().getWidth();
+        screenHeight = RenderingEngine.getInstance().getScreen().getHeight();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setFont(new Font("Kenney Future Narrow", Font.PLAIN, 25));
     }
@@ -65,15 +69,13 @@ public class Canvas {
     public void drawScreen(Color color) {
 
         drawRectangle(camera.getPosition().getX(), camera.getPosition().getY(),
-                RenderingEngine.getInstance().getScreen().getWidth(),
-                RenderingEngine.getInstance().getScreen().getHeight(), color);
+                screenWidth,
+                screenHeight, color);
     }
 
     public void applyShaders(Ellipse2D bounds) {
-        int screenWidth = RenderingEngine.getInstance().getScreen().getWidth();
-        int screenHeight = RenderingEngine.getInstance().getScreen().getHeight();
         int diagonal = (int) Math.sqrt(Math.pow(screenWidth, 2) + Math.pow(screenHeight, 2));
-        int diameter = (int) diagonal / 2;
+        int diameter = diagonal / 2;
 
         int sightCenterX = (int) bounds.getCenterX();
         int sightCenterY = (int) bounds.getCenterY();

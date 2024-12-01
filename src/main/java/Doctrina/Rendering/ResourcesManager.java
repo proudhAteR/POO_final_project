@@ -1,6 +1,11 @@
 package Doctrina.Rendering;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -13,6 +18,7 @@ import city_cleaner.SFX;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
+
 
 public class ResourcesManager {
 
@@ -63,4 +69,11 @@ public class ResourcesManager {
     }
 
 
+    public static String readFile(String filePath) throws FileNotFoundException, IOException, URISyntaxException {
+        URL stream = ClassLoader.getSystemResource(filePath);
+        Path path = Path.of(stream.toURI());
+        String json = Files.readString(path);
+
+        return json;
+    }
 }

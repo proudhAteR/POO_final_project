@@ -2,6 +2,7 @@ package city_cleaner;
 
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
+import Doctrina.Rendering.WorldRendering.JSONParser;
 import city_cleaner.Contoller.GamePad;
 import city_cleaner.Entities.Bullet;
 import city_cleaner.Entities.Enemy;
@@ -12,23 +13,33 @@ import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.DestroyableManager;
 import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Position;
-
+import java.awt.Color;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import Doctrina.Core.*;
 
 public class CityCleanerGame extends Game {
-    private World world;
     private GamePad gamePad;
     private Player player;
     private ArrayList<Enemy> enemies;
     private ArrayList<MovableEntity> entities;
     private ArrayList<StaticEntity> destroyed;
-
+    World world;
     @Override
     protected void initialize() {
-        world = new World();
+        try {
+            world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         initializeEntities();
         initializePlayer();
         initializeEnemies();
@@ -45,12 +56,14 @@ public class CityCleanerGame extends Game {
 
     @Override
     protected void draw(Canvas canvas) {
-        world.draw(canvas);
-        renderEntities(canvas);
-        canvas.applyShaders(player.getSight().getBounds());
-
+        canvas.drawScreen(Color.blue);
         if (GameConfig.debugMode()) {
             renderDebugInfos(canvas);
+        }
+        renderEntities(canvas);
+        
+        if (!GameConfig.debugMode()){
+            canvas.applyShaders(player.getSight().getBounds());
         }
     }
 

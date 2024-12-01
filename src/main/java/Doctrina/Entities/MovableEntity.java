@@ -73,11 +73,7 @@ public abstract class MovableEntity extends StaticEntity {
             position.addX(direction.calculateVelocityX(allowedSpeed));
             position.addY(direction.calculateVelocityY(allowedSpeed));
             moved = (position.getX() != lastX || position.getY() != lastY);
-            if (!hasMoved()) {
-                resetAnimationFrame();
-            }
             action = hasMoved() ? Action.MOVING : Action.IDLE;
-
             lastX = position.getX();
             lastY = position.getY();
         }
@@ -98,6 +94,9 @@ public abstract class MovableEntity extends StaticEntity {
         nextFrame--;
         if (isNextFrameZero() && !isDead) {
             updateAnimationFrame();
+        }
+        if (!hasMoved() && !isAttacking()) {
+            resetAnimationFrame();
         }
     }
 
@@ -144,7 +143,7 @@ public abstract class MovableEntity extends StaticEntity {
             case UP -> canvas.drawImage(frames[1][currentAnimationFrame], position);
             case RIGHT -> canvas.drawImage(frames[2][currentAnimationFrame], position);
             case LEFT -> canvas.drawImage(frames[3][currentAnimationFrame], position);
-
+            default -> canvas.drawImage(frames[0][currentAnimationFrame], position);
         }
     }
 
@@ -154,7 +153,7 @@ public abstract class MovableEntity extends StaticEntity {
 
     protected void loadAnimationFrames(SpriteProperties properties, Action action) {
         Image[][] frames = new Image[4][];
-        for (int i = 0; i < Direction.values().length; i++) {
+        for (int i = 0; i < 4; i++) {
             frames[i] = resourcesManager.extractFrames(properties.getFrameCount(), properties.getXOff(),
                     properties.getYOff(), this, image);
             properties.setYOff(this.size.getHeight());
@@ -232,10 +231,11 @@ public abstract class MovableEntity extends StaticEntity {
 
     public Direction getOppositeDirection() {
         return switch (direction) {
-            case Direction.UP -> Direction.DOWN;
-            case Direction.DOWN -> Direction.UP;
-            case Direction.LEFT -> Direction.RIGHT;
-            case Direction.RIGHT -> Direction.LEFT;
+            case UP -> Direction.DOWN;
+            case DOWN -> Direction.UP;
+            case LEFT -> Direction.RIGHT;
+            case RIGHT -> Direction.LEFT;
+            default -> Direction.NONE;
 
         };
     }

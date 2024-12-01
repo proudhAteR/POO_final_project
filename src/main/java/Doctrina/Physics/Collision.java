@@ -16,6 +16,7 @@ public class Collision {
             case RIGHT -> getAllowedRightSpeed();
             case DOWN -> getAllowedDownSpeed();
             case UP -> getAllowedUpSpeed();
+            default -> 0;
         };
     }
 
