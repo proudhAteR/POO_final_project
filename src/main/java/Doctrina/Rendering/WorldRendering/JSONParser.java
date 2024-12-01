@@ -1,6 +1,5 @@
 package Doctrina.Rendering.WorldRendering;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -23,8 +22,13 @@ public class JSONParser {
         return instance;
     }
 
-    public World getWorld(String path) throws FileNotFoundException, IOException, URISyntaxException {
-        String json = ResourcesManager.readFile(path);
+    public World getWorld(String path){
+        String json = "";
+        try {
+            json = ResourcesManager.readFile(path);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
         JsonNode node;
         try {
             node = mapper.readTree(json);
@@ -44,7 +48,7 @@ public class JSONParser {
                 node.get("type").asText(),
                 node.get("version").asText(),
                 node.get("width").asInt()
-        );
+            );
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

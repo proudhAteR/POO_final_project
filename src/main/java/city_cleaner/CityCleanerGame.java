@@ -31,15 +31,7 @@ public class CityCleanerGame extends Game {
     World world;
     @Override
     protected void initialize() {
-        try {
-            world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
         initializeEntities();
         initializePlayer();
         initializeEnemies();
