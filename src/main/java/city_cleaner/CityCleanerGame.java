@@ -14,9 +14,6 @@ import Doctrina.Entities.Properties.DestroyableManager;
 import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Position;
 import java.awt.Color;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
 
