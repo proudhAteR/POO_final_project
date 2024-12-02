@@ -17,9 +17,10 @@ import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.ResourcesManager;
 import Doctrina.Rendering.SpriteProperties;
+import city_cleaner.Entities.Player;
 
-//!BUG : Latency in the movement animation
 //!BUG : Animation frames out of bounds happening from time to time
+//!!TODO: Make a state machine
 public abstract class MovableEntity extends StaticEntity {
 
     protected int speed = 0;
@@ -67,46 +68,64 @@ public abstract class MovableEntity extends StaticEntity {
         checkDeath();
     }
 
+    public void die() {
+        setAction(Action.DYING);
+    }
+
     public void move() {
         if (!isAttacking() && !isDying()) {
             int allowedSpeed = collision.getAllowedSpeed();
             position.addX(direction.calculateVelocityX(allowedSpeed));
             position.addY(direction.calculateVelocityY(allowedSpeed));
             moved = (position.getX() != lastX || position.getY() != lastY);
-            action = hasMoved() ? Action.MOVING : Action.IDLE;
             lastX = position.getX();
             lastY = position.getY();
         }
 
     }
 
-    protected void moveTo(Position position) {
-        int dx = this.position.getX() - position.getX();
-        int dy = this.position.getY() - position.getY();
+    public boolean isHuman() {
+        return this instanceof Player;
+    }
 
-        this.direction = (Math.abs(dx) > Math.abs(dy)) ? (dx > 0 ? Direction.LEFT : Direction.RIGHT)
-                : (dy > 0 ? Direction.UP : Direction.DOWN);
+    protected void moveTo(Position position) {
+        int dx = position.getX() - this.position.getX();
+        int dy = position.getY() - this.position.getY();
+
+        this.direction = (Math.abs(dx) > Math.abs(dy)) ? (dx > 0 ? Direction.RIGHT : Direction.LEFT)
+                : (dy > 0 ? Direction.DOWN : Direction.UP);
 
         moveTowards(direction);
     }
 
     protected void updateAnimation() {
         nextFrame--;
-        if (isNextFrameZero() && !isDead) {
+        if (!isAttacking() && !isDying()) {
+            setAction(hasMoved() ? Action.MOVING : Action.IDLE);
+        }
+        if (isNextFrameZero()) {
             updateAnimationFrame();
         }
-        if (!hasMoved() && !isAttacking()) {
-            resetAnimationFrame();
+
+    }
+
+    @Override
+    public void setAction(Action action) {
+        if (action != this.action) {
+            super.setAction(action);
+            nextFrame = ANIMATION_SPEED;
+            currentAnimationFrame = 0;
         }
     }
 
     protected void resetAnimationFrame() {
-        this.currentAnimationFrame = 0;
-        action = Action.IDLE;
+        setAction(Action.IDLE);
+        nextFrame = ANIMATION_SPEED;
+        currentAnimationFrame = 0;
     }
 
     protected boolean isNextFrameZero() {
-        return nextFrame == 0;
+        return nextFrame <= 0;
     }
 
     private void updateAnimationFrame() {
@@ -126,7 +145,7 @@ public abstract class MovableEntity extends StaticEntity {
         if (isDying()) {
             return;
         }
-        this.action = Action.ATTACKING;
+        setAction(Action.ATTACKING);
     }
 
     @Override
@@ -168,10 +187,6 @@ public abstract class MovableEntity extends StaticEntity {
     public void moveTowards(Direction direction) {
         this.direction = direction;
         move();
-    }
-
-    public void setAction(Action action) {
-        this.action = action;
     }
 
     public void moveUp() {

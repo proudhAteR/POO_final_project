@@ -5,8 +5,7 @@ public enum Direction {
     RIGHT(1, 0),
     UP(0, -1),
     DOWN(0, 1),
-    NONE(0,0)
-    ;
+    NONE(0, 0);
 
     private final int velocityX;
     private final int velocityY;
@@ -23,6 +22,5 @@ public enum Direction {
     public int calculateVelocityY(int speed) {
         return velocityY * speed;
     }
-
 
 }

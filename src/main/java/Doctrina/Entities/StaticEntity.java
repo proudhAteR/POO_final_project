@@ -38,11 +38,13 @@ public abstract class StaticEntity {
     public Position getPosition() {
         return position;
     }
+
     public void checkDeath() {
         if (getHealth() <= 0) {
             die();
         }
     }
+
     public abstract void load();
 
     public void setDimension(Size size) {
@@ -124,7 +126,11 @@ public abstract class StaticEntity {
     }
 
     public void die() {
-        this.action = Action.DYING;
+        setAction(Action.DYING);
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
     }
 
     public void setAttackProperties(AttackProperties attackProperties) {

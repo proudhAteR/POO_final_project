@@ -51,21 +51,6 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
 
     }
 
-    // TODO: Change this so the enemies move around the obtruction
-    public void handleObstruction(MovableEntity entity) {
-        if (isObstructed(entity)) {
-            direction =  this.getOppositeDirection();
-        }
-    }
-
-    private boolean isObstructed(MovableEntity entity) {
-        return isReachable(entity) && !isHuman(entity);
-    }
-
-    private boolean isHuman(MovableEntity entity) {
-        return entity instanceof Player;
-    }
-
     public boolean isReachable(StaticEntity e) {
         return intersectsWith(e);
     }

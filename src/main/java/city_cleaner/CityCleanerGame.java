@@ -148,9 +148,7 @@ public class CityCleanerGame extends Game {
     private void handleEnemyAction() {
         for (Enemy enemy : enemies) {
             enemy.follow(player);
-            for (MovableEntity entity : entities) {
-                enemy.handleObstruction(entity);
-            }
+            
             if (enemy.isReachable(player) && !enemy.isDying()) {
                 enemy.attack();
                 if (enemy.touched(player)) {
@@ -217,7 +215,7 @@ public class CityCleanerGame extends Game {
     }
 
     private void configureRenderingEngine() {
-        RenderingEngine.getInstance().getScreen().fullscreen();
+        //RenderingEngine.getInstance().getScreen().fullscreen();
         RenderingEngine.getInstance().getScreen().hideCursor();
     }
 
