@@ -19,7 +19,6 @@ import Doctrina.Rendering.ResourcesManager;
 import Doctrina.Rendering.SpriteProperties;
 import city_cleaner.Entities.Player;
 
-//!BUG : Animation frames out of bounds happening from time to time
 //!!TODO: Make a state machine
 public abstract class MovableEntity extends StaticEntity {
 
