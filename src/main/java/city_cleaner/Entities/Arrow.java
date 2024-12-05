@@ -14,7 +14,7 @@ public class Arrow extends Projectile {
     public Arrow(MovableEntity e) {
         setSpeed(10);
         action = Action.IDLE;
-        attackProperties = new AttackProperties(75, 15);
+        attackProperties = new AttackProperties(50, 15);
         this.direction = e.getDirection();
         initialize(e);
     }
@@ -28,11 +28,6 @@ public class Arrow extends Projectile {
     public void load() {
         loadSpriteSheet(SPRITE_PATH);
         loadActions(SPRITE_PROPS, Action.IDLE);
-    }
-
-    @Override
-    public void update() {
-        moveTowards(direction);
     }
 
     @Override

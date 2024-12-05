@@ -60,7 +60,7 @@ public abstract class StaticEntity {
         return new Rectangle(position.getX(), position.getY(), size.getWidth(), size.getHeight());
     }
 
-    protected boolean isAttacking() {
+    public boolean isAttacking() {
         return action == Action.ATTACKING;
     }
 
@@ -118,7 +118,7 @@ public abstract class StaticEntity {
     }
 
     public void getHurt(int number) {
-        this.health -= number;
+        this.health = Math.max(0, this.health - number);
     }
 
     public void die() {

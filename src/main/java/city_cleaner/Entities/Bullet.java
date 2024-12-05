@@ -12,7 +12,7 @@ public class Bullet extends Projectile {
     private final SpriteProperties SPRITE_PROPS = new SpriteProperties(4, 0, 0);
 
     public Bullet(MovableEntity e) {
-        setSpeed(10);
+        setSpeed(12);
         action = Action.IDLE;
         attackProperties = new AttackProperties(50, 25);
         this.direction = e.getDirection();
@@ -28,11 +28,6 @@ public class Bullet extends Projectile {
     public void load() {
         loadSpriteSheet(SPRITE_PATH);
         loadActions(SPRITE_PROPS, Action.IDLE);
-    }
-
-    @Override
-    public void update() {
-        moveTowards(direction);
     }
 
     @Override

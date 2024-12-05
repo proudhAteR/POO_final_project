@@ -16,14 +16,13 @@ public class Collision {
             case RIGHT -> getAllowedRightSpeed();
             case DOWN -> getAllowedDownSpeed();
             case UP -> getAllowedUpSpeed();
+            case NONE -> 0;
             default -> 0;
         };
     }
 
     private int getAllowedUpSpeed() {
-        return distance((other -> entity.getY() - (other.getY() + other.getHeight()))); // the -> is a lambda
-                                                                                        // declaration it's like having
-                                                                                        // an anonymous function in JS
+        return distance((other -> entity.getY() - (other.getY() + other.getHeight())));
     }
 
     private int getAllowedDownSpeed() {

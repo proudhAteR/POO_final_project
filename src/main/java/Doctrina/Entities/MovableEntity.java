@@ -11,6 +11,7 @@ import java.util.Map;
 import Doctrina.Controllers.Direction;
 import Doctrina.Core.GameConfig;
 import Doctrina.Entities.Properties.Action;
+import Doctrina.Entities.Properties.Projectile;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Collision;
@@ -22,8 +23,9 @@ import city_cleaner.Entities.Player;
 
 //!!TODO: Make a state machine
 public abstract class MovableEntity extends StaticEntity {
-
     protected int speed = 0;
+    private long lastActionTime = 0;
+    private static final long COOLDOWN_TIME = 1000;
     protected static final int ANIMATION_SPEED = 10;
     protected int currentAnimationFrame = 1;
     protected int nextFrame = ANIMATION_SPEED;
@@ -71,6 +73,22 @@ public abstract class MovableEntity extends StaticEntity {
     public void receiveAttack(int damage) {
         getHurt(damage);
         checkDeath();
+    }
+
+    public void closeAttack() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastActionTime >= COOLDOWN_TIME) {
+            attack(0);
+            lastActionTime = currentTime;
+        }
+    }
+
+    public boolean attackWorked(StaticEntity e) {
+        return touched(e) && canApplyDamage();
+    }
+
+    public boolean canApplyDamage() {
+        return System.currentTimeMillis() - lastActionTime >= COOLDOWN_TIME;
     }
 
     public void die() {
@@ -164,16 +182,23 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     private void drawFrames(Canvas canvas, Image[][] frames) {
+        int upIndex = isProjetable() ? 0 : 1;
+        int downIndex = isProjetable() ? 1 : 0;
+
         switch (direction) {
-            case DOWN -> canvas.drawImage(frames[0][currentAnimationFrame], position);
-            case UP -> canvas.drawImage(frames[1][currentAnimationFrame], position);
+            case UP -> canvas.drawImage(frames[upIndex][currentAnimationFrame], position);
+            case DOWN -> canvas.drawImage(frames[downIndex][currentAnimationFrame], position);
             case RIGHT -> canvas.drawImage(frames[2][currentAnimationFrame], position);
             case LEFT -> canvas.drawImage(frames[3][currentAnimationFrame], position);
-            default -> canvas.drawImage(frames[0][currentAnimationFrame], position);
+            default -> canvas.drawImage(frames[upIndex][currentAnimationFrame], position);
         }
     }
 
-    private boolean isLastAnimationFrame() {
+    private boolean isProjetable() {
+        return this instanceof Projectile;
+    }
+
+    public boolean isLastAnimationFrame() {
         return currentAnimationFrame >= actionFrames.get(this.action)[0].length;
     }
 

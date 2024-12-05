@@ -5,7 +5,7 @@ import Doctrina.Entities.MovableEntity;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 
-public abstract class Projectile extends MovableEntity {
+public abstract class Projectile extends MovableEntity implements Collidable {
     public abstract void positionProjectileAtEntity(MovableEntity entity);
 
     protected void initialize(MovableEntity e) {
@@ -16,6 +16,7 @@ public abstract class Projectile extends MovableEntity {
         setDimension(size);
         teleport(position);
         load();
+        canCollide(e);
         positionProjectileAtEntity(e);
     }
 
@@ -43,5 +44,10 @@ public abstract class Projectile extends MovableEntity {
 
     private int[] invertValues(int arg1, int arg2) {
         return new int[] { arg2, arg1 };
+    }
+
+    @Override
+    public void update() {
+        moveTowards(direction);
     }
 }

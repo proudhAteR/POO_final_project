@@ -1,24 +1,19 @@
 package city_cleaner;
 
-import Doctrina.Rendering.Canvas;
-import Doctrina.Rendering.RenderingEngine;
+import Doctrina.Rendering.*;
 import Doctrina.Rendering.WorldRendering.JSONParser;
 import city_cleaner.Contoller.GamePad;
-import city_cleaner.Entities.Enemy;
-import city_cleaner.Entities.Player;
-import Doctrina.Entities.MovableEntity;
-import Doctrina.Entities.StaticEntity;
-import Doctrina.Entities.Properties.AttackProperties;
-import Doctrina.Entities.Properties.DestroyableManager;
-import Doctrina.Entities.Properties.Projectile;
-import Doctrina.Entities.Properties.Step;
-import Doctrina.Physics.Position;
+import city_cleaner.Entities.*;
+import Doctrina.Entities.*;
+import Doctrina.Entities.Properties.*;
+import Doctrina.Physics.*;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
 import Doctrina.Core.*;
 
+//TODO : add bonuses for sight (remove shaders for a moment, health, better weapon props), add a bigger enemy to avoid, add the map
 public class CityCleanerGame extends Game {
     private GamePad gamePad;
     private Player player;
@@ -129,7 +124,7 @@ public class CityCleanerGame extends Game {
 
     private void checkShotCollisions(Projectile projectile) {
         for (MovableEntity entity : entities) {
-            if (projectile.touched(entity)) {
+            if (projectile.touched(entity) && !entity.isHuman()) {
                 if (!entity.died()) {
                     (entity).moveTowards(projectile.getOppositeDirection());
                 }
@@ -151,9 +146,11 @@ public class CityCleanerGame extends Game {
             enemy.follow(player);
 
             if (enemy.isReachable(player) && !enemy.isDying()) {
-                enemy.attack(0);
-                if (enemy.touched(player)) {
-                    player.receiveAttack(enemy.getAttackProperties().getDamage());
+                enemy.closeAttack();
+
+                if (enemy.attackWorked(player)) {
+                    int damage = enemy.getAttackProperties().getDamage();
+                    player.receiveAttack(damage);
                 }
             }
         }
@@ -174,10 +171,10 @@ public class CityCleanerGame extends Game {
             entities.add(player.fire());
         }
         if (gamePad.isStabPressed()) {
-            player.attack(0);
+            player.closeAttack();
             for (MovableEntity e : entities) {
                 if (e instanceof Enemy) {
-                    if (player.touched(e)) {
+                    if (player.attackWorked(e)) {
                         e.receiveAttack(player.getAttackProperties().getDamage());
                     }
                 }
@@ -197,15 +194,15 @@ public class CityCleanerGame extends Game {
     private void initializePlayer() {
         gamePad = new GamePad();
         player = new Player(gamePad);
-        player.setAttackProperties(new AttackProperties(50, 0));
+        player.setAttackProperties(new AttackProperties(20, 0));
         entities.add(player);
     }
 
     private void initializeEnemies() {
         enemies = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 1; i++) {
             Enemy enemy = new Enemy();
-            enemy.setAttackProperties(new AttackProperties(0, 0));
+            enemy.setAttackProperties(new AttackProperties(20, 0));
             entities.add(enemy);
             enemies.add(enemy);
             enemy.canCollide(enemy);
