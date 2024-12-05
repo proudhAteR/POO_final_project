@@ -11,6 +11,7 @@ import Doctrina.Entities.MovableEntity;
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.DestroyableManager;
+import Doctrina.Entities.Properties.Projectile;
 import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Position;
 import java.awt.Color;
@@ -60,20 +61,20 @@ public class CityCleanerGame extends Game {
     private void entitiesUpdate() {
         for (MovableEntity e : entities) {
             e.update();
-            if (e instanceof Bullet) {
-                handleBullet((Bullet) e);
+            if (e instanceof Projectile) {
+                handleProjectile((Projectile) e);
             }
         }
     }
 
-    private void handleBullet(Bullet bullet) {
-        AttackProperties props = bullet.getAttackProperties();
-        checkShotCollisions(bullet);
+    private void handleProjectile(Projectile projectile) {
+        AttackProperties props = projectile.getAttackProperties();
+        checkShotCollisions(projectile);
 
-        if (!hasBeenDestroyed(bullet)) {
+        if (!hasBeenDestroyed(projectile)) {
             props.decreaseProps();
             if (props.isAttackOutOfRange()) {
-                destroyed.add(bullet);
+                destroyed.add(projectile);
             }
         }
     }
@@ -127,14 +128,14 @@ public class CityCleanerGame extends Game {
         GameConfig.drawCount(enemies, canvas);
     }
 
-    private void checkShotCollisions(Bullet bullet) {
+    private void checkShotCollisions(Projectile projectile) {
         for (MovableEntity entity : entities) {
-            if (bullet.touched(entity)) {
+            if (projectile.touched(entity)) {
                 if (!entity.died()) {
-                    (entity).moveTowards(bullet.getOppositeDirection());
+                    (entity).moveTowards(projectile.getOppositeDirection());
                 }
-                entity.receiveAttack(bullet.getAttackProperties().getDamage());
-                destroyed.add(bullet);
+                entity.receiveAttack(projectile.getAttackProperties().getDamage());
+                destroyed.add(projectile);
                 break;
             }
         }
