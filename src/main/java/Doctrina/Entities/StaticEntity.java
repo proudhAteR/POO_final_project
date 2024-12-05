@@ -61,7 +61,7 @@ public abstract class StaticEntity {
     }
 
     protected boolean isAttacking() {
-        return action == Action.ATTACKING || action == Action.CLOSE_ATTACKING;
+        return action == Action.ATTACKING;
     }
 
     protected boolean isIdle() {
@@ -74,10 +74,6 @@ public abstract class StaticEntity {
 
     public boolean isDying() {
         return action == Action.DYING;
-    }
-
-    public void closeAttack() {
-        this.action = Action.CLOSE_ATTACKING;
     }
 
     public void drawHitBox(Canvas canvas) {

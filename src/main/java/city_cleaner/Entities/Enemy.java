@@ -12,17 +12,17 @@ import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
 
 public class Enemy extends MovableEntity implements Hostile, Collidable {
+
+    private final String ATTACKS_PATHS = "images/sprite_sheets/zombies/Attack.png";
+    private final SpriteProperties ATTACKS_PROPS = new SpriteProperties(8, 32, 0);
+
     protected final String[] SPRITE_PATHS = {
             "images/sprite_sheets/zombies/z_walk.png",
-            "images/sprite_sheets/zombies/Attack.png",
-            "images/sprite_sheets/zombies/Attack.png",
             "images/sprite_sheets/zombies/z_idle.png",
             "images/sprite_sheets/zombies/z_death.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
             new SpriteProperties(10, 32, 0),
-            new SpriteProperties(8, 32, 0),
-            new SpriteProperties(8, 32, 0),
             new SpriteProperties(5, 32, 0),
             new SpriteProperties(7, 32, 0)
     };
@@ -115,8 +115,14 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
 
     public void load() {
         for (Action action : Action.values()) {
+            if (action == Action.ATTACKING) {
+                loadSpriteSheet(ATTACKS_PATHS);
+                loadAttacks(ATTACKS_PROPS);
+                loadActions(ATTACKS_PROPS, action);
+                continue;
+            }
             loadSpriteSheet(SPRITE_PATHS[action.ordinal()]);
-            loadAnimationFrames(SPRITE_PROPS[action.ordinal()], action);
+            loadActions(SPRITE_PROPS[action.ordinal()], action);
         }
     }
 

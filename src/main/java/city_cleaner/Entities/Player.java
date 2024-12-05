@@ -6,6 +6,7 @@ import Doctrina.Rendering.SpriteProperties;
 import Doctrina.Entities.ControllableEntity;
 import Doctrina.Entities.MovableEntity;
 import Doctrina.Entities.Properties.Action;
+import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Collidable;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
@@ -13,26 +14,35 @@ import Doctrina.Physics.Size;
 import java.awt.Color;
 
 public class Player extends ControllableEntity implements Collidable {
+    private final String[] ATTACKS_PATHS = {
+            "images/sprite_sheets/player/stab.png",
+            "images/sprite_sheets/player/shoot.png",
+            "images/sprite_sheets/player/Crossbow.png"
+    };
+    private final SpriteProperties[] ATTACKS_PROPS = {
+            new SpriteProperties(4, 32, 0),
+            new SpriteProperties(4, 32, 0),
+            new SpriteProperties(6, 32, 0)
+    };
     protected final String[] SPRITE_PATHS = {
             "images/sprite_sheets/player/walk.png",
-            "images/sprite_sheets/player/shoot.png",
-            "images/sprite_sheets/player/stab.png",
             "images/sprite_sheets/player/idle.png",
             "images/sprite_sheets/player/death.png"
     };
     protected final SpriteProperties[] SPRITE_PROPS = {
             new SpriteProperties(4, 32, 0),
-            new SpriteProperties(4, 32, 0),
-            new SpriteProperties(4, 32, 0),
             new SpriteProperties(2, 32, 0),
             new SpriteProperties(4, 32, 0)
     };
     private int cooldown = 0;
-    private final int INITIAL_COOLDOWN;
+    private final int GUN_COOLDOWN;
+    private final int BOW_COOLDOWN;
+    private int weaponIndex = 1;
 
     public Player(MovementController controller) {
         super(controller);
-        INITIAL_COOLDOWN = (int) (MovableEntity.ANIMATION_SPEED * 6);
+        GUN_COOLDOWN = (int) (MovableEntity.ANIMATION_SPEED * 6);
+        BOW_COOLDOWN = (int) (MovableEntity.ANIMATION_SPEED * 8);
         canCollide(this);
         setHealth(100);
         position = new Position(0, 0);
@@ -47,8 +57,18 @@ public class Player extends ControllableEntity implements Collidable {
 
     public void load() {
         for (Action action : Action.values()) {
+            if (action == Action.ATTACKING) {
+                loadSpriteSheet(ATTACKS_PATHS[0]);
+                loadActions(ATTACKS_PROPS[0], action);
+                continue;
+            }
             loadSpriteSheet(SPRITE_PATHS[action.ordinal()]);
-            loadAnimationFrames(SPRITE_PROPS[action.ordinal()], action);
+            loadActions(SPRITE_PROPS[action.ordinal()], action);
+        }
+
+        for (int i = 0; i < ATTACKS_PATHS.length; i++) {
+            loadSpriteSheet(ATTACKS_PATHS[i]);
+            loadAttacks(ATTACKS_PROPS[i]);
         }
     }
 
@@ -58,12 +78,35 @@ public class Player extends ControllableEntity implements Collidable {
     }
 
     public Bullet fire() {
-        cooldown = INITIAL_COOLDOWN;
-        return new Bullet(this);
+        Bullet bullet;
+        if (usesGun()) {
+            cooldown = GUN_COOLDOWN;
+            return bullet = new Bullet(this);
+        }
+        cooldown = BOW_COOLDOWN;
+        bullet = new Bullet(this);
+        bullet.setAttackProperties(new AttackProperties(75, 10));
+        return bullet;
+
+    }
+
+    private boolean usesGun() {
+        return currentWeapon() == 1;
     }
 
     public boolean canFire() {
         return cooldown == 0;
+    }
+
+    public int currentWeapon() {
+        return weaponIndex;
+    }
+
+    public void changeWeapon(int i) {
+        if (i >= ATTACKS_PATHS.length) {
+            return;
+        }
+        weaponIndex = i;
     }
 
     public void update() {
@@ -77,7 +120,7 @@ public class Player extends ControllableEntity implements Collidable {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        int cooldownWidth = (cooldown * getWidth()) / INITIAL_COOLDOWN;
+        int cooldownWidth = (cooldown * getWidth()) / GUN_COOLDOWN;
         if (!canFire()) {
             drawShootCoolDown(canvas, cooldownWidth);
         }

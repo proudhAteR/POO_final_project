@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 import Doctrina.Controllers.Direction;
@@ -34,6 +35,7 @@ public abstract class MovableEntity extends StaticEntity {
     protected ArrayList<Step> traces;
 
     private final Map<Action, Image[][]> actionFrames = new EnumMap<>(Action.class);
+    private final List<Image[][]> attackFrames = new ArrayList<>();
     private final ResourcesManager resourcesManager;
 
     protected BufferedImage image;
@@ -45,6 +47,10 @@ public abstract class MovableEntity extends StaticEntity {
         collision = new Collision(this);
         resourcesManager = new ResourcesManager();
         action = Action.IDLE;
+    }
+
+    public Image[][] getAttackAt(int i) {
+        return attackFrames.get(i);
     }
 
     public ArrayList<Step> getSteps() {
@@ -140,11 +146,13 @@ public abstract class MovableEntity extends StaticEntity {
         nextFrame = ANIMATION_SPEED;
     }
 
-    public void attack() {
+    public void attack(int i) {
         if (isDying()) {
             return;
         }
         setAction(Action.ATTACKING);
+        actionFrames.put(action, getAttackAt(i));
+
     }
 
     @Override
@@ -169,14 +177,26 @@ public abstract class MovableEntity extends StaticEntity {
         return currentAnimationFrame >= actionFrames.get(this.action)[0].length;
     }
 
-    protected void loadAnimationFrames(SpriteProperties properties, Action action) {
+    protected void loadActions(SpriteProperties properties, Action action) {
+        Image[][] frames = loadFrames(properties);
+        actionFrames.put(action, frames);
+    }
+
+    private Image[][] loadFrames(SpriteProperties properties) {
         Image[][] frames = new Image[4][];
+        int yOffset = properties.getYOff();
         for (int i = 0; i < 4; i++) {
             frames[i] = resourcesManager.extractFrames(properties.getFrameCount(), properties.getXOff(),
-                    properties.getYOff(), this, image);
-            properties.setYOff(this.size.getHeight());
+                    yOffset, this, image);
+            yOffset += this.size.getHeight();
+
         }
-        actionFrames.put(action, frames);
+        return frames;
+    }
+
+    protected void loadAttacks(SpriteProperties properties) {
+        Image[][] frames = loadFrames(properties);
+        attackFrames.add(frames);
     }
 
     protected void loadSpriteSheet(String spritePath) {

@@ -1,5 +1,6 @@
 package Doctrina.Controllers;
 
+import java.util.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -22,6 +23,11 @@ public abstract class Controller implements KeyListener, MouseListener {
 
     protected void bindKeys(int keyCode) {
         pressedKeys.put(keyCode, false);
+    }
+    protected void bindKeys(List<Integer> keys){
+        for (Integer keyCode : keys) {
+            pressedKeys.put(keyCode, false);
+        }
     }
 
     protected void clearKeys() {

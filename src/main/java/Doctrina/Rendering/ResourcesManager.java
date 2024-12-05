@@ -19,7 +19,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-
 public class ResourcesManager {
 
     public Image getImage(String imagePath) {
@@ -67,7 +66,6 @@ public class ResourcesManager {
             e.printStackTrace();
         }
     }
-
 
     public static String readFile(String filePath) throws FileNotFoundException, IOException, URISyntaxException {
         URL stream = ClassLoader.getSystemResource(filePath);

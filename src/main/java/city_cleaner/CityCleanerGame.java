@@ -26,6 +26,7 @@ public class CityCleanerGame extends Game {
     private ArrayList<MovableEntity> entities;
     private ArrayList<StaticEntity> destroyed;
     World world;
+
     @Override
     protected void initialize() {
         world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
@@ -50,8 +51,8 @@ public class CityCleanerGame extends Game {
             renderDebugInfos(canvas);
         }
         renderEntities(canvas);
-        
-        if (!GameConfig.debugMode()){
+
+        if (!GameConfig.debugMode()) {
             canvas.applyShaders(player.getSight().getBounds());
         }
     }
@@ -148,9 +149,9 @@ public class CityCleanerGame extends Game {
     private void handleEnemyAction() {
         for (Enemy enemy : enemies) {
             enemy.follow(player);
-            
+
             if (enemy.isReachable(player) && !enemy.isDying()) {
-                enemy.attack();
+                enemy.attack(0);
                 if (enemy.touched(player)) {
                     player.receiveAttack(enemy.getAttackProperties().getDamage());
                 }
@@ -169,11 +170,11 @@ public class CityCleanerGame extends Game {
 
     private void handlePlayerAction() {
         if (gamePad.isFirePressed() && player.canFire()) {
-            player.attack();
+            player.attack(player.currentWeapon());
             entities.add(player.fire());
         }
         if (gamePad.isStabPressed()) {
-            player.closeAttack();
+            player.attack(0);
             for (MovableEntity e : entities) {
                 if (e instanceof Enemy) {
                     if (player.touched(e)) {
@@ -182,6 +183,9 @@ public class CityCleanerGame extends Game {
                 }
 
             }
+        }
+        if (gamePad.isWeaponKeyPressed()) {
+            player.changeWeapon(gamePad.getWeaponKeyCode());
         }
     }
 
@@ -215,7 +219,7 @@ public class CityCleanerGame extends Game {
     }
 
     private void configureRenderingEngine() {
-        //RenderingEngine.getInstance().getScreen().fullscreen();
+        RenderingEngine.getInstance().getScreen().fullscreen();
         RenderingEngine.getInstance().getScreen().hideCursor();
     }
 
