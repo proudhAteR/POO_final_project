@@ -7,14 +7,14 @@ import Doctrina.Entities.Properties.Projectile;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
 
-public class Bullet extends Projectile {
-    private final String SPRITE_PATH = "images/sprite_sheets/player/Bullet.png";
-    private final SpriteProperties SPRITE_PROPS = new SpriteProperties(4, 0, 0);
+public class Arrow extends Projectile {
+    private final String SPRITE_PATH = "images/sprite_sheets/player/Arrow.png";
+    private final SpriteProperties SPRITE_PROPS = new SpriteProperties(9, 0, 0);
 
-    public Bullet(MovableEntity e) {
+    public Arrow(MovableEntity e) {
         setSpeed(10);
         action = Action.IDLE;
-        attackProperties = new AttackProperties(50, 25);
+        attackProperties = new AttackProperties(75, 15);
         this.direction = e.getDirection();
         initialize(e);
     }

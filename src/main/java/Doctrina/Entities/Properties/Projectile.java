@@ -2,10 +2,22 @@ package Doctrina.Entities.Properties;
 
 import Doctrina.Controllers.Direction;
 import Doctrina.Entities.MovableEntity;
+import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 
 public abstract class Projectile extends MovableEntity {
     public abstract void positionProjectileAtEntity(MovableEntity entity);
+
+    protected void initialize(MovableEntity e) {
+        size = new Size(32, 32);
+        position = new Position(0, 0);
+        sight = new Sight(e);
+        sight.setSize(new Size(0, 0));
+        setDimension(size);
+        teleport(position);
+        load();
+        positionProjectileAtEntity(e);
+    }
 
     protected void placeAtCenter(MovableEntity entity) {
         int[] values = new int[2];

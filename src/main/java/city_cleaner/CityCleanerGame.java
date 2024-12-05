@@ -4,7 +4,6 @@ import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.RenderingEngine;
 import Doctrina.Rendering.WorldRendering.JSONParser;
 import city_cleaner.Contoller.GamePad;
-import city_cleaner.Entities.Bullet;
 import city_cleaner.Entities.Enemy;
 import city_cleaner.Entities.Player;
 import Doctrina.Entities.MovableEntity;
@@ -118,7 +117,7 @@ public class CityCleanerGame extends Game {
                     trace.placeStep(canvas);
                 }
             } else {
-                if (!(e instanceof Bullet)) {
+                if (!(e instanceof Projectile)) {
                     e.getSight().draw(canvas);
                 }
             }

@@ -6,8 +6,8 @@ import Doctrina.Rendering.SpriteProperties;
 import Doctrina.Entities.ControllableEntity;
 import Doctrina.Entities.MovableEntity;
 import Doctrina.Entities.Properties.Action;
-import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Collidable;
+import Doctrina.Entities.Properties.Projectile;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
@@ -77,16 +77,13 @@ public class Player extends ControllableEntity implements Collidable {
         this.color = color;
     }
 
-    public Bullet fire() {
-        Bullet bullet;
+    public Projectile fire() {
         if (usesGun()) {
             cooldown = GUN_COOLDOWN;
-            return bullet = new Bullet(this);
+            return new Bullet(this);
         }
         cooldown = BOW_COOLDOWN;
-        bullet = new Bullet(this);
-        bullet.setAttackProperties(new AttackProperties(75, 10));
-        return bullet;
+        return new Arrow(this);
 
     }
 
