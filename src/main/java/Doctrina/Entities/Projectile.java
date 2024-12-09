@@ -1,12 +1,16 @@
-package Doctrina.Entities.Properties;
+package Doctrina.Entities;
 
 import Doctrina.Controllers.Direction;
-import Doctrina.Entities.MovableEntity;
+import Doctrina.Entities.Properties.Collidable;
+import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 
 public abstract class Projectile extends MovableEntity implements Collidable {
     public abstract void positionProjectileAtEntity(MovableEntity entity);
+
+    protected int cooldown;
+    protected String weapon;
 
     protected void initialize(MovableEntity e) {
         size = new Size(32, 32);
@@ -49,5 +53,12 @@ public abstract class Projectile extends MovableEntity implements Collidable {
     @Override
     public void update() {
         moveTowards(direction);
+    }
+
+    public int getCooldown() {
+        return cooldown;
+    }
+    public String getWeapon() {
+        return weapon;
     }
 }

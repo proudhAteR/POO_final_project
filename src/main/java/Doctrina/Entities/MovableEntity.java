@@ -11,7 +11,6 @@ import java.util.Map;
 import Doctrina.Controllers.Direction;
 import Doctrina.Core.GameConfig;
 import Doctrina.Entities.Properties.Action;
-import Doctrina.Entities.Properties.Projectile;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Collision;

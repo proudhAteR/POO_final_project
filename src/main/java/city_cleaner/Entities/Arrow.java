@@ -1,9 +1,9 @@
 package city_cleaner.Entities;
 
 import Doctrina.Entities.MovableEntity;
+import Doctrina.Entities.Projectile;
 import Doctrina.Entities.Properties.Action;
 import Doctrina.Entities.Properties.AttackProperties;
-import Doctrina.Entities.Properties.Projectile;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
 
@@ -12,6 +12,8 @@ public class Arrow extends Projectile {
     private final SpriteProperties SPRITE_PROPS = new SpriteProperties(9, 0, 0);
 
     public Arrow(MovableEntity e) {
+        weapon = "CrossBow";
+        cooldown = 100;
         setSpeed(10);
         action = Action.IDLE;
         attackProperties = new AttackProperties(50, 15);

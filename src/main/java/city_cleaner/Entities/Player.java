@@ -3,11 +3,11 @@ package city_cleaner.Entities;
 import Doctrina.Controllers.MovementController;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
+import Doctrina.Rendering.UI.Bar;
 import Doctrina.Entities.ControllableEntity;
-import Doctrina.Entities.MovableEntity;
+import Doctrina.Entities.Projectile;
 import Doctrina.Entities.Properties.Action;
 import Doctrina.Entities.Properties.Collidable;
-import Doctrina.Entities.Properties.Projectile;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
@@ -35,14 +35,17 @@ public class Player extends ControllableEntity implements Collidable {
             new SpriteProperties(4, 32, 0)
     };
     private int cooldown = 0;
-    private final int GUN_COOLDOWN;
-    private final int BOW_COOLDOWN;
     private int weaponIndex = 1;
+    private Bar healthBar;
+    private Bar coolDownBar;
+    private final int BASE_WIDTH = 200;
+    private Projectile proj;
+    private String weapon;
 
     public Player(MovementController controller) {
         super(controller);
-        GUN_COOLDOWN = (int) (MovableEntity.ANIMATION_SPEED * 6);
-        BOW_COOLDOWN = (int) (MovableEntity.ANIMATION_SPEED * 10);
+        healthBar = new Bar(new Position(580, 20), new Size(BASE_WIDTH, 20), Color.green);
+        coolDownBar = new Bar(new Position(580, 48), new Size(BASE_WIDTH, 20), Color.pink);
         canCollide(this);
         setHealth(100);
         position = new Position(300, 400);
@@ -52,6 +55,8 @@ public class Player extends ControllableEntity implements Collidable {
         sight.setSize(this.size.multiply(6));
         setDimension(size);
         setSpeed(4);
+        proj = new Bullet(this);
+        weapon = proj.getWeapon();
         load();
     }
 
@@ -78,13 +83,9 @@ public class Player extends ControllableEntity implements Collidable {
     }
 
     public Projectile fire() {
-        if (usesGun()) {
-            cooldown = GUN_COOLDOWN;
-            return new Bullet(this);
-        }
-        cooldown = BOW_COOLDOWN;
-        return new Arrow(this);
-
+        proj = usesGun() ? new Bullet(this) : new Arrow(this);
+        cooldown = proj.getCooldown();
+        return proj;
     }
 
     private boolean usesGun() {
@@ -103,6 +104,8 @@ public class Player extends ControllableEntity implements Collidable {
         if (i >= ATTACKS_PATHS.length) {
             return;
         }
+        proj = usesGun() ? new Bullet(this) : new Arrow(this);
+        weapon = proj.getWeapon();
         weaponIndex = i;
     }
 
@@ -114,17 +117,26 @@ public class Player extends ControllableEntity implements Collidable {
         handleMovement();
     }
 
+    public String getWeapon() {
+        return weapon;
+    }
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        int cooldownWidth = (cooldown * getWidth()) / GUN_COOLDOWN;
-        if (!canFire()) {
-            drawShootCoolDown(canvas, cooldownWidth);
-        }
     }
 
-    private void drawShootCoolDown(Canvas canvas, int cooldownWidth) {
-        canvas.drawRectangle(this.getX(), getY() - 5, cooldownWidth, 2, Color.pink);
+    public void drawShootCoolDown(Canvas canvas) {
+        int cooldownWidth = (cooldown * BASE_WIDTH) / proj.getCooldown();
+        coolDownBar.getSize().setWidth(cooldownWidth);
+        coolDownBar.draw(canvas);
     }
 
+    public Bar getHealthBar() {
+        return healthBar;
+    }
+
+    public Bar getCoolDownBar() {
+        return coolDownBar;
+    }
 }
