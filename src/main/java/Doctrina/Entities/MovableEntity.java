@@ -11,6 +11,7 @@ import java.util.Map;
 import Doctrina.Controllers.Direction;
 import Doctrina.Core.GameConfig;
 import Doctrina.Entities.Properties.Action;
+import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Entities.Properties.Step;
 import Doctrina.Physics.Collision;
@@ -68,22 +69,22 @@ public abstract class MovableEntity extends StaticEntity {
         return false;
     }
 
-    public void receiveAttack(int damage) {
-        getHurt(damage);
+    public void receiveAttack(AttackProperties props) {
+        getHurt(props.getDamage());
         checkDeath();
 
         if (!isDying()) {
-            jumpBack(200, damage);
+            jumpBack(200, props.getForce());
 
         }
     }
 
     // !ChatGPT
-    public void jumpBack(int duration, int damage) {
+    public void jumpBack(int duration, int force) {
         int startX = position.getX();
         int startY = position.getY();
-        int targetX = position.getX() + getOppositeDirection().calculateVelocityX(speed) * (damage * 2);
-        int targetY = position.getY() + getOppositeDirection().calculateVelocityY(speed) * (damage * 2);
+        int targetX = position.getX() + getOppositeDirection().calculateVelocityX(speed) * force;
+        int targetY = position.getY() + getOppositeDirection().calculateVelocityY(speed) * force;
 
         long startTime = System.currentTimeMillis();
 

@@ -135,7 +135,7 @@ public class CityCleanerGame extends Game {
                 if (!entity.died()) {
                     (entity).moveTowards(projectile.getOppositeDirection());
                 }
-                entity.receiveAttack(projectile.getAttackProperties().getDamage());
+                entity.receiveAttack(projectile.getAttackProperties());
                 destroyed.add(projectile);
                 break;
             }
@@ -156,27 +156,26 @@ public class CityCleanerGame extends Game {
                 enemy.closeAttack();
 
                 if (enemy.attackWorked(player)) {
-                    int damage = enemy.getAttackProperties().getDamage();
-                    player.receiveAttack(damage);
+                    player.receiveAttack(enemy.getAttackProperties());
                 }
             }
         }
     }
-    
+
     private void handleUserAction() {
         boolean isDebugPressed = gamePad.isDebugPressed();
         if (isDebugPressed && !wasDebugPressed) {
             GameConfig.toggleDebug();
         }
         wasDebugPressed = isDebugPressed;
-    
+
         boolean isQuitPressed = gamePad.isQuitPressed();
         if (isQuitPressed && !wasQuitPressed) {
             stop();
         }
         wasQuitPressed = isQuitPressed;
     }
-    
+
     private void handlePlayerAction() {
         // The player can't shoot when too close to an enemy
         if (gamePad.isFirePressed() && player.canFire() && !enemies.stream().anyMatch(player::intersectsWith)) {
@@ -188,7 +187,7 @@ public class CityCleanerGame extends Game {
             for (MovableEntity e : entities) {
                 if (e instanceof Enemy) {
                     if (player.attackWorked(e)) {
-                        e.receiveAttack(player.getAttackProperties().getDamage());
+                        e.receiveAttack(player.getAttackProperties());
                     }
                 }
 

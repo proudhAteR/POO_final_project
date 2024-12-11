@@ -3,9 +3,11 @@ package Doctrina.Entities.Properties;
 public class AttackProperties {
     protected int damage;
     protected int range;
+    protected int force;
 
-    public AttackProperties(int damage, int range){
+    public AttackProperties(int damage, int range) {
         this.damage = damage;
+        this.force = damage * 2;
         this.range = range;
     }
 
@@ -25,15 +27,19 @@ public class AttackProperties {
         this.range--;
     }
 
-    public void decreaseDamage(){
+    public void decreaseDamage() {
         this.damage--;
     }
 
-    public void decreaseProps(){
+    public void decreaseProps() {
         this.damage--;
-        this.range --;
+        this.range--;
     }
+
     public boolean isAttackOutOfRange() {
         return this.getRange() <= 0;
+    }
+    public int getForce() {
+        return force;
     }
 }
