@@ -143,4 +143,11 @@ public class Player extends ControllableEntity implements Collidable {
     public Bar getCoolDownBar() {
         return coolDownBar;
     }
+
+    public boolean findBonus(Bonus bonus) {
+        if (this.intersectsWith(bonus)) {
+            bonus.setFound(true);
+        }
+        return bonus.isFound();
+    }
 }

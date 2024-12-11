@@ -13,7 +13,7 @@ import java.util.Random;
 
 import Doctrina.Core.*;
 
-//TODO : add bonuses for sight (remove shaders for a moment, health, better weapon props), add a bigger enemy to avoid, add the map
+//TODO : add bonuses for sight (remove shaders for a moment, health, better weapon props), add the map
 public class CityCleanerGame extends Game {
     private GamePad gamePad;
     private Player player;
@@ -22,7 +22,8 @@ public class CityCleanerGame extends Game {
     private ArrayList<StaticEntity> destroyed;
     private boolean wasDebugPressed = false;
     private boolean wasQuitPressed = false;
-    World world;
+    private World world;
+    private Bonus bonus;
 
     @Override
     protected void initialize() {
@@ -30,6 +31,7 @@ public class CityCleanerGame extends Game {
         initializeEntities();
         initializePlayer();
         initializeEnemies();
+        bonus = new Bonus(new Position(300,400));
         configureRenderingEngine();
         configureCamera();
     }
@@ -48,7 +50,9 @@ public class CityCleanerGame extends Game {
             renderDebugInfos(canvas);
         }
         renderEntities(canvas);
-
+        if (!player.findBonus(bonus)) {
+            bonus.place(canvas);
+        }
         if (!GameConfig.debugMode()) {
             canvas.applyShaders(player.getSight().getBounds());
         }

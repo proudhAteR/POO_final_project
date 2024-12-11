@@ -19,6 +19,7 @@ import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.ResourcesManager;
 import Doctrina.Rendering.SpriteProperties;
+import city_cleaner.Entities.Bonus;
 import city_cleaner.Entities.Player;
 
 //!!TODO: Make a state machine
@@ -322,6 +323,13 @@ public abstract class MovableEntity extends StaticEntity {
             return false;
         }
         return getHitBox().intersects(other.getBounds());
+    }
+
+    public boolean intersectsWith(Bonus b) {
+        if (b == null) {
+            return false;
+        }
+        return getHitBox().intersects(b.getBounds());
     }
 
     public Direction getOppositeDirection() {
