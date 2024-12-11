@@ -83,9 +83,13 @@ public class Player extends ControllableEntity implements Collidable {
     }
 
     public Projectile fire() {
-        proj = usesGun() ? new Bullet(this) : new Arrow(this);
+        proj = getProj();
         cooldown = proj.getCooldown();
         return proj;
+    }
+
+    private Projectile getProj() {
+        return usesGun() ? new Bullet(this) : new Arrow(this);
     }
 
     private boolean usesGun() {
@@ -104,7 +108,7 @@ public class Player extends ControllableEntity implements Collidable {
         if (i >= ATTACKS_PATHS.length) {
             return;
         }
-        proj = usesGun() ? new Bullet(this) : new Arrow(this);
+        proj = getProj();
         weapon = proj.getWeapon();
         weaponIndex = i;
     }
