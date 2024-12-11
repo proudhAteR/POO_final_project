@@ -171,7 +171,8 @@ public class CityCleanerGame extends Game {
     }
 
     private void handlePlayerAction() {
-        if (gamePad.isFirePressed() && player.canFire()) {
+        // The player can't shoot when too close to an enemy
+        if (gamePad.isFirePressed() && player.canFire() && !enemies.stream().anyMatch(player::intersectsWith)) {
             player.attack(player.currentWeapon());
             entities.add(player.fire());
         }

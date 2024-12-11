@@ -38,7 +38,6 @@ public abstract class MovableEntity extends StaticEntity {
     private final Map<Action, Image[][]> actionFrames = new EnumMap<>(Action.class);
     private final List<Image[][]> attackFrames = new ArrayList<>();
     private final ResourcesManager resourcesManager;
-
     protected BufferedImage image;
 
     public MovableEntity() {
@@ -72,6 +71,44 @@ public abstract class MovableEntity extends StaticEntity {
     public void receiveAttack(int damage) {
         getHurt(damage);
         checkDeath();
+
+        if (!isDying()) {
+            jumpBack(200, damage);
+
+        }
+    }
+
+    // !ChatGPT
+    public void jumpBack(int durationMillis, int damage) {
+        int startX = position.getX();
+        int startY = position.getY();
+        int targetX = position.getX() + getOppositeDirection().calculateVelocityX(speed) * (damage * 2);
+        int targetY = position.getY() + getOppositeDirection().calculateVelocityY(speed) * (damage * 2);
+
+        long startTime = System.currentTimeMillis();
+
+        new Thread(() -> {
+            long elapsed;
+            do {
+                elapsed = System.currentTimeMillis() - startTime;
+                float t = Math.min(1, elapsed / (float) durationMillis);
+
+                int interpolatedX = (int) (startX + (targetX - startX) * t);
+                int interpolatedY = (int) (startY + (targetY - startY) * t);
+
+                teleport(interpolatedX, interpolatedY);
+
+                try {
+                    Thread.sleep(16); // ~60 updates per second
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            } while (elapsed < durationMillis);
+
+            // Ensure final position is exactly the target
+            teleport(targetX, targetY);
+        }).start();
     }
 
     public void closeAttack() {
@@ -169,7 +206,6 @@ public abstract class MovableEntity extends StaticEntity {
         }
         setAction(Action.ATTACKING);
         actionFrames.put(action, getAttackAt(i));
-
     }
 
     @Override
