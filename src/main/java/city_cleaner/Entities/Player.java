@@ -44,8 +44,8 @@ public class Player extends ControllableEntity implements Collidable {
 
     public Player(MovementController controller) {
         super(controller);
-        healthBar = new Bar(new Position(580, 20), new Size(BASE_WIDTH, 20), Color.green);
-        coolDownBar = new Bar(new Position(580, 48), new Size(BASE_WIDTH, 20), Color.pink);
+        healthBar = new Bar(new Position(20, 20), new Size(BASE_WIDTH, 20), Color.green);
+        coolDownBar = new Bar(new Position(20, 48), new Size(BASE_WIDTH, 20), Color.pink);
         canCollide(this);
         setHealth(100);
         position = new Position(300, 400);

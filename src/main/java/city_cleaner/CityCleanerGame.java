@@ -51,7 +51,7 @@ public class CityCleanerGame extends Game {
             canvas.applyShaders(player.getSight().getBounds());
         }
         player.getHealthBar().draw(canvas);
-        canvas.drawString(player.getWeapon(), 580, 92, Color.white);
+        canvas.drawString(player.getWeapon(), 20, 92, Color.white);
         if (!player.canFire()) {
             player.drawShootCoolDown(canvas);
         }
