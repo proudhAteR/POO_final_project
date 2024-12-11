@@ -20,6 +20,8 @@ public class CityCleanerGame extends Game {
     private ArrayList<Enemy> enemies;
     private ArrayList<MovableEntity> entities;
     private ArrayList<StaticEntity> destroyed;
+    private boolean wasDebugPressed = false;
+    private boolean wasQuitPressed = false;
     World world;
 
     @Override
@@ -160,16 +162,21 @@ public class CityCleanerGame extends Game {
             }
         }
     }
-
+    
     private void handleUserAction() {
-        if (gamePad.isDebugPressed()) {
+        boolean isDebugPressed = gamePad.isDebugPressed();
+        if (isDebugPressed && !wasDebugPressed) {
             GameConfig.toggleDebug();
         }
-        if (gamePad.isQuitPressed()) {
+        wasDebugPressed = isDebugPressed;
+    
+        boolean isQuitPressed = gamePad.isQuitPressed();
+        if (isQuitPressed && !wasQuitPressed) {
             stop();
         }
+        wasQuitPressed = isQuitPressed;
     }
-
+    
     private void handlePlayerAction() {
         // The player can't shoot when too close to an enemy
         if (gamePad.isFirePressed() && player.canFire() && !enemies.stream().anyMatch(player::intersectsWith)) {

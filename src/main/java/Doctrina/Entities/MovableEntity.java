@@ -79,7 +79,7 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     // !ChatGPT
-    public void jumpBack(int durationMillis, int damage) {
+    public void jumpBack(int duration, int damage) {
         int startX = position.getX();
         int startY = position.getY();
         int targetX = position.getX() + getOppositeDirection().calculateVelocityX(speed) * (damage * 2);
@@ -91,7 +91,7 @@ public abstract class MovableEntity extends StaticEntity {
             long elapsed;
             do {
                 elapsed = System.currentTimeMillis() - startTime;
-                float t = Math.min(1, elapsed / (float) durationMillis);
+                float t = Math.min(1, elapsed / (float) duration);
 
                 int interpolatedX = (int) (startX + (targetX - startX) * t);
                 int interpolatedY = (int) (startY + (targetY - startY) * t);
@@ -104,7 +104,7 @@ public abstract class MovableEntity extends StaticEntity {
                     Thread.currentThread().interrupt();
                     break;
                 }
-            } while (elapsed < durationMillis);
+            } while (elapsed < duration);
 
             // Ensure final position is exactly the target
             teleport(targetX, targetY);
