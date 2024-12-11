@@ -31,7 +31,7 @@ public class CityCleanerGame extends Game {
         initializeEntities();
         initializePlayer();
         initializeEnemies();
-        bonus = new Bonus(new Position(300,400));
+        bonus = new Bonus(new Position(300,400), 10);
         configureRenderingEngine();
         configureCamera();
     }

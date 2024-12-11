@@ -11,9 +11,10 @@ public class Bonus {
     private boolean isFound;
     private int value;
 
-    public Bonus(Position position) {
+    public Bonus(Position position, int value) {
         this.isFound = false;
         this.position = position;
+        this.value = value;
     }
 
     public Position getPosition() {
@@ -34,5 +35,8 @@ public class Bonus {
 
     public void setFound(boolean isFound) {
         this.isFound = isFound;
+    }
+    public int getValue() {
+        return value;
     }
 }
