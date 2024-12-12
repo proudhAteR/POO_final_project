@@ -31,7 +31,7 @@ public class CityCleanerGame extends Game {
         initializeEntities();
         initializePlayer();
         initializeEnemies();
-        bonus = new Bonus(new Position(300,400), 10);
+        bonus = new Bonus(new Position(300, 400), 10);
         configureRenderingEngine();
         configureCamera();
     }
@@ -49,10 +49,12 @@ public class CityCleanerGame extends Game {
         if (GameConfig.debugMode()) {
             renderDebugInfos(canvas);
         }
+
         renderEntities(canvas);
         if (!player.findBonus(bonus)) {
             bonus.place(canvas);
         }
+
         if (!GameConfig.debugMode()) {
             canvas.applyShaders(player.getSight().getBounds());
         }
