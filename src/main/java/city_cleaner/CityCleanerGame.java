@@ -1,7 +1,7 @@
 package city_cleaner;
 
 import Doctrina.Rendering.*;
-import Doctrina.Rendering.WorldRendering.JSONParser;
+//import Doctrina.Rendering.WorldRendering.JSONParser;
 import city_cleaner.Contoller.GamePad;
 import city_cleaner.Entities.*;
 import Doctrina.Entities.*;
@@ -22,12 +22,12 @@ public class CityCleanerGame extends Game {
     private ArrayList<StaticEntity> destroyed;
     private boolean wasDebugPressed = false;
     private boolean wasQuitPressed = false;
-    private World world;
+    //private World world;
     private Bonus bonus;
 
     @Override
     protected void initialize() {
-        world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
+        //world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
         initializeEntities();
         initializePlayer();
         initializeEnemies();

@@ -34,11 +34,13 @@ public class AttackProperties {
     public void decreaseProps() {
         this.damage--;
         this.range--;
+        this.force--;
     }
 
     public boolean isAttackOutOfRange() {
         return this.getRange() <= 0;
     }
+
     public int getForce() {
         return force;
     }
