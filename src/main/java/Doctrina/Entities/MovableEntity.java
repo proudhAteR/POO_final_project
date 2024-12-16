@@ -39,7 +39,6 @@ public abstract class MovableEntity extends StaticEntity {
 
     private final Map<Action, Image[][]> actionFrames = new EnumMap<>(Action.class);
     private final List<Image[][]> attackFrames = new ArrayList<>();
-    private final ResourcesManager resourcesManager;
     protected BufferedImage image;
 
     public MovableEntity() {
@@ -47,7 +46,6 @@ public abstract class MovableEntity extends StaticEntity {
         sight.setSize(size);
         traces = new ArrayList<>();
         collision = new Collision(this);
-        resourcesManager = new ResourcesManager();
         action = Action.IDLE;
     }
 
@@ -88,17 +86,17 @@ public abstract class MovableEntity extends StaticEntity {
         int targetY = position.getY() + getOppositeDirection().calculateVelocityY(speed) * force;
 
         long startTime = System.currentTimeMillis();
-
+        Position start = new Position(startX, startY);
+        Position target = new Position(targetX, targetY);
         new Thread(() -> {
             long elapsed;
+            Position position;
             do {
                 elapsed = System.currentTimeMillis() - startTime;
                 float t = Math.min(1, elapsed / (float) duration);
-
-                int interpolatedX = (int) (startX + (targetX - startX) * t);
-                int interpolatedY = (int) (startY + (targetY - startY) * t);
-
-                teleport(interpolatedX, interpolatedY);
+                
+                position = lerp(t, start, target);
+                teleport(position.getX(), position.getY());
 
                 try {
                     Thread.sleep(16); // ~60 updates per second
@@ -108,9 +106,16 @@ public abstract class MovableEntity extends StaticEntity {
                 }
             } while (elapsed < duration);
 
-            // Ensure final position is exactly the target
             teleport(targetX, targetY);
         }).start();
+    }
+
+    private Position lerp(float t, Position startPosition, Position targetPosition) {
+
+        int interpolatedX = (int) (startPosition.getX() + (targetPosition.getX() - startPosition.getX()) * t);
+        int interpolatedY = (int) (startPosition.getY() + (targetPosition.getY() - startPosition.getY()) * t);
+
+        return new Position(interpolatedX, interpolatedY);
     }
 
     public void closeAttack() {
@@ -248,7 +253,7 @@ public abstract class MovableEntity extends StaticEntity {
         Image[][] frames = new Image[4][];
         int yOffset = properties.getYOff();
         for (int i = 0; i < 4; i++) {
-            frames[i] = resourcesManager.extractFrames(properties.getFrameCount(), properties.getXOff(),
+            frames[i] = ResourcesManager.getInstance().extractFrames(properties.getFrameCount(), properties.getXOff(),
                     yOffset, this, image);
             yOffset += this.size.getHeight();
 
@@ -262,7 +267,7 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     protected void loadSpriteSheet(String spritePath) {
-        image = (BufferedImage) resourcesManager.getImage(spritePath);
+        image = (BufferedImage) ResourcesManager.getInstance().getImage(spritePath);
     }
 
     public void moveTowards(Direction direction) {
