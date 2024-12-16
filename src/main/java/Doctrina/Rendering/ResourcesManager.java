@@ -21,6 +21,19 @@ import java.util.Objects;
 
 public class ResourcesManager {
 
+    private static ResourcesManager instance;
+
+    private ResourcesManager() {
+
+    }
+
+    public static ResourcesManager getInstance() {
+        if (instance == null) {
+            instance = new ResourcesManager();
+        }
+        return instance;
+    }
+
     public Image getImage(String imagePath) {
         Image image;
         try {
