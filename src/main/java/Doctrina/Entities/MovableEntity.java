@@ -22,7 +22,6 @@ import Doctrina.Rendering.SpriteProperties;
 import city_cleaner.Entities.Bonus;
 import city_cleaner.Entities.Player;
 
-//!!TODO: Make a state machine
 public abstract class MovableEntity extends StaticEntity {
     protected int speed = 0;
     private long lastActionTime = 0;
@@ -78,7 +77,6 @@ public abstract class MovableEntity extends StaticEntity {
         }
     }
 
-    // !ChatGPT
     public void jumpBack(int duration, int force) {
         int startX = position.getX();
         int startY = position.getY();
@@ -88,13 +86,19 @@ public abstract class MovableEntity extends StaticEntity {
         long startTime = System.currentTimeMillis();
         Position start = new Position(startX, startY);
         Position target = new Position(targetX, targetY);
+        
+        smoothTeleport(duration,startTime, start, target);
+    }
+
+    // !ChatGPT
+    private void smoothTeleport(int duration,long startTime, Position start, Position target) {
         new Thread(() -> {
             long elapsed;
             Position position;
             do {
                 elapsed = System.currentTimeMillis() - startTime;
                 float t = Math.min(1, elapsed / (float) duration);
-                
+
                 position = lerp(t, start, target);
                 teleport(position.getX(), position.getY());
 
@@ -106,7 +110,7 @@ public abstract class MovableEntity extends StaticEntity {
                 }
             } while (elapsed < duration);
 
-            teleport(targetX, targetY);
+            teleport(target.getX(), target.getY());
         }).start();
     }
 
@@ -120,7 +124,7 @@ public abstract class MovableEntity extends StaticEntity {
 
     public void closeAttack() {
         long currentTime = System.currentTimeMillis();
-        if (currentTime - lastActionTime >= COOLDOWN_TIME) {
+        if (canApplyDamage()) {
             attack(0);
             lastActionTime = currentTime;
         }
@@ -292,19 +296,14 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     public Rectangle getHitBox() {
-        if (isGoingUp()) {
-            return getUpperHitBox();
-        }
-        if (isGoingDown()) {
-            return getLowerHitBox();
-        }
-        if (isGoingLeft()) {
-            return getLeftHitBox();
-        }
-        if (isGoingRight()) {
-            return getRightHitBox();
-        }
-        return getBounds();
+        
+        return switch (direction) {
+            case UP -> getUpperHitBox();
+            case DOWN -> getLowerHitBox();
+            case LEFT -> getLeftHitBox();
+            case RIGHT -> getRightHitBox();
+            default -> getBounds();
+        };
     }
 
     private Rectangle getUpperHitBox() {
@@ -344,7 +343,6 @@ public abstract class MovableEntity extends StaticEntity {
             case LEFT -> Direction.RIGHT;
             case RIGHT -> Direction.LEFT;
             default -> Direction.NONE;
-
         };
     }
 
@@ -353,22 +351,6 @@ public abstract class MovableEntity extends StaticEntity {
             return false;
         }
         return getHitBox().intersects(step.getBounds());
-    }
-
-    private boolean isGoingUp() {
-        return direction == Direction.UP;
-    }
-
-    private boolean isGoingDown() {
-        return direction == Direction.DOWN;
-    }
-
-    private boolean isGoingLeft() {
-        return direction == Direction.LEFT;
-    }
-
-    private boolean isGoingRight() {
-        return direction == Direction.RIGHT;
     }
 
     public boolean hasMoved() {
