@@ -1,4 +1,4 @@
-package city_cleaner.Contoller;
+package city_cleaner.Controller;
 
 import java.util.List;
 import java.awt.event.KeyEvent;

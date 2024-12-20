@@ -1,7 +1,8 @@
-package city_cleaner.Contoller;
+package city_cleaner;
 
 import Doctrina.Rendering.*;
 import Doctrina.Rendering.UI.Bar;
+import city_cleaner.Controller.GamePad;
 import city_cleaner.Entities.*;
 import city_cleaner.Entities.Bonus.Bonus;
 import city_cleaner.Entities.Bonus.BonusFactory;
