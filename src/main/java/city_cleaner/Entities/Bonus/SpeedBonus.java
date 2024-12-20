@@ -18,6 +18,7 @@ public final class SpeedBonus extends TemporaryBonus {
         int s = player.getSpeed();
         prev = s;
         player.setSpeed(s + value);
+        super.affect(player);
     }
 
     @Override

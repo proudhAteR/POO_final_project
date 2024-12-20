@@ -20,6 +20,7 @@ public class SightBonus extends TemporaryBonus {
         prev = s;
         s.setSize(s.getSize().multiply(value));
         player.getSight().setSize(s.getSize());
+        super.affect(player);
     }
 
     @Override
