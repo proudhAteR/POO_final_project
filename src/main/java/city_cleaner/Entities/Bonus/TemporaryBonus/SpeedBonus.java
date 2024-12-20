@@ -1,4 +1,4 @@
-package city_cleaner.Entities.Bonus;
+package city_cleaner.Entities.Bonus.TemporaryBonus;
 
 import java.awt.Color;
 
@@ -8,9 +8,10 @@ import city_cleaner.Entities.Player;
 public final class SpeedBonus extends TemporaryBonus {
     private int prev;
 
-    public SpeedBonus(Position pos, int value) {
-        super(pos, value);
+    public SpeedBonus(Position pos, int value, int duration) {
+        super(pos, value, duration);
         this.color = Color.yellow;
+        this.name = "Flash Speed";
     }
 
     @Override

@@ -2,6 +2,9 @@ package city_cleaner.Entities.Bonus;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.Collection;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;
@@ -9,15 +12,27 @@ import city_cleaner.Entities.Player;
 
 public abstract class Bonus {
     protected Position position;
+    protected String name;
     protected boolean isFound;
     protected int value;
     protected Color color;
+    private Timer timer;
 
     protected Bonus(Position position, int value) {
         this.isFound = false;
         this.position = position;
         this.value = value;
         this.color = Color.gray;
+        timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!isFound) {
+                    removeBonus(Bonus.this);
+                }
+            }
+        }, 10000);
     }
 
     public Position getPosition() {
@@ -25,7 +40,9 @@ public abstract class Bonus {
     }
 
     public void place(Canvas canvas) {
-        canvas.drawRectangle(getBounds(), color);
+        if (!isFound) {
+            canvas.drawRectangle(getBounds(), color);
+        }
     }
 
     public Rectangle getBounds() {
@@ -42,9 +59,20 @@ public abstract class Bonus {
 
     public void setFound(boolean isFound) {
         this.isFound = isFound;
+        if (isFound) {
+            timer.cancel();
+        }
     }
 
     public int getValue() {
         return value;
+    }
+
+    public static void removeBonus(Bonus bonus) {
+        BonusesRepository.getInstance().unregisterBonus(bonus);
+    }
+
+    public static void removeBonus(Collection<Bonus> bonuses) {
+        BonusesRepository.getInstance().unregisterBonuses(bonuses);
     }
 }

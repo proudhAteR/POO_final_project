@@ -2,28 +2,35 @@ package city_cleaner.Contoller;
 
 import Doctrina.Rendering.*;
 import city_cleaner.Entities.*;
+import city_cleaner.Entities.Bonus.Bonus;
+import city_cleaner.Entities.Bonus.BonusFactory;
+import city_cleaner.Entities.Bonus.BonusesRepository;
 import Doctrina.Entities.*;
 import Doctrina.Entities.Properties.*;
 import Doctrina.Physics.*;
+import java.util.List;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
 import Doctrina.Core.*;
 
-//TODO : add bonuses for sight (remove shaders for a moment, health, better weapon props), add the map
 public class CityCleanerGame extends Game {
     private GamePad gamePad;
     private Player player;
     private ArrayList<Enemy> enemies;
     private ArrayList<MovableEntity> entities;
     private ArrayList<StaticEntity> destroyed;
+    private BonusesRepository bonuses;
+    private List<Bonus> found;
     private boolean wasDebugPressed = false;
     private boolean wasQuitPressed = false;
     // private World world;
 
     @Override
     protected void initialize() {
+        bonuses = BonusesRepository.getInstance();
+        found = new ArrayList<>();
         // world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
         initializeEntities();
         initializePlayer();
@@ -45,17 +52,36 @@ public class CityCleanerGame extends Game {
         if (GameConfig.debugMode()) {
             renderDebugInfos(canvas);
         }
-
+        renderBonuses(canvas);
         renderEntities(canvas);
 
         if (!GameConfig.debugMode()) {
             canvas.applyShaders(player.getSight().getBounds());
         }
+
+        renderHUD(canvas);
+    }
+
+    private void renderHUD(Canvas canvas) {
         player.getHealthBar().draw(canvas);
         canvas.drawString(player.getWeapon(), 20, 92, Color.white);
         if (player.isReloading()) {
             player.drawShootCoolDown(canvas);
         }
+    }
+
+    private void renderBonuses(Canvas canvas) {
+        for (Bonus bonus : bonuses) {
+            bonus.place(canvas);
+        }
+    }
+
+    public boolean handleBonus(Bonus bonus) {
+        if (player.intersectsWith(bonus)) {
+            bonus.setFound(true);
+
+        }
+        return bonus.isFound();
     }
 
     private void entitiesUpdate() {
@@ -64,6 +90,9 @@ public class CityCleanerGame extends Game {
             if (e instanceof Projectile) {
                 handleProjectile((Projectile) e);
             }
+        }
+        for (Bonus b : bonuses) {
+            handleBonus(b);
         }
     }
 
@@ -84,6 +113,15 @@ public class CityCleanerGame extends Game {
     }
 
     private void arraysUpdate() {
+        for (Bonus bonus : bonuses) {
+            if (bonus.isFound()) {
+                found.add(bonus);
+                bonus.affect(player);
+            }
+        }
+        if (Math.random() < 0.005) {
+            bonuses.registerBonus(BonusFactory.createRandomBonus());
+        }
         if (!enemies.isEmpty()) {
             decomposeTheDead();
         }
@@ -92,6 +130,10 @@ public class CityCleanerGame extends Game {
             entities.removeAll(destroyed);
             destroyed.clear();
         }
+        if (!found.isEmpty()) {
+            Bonus.removeBonus(found);
+        }
+
         camera.update();
     }
 
@@ -211,7 +253,7 @@ public class CityCleanerGame extends Game {
 
     private void initializeEnemies() {
         enemies = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 0; i++) {
             Enemy enemy = new Enemy();
             enemy.setAttackProperties(new AttackProperties(20, 0));
             entities.add(enemy);
@@ -223,7 +265,10 @@ public class CityCleanerGame extends Game {
 
     private Position randomPosition() {
         Random random = new Random();
-        return new Position(random.nextInt(400), random.nextInt(300));
+        final int x = RenderingEngine.getInstance().getScreen().getHeight();
+        final int y = RenderingEngine.getInstance().getScreen().getWidth();
+
+        return new Position(random.nextInt(x), random.nextInt(y));
     }
 
     private void configureRenderingEngine() {

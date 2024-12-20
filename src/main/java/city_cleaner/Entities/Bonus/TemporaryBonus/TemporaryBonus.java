@@ -1,16 +1,18 @@
-package city_cleaner.Entities.Bonus;
+package city_cleaner.Entities.Bonus.TemporaryBonus;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import Doctrina.Physics.Position;
 import city_cleaner.Entities.Player;
+import city_cleaner.Entities.Bonus.Bonus;
 
 public abstract class TemporaryBonus extends Bonus {
     protected int duration; // value in seconds
 
-    public TemporaryBonus(Position pos, int value) {
+    public TemporaryBonus(Position pos, int value, int duration) {
         super(pos, value);
+        this.duration = duration;
     }
 
     public int getDuration() {

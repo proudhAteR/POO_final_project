@@ -1,15 +1,16 @@
-package city_cleaner.Entities.Bonus;
+package city_cleaner.Entities.Bonus.PermanentBonus;
 
 import java.awt.Color;
 
 import Doctrina.Physics.Position;
 import city_cleaner.Entities.Player;
 
-public class HealthBonus extends PermanentBonus {
+public final class HealthBonus extends PermanentBonus {
     
     public HealthBonus(Position pos, int value) {
         super(pos, value);
         this.color = Color.green;
+        this.name = "Iron Constitution";
     }
 
     @Override

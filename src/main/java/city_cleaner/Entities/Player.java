@@ -4,7 +4,6 @@ import Doctrina.Controllers.MovementController;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
 import Doctrina.Rendering.UI.Bar;
-import city_cleaner.Entities.Bonus.Bonus;
 import city_cleaner.Entities.Projectile.Arrow;
 import city_cleaner.Entities.Projectile.Bullet;
 import Doctrina.Entities.ControllableEntity;
@@ -102,7 +101,7 @@ public class Player extends ControllableEntity implements Collidable {
         return usesGun() ? new Bullet(this) : new Arrow(this);
     }
 
-    private boolean usesGun() {
+    public boolean usesGun() {
         return currentWeapon() == 1;
     }
 
@@ -158,10 +157,5 @@ public class Player extends ControllableEntity implements Collidable {
         return coolDownBar;
     }
 
-    public boolean findBonus(Bonus bonus) {
-        if (this.intersectsWith(bonus)) {
-            bonus.setFound(true);
-        }
-        return bonus.isFound();
-    }
+    
 }
