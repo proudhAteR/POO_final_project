@@ -27,7 +27,7 @@ public class BonusFactory {
     }
 
     private static TemporaryBonus<?> createRandomTemporaryBonus() {
-        switch (random.nextInt(2)) {
+        switch (0) {
             case 0:
                 return new SightBonus(generateRandomPosition(), generateRandomValue(10), generateRandomValue(10));
             case 1:
@@ -47,17 +47,18 @@ public class BonusFactory {
 
     private static Position generateRandomPosition() {
         final Camera cam = RenderingEngine.getInstance().getCamera();
-        final int screenWidth = RenderingEngine.getInstance().getScreen().getWidth();
-        final int screenHeight = RenderingEngine.getInstance().getScreen().getHeight();
 
-        int camX = cam.getPosition().getX();
-        int camY = cam.getPosition().getY();
+        int camX = cam.getEntityOnFocus().getX();
+        int camY = cam.getEntityOnFocus().getY();
 
-        int x = random.nextInt(screenWidth) + camX;
-        int y = random.nextInt(screenHeight) + camY;
+        int originX = Math.min(camX / 2, camX * 2);
+        int boundX = Math.max(camX / 2, camX * 2);
 
-        x = Math.min(x, screenWidth - 10);
-        y = Math.min(y, screenHeight - 10);
+        int originY = Math.min(camY / 2, camY * 2);
+        int boundY = Math.max(camY / 2, camY * 2);
+
+        int x = random.nextInt(originX, boundX);
+        int y = random.nextInt(originY, boundY);
 
         return new Position(x, y);
     }

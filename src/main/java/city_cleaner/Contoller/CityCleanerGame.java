@@ -1,10 +1,12 @@
 package city_cleaner.Contoller;
 
 import Doctrina.Rendering.*;
+import Doctrina.Rendering.UI.Bar;
 import city_cleaner.Entities.*;
 import city_cleaner.Entities.Bonus.Bonus;
 import city_cleaner.Entities.Bonus.BonusFactory;
 import city_cleaner.Entities.Bonus.BonusesRepository;
+import city_cleaner.Entities.Bonus.TemporaryBonus.TemporaryBonus;
 import Doctrina.Entities.*;
 import Doctrina.Entities.Properties.*;
 import Doctrina.Physics.*;
@@ -12,6 +14,9 @@ import java.util.List;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
+
+import org.tritonus.share.ArraySet;
 
 import Doctrina.Core.*;
 
@@ -23,6 +28,7 @@ public class CityCleanerGame extends Game {
     private ArrayList<StaticEntity> destroyed;
     private BonusesRepository bonuses;
     private List<Bonus> found;
+    private Set<TemporaryBonus<?>> bonusProgress;
     private boolean wasDebugPressed = false;
     private boolean wasQuitPressed = false;
     // private World world;
@@ -31,6 +37,7 @@ public class CityCleanerGame extends Game {
     protected void initialize() {
         bonuses = BonusesRepository.getInstance();
         found = new ArrayList<>();
+        bonusProgress = new ArraySet<>();
         // world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
         initializeEntities();
         initializePlayer();
@@ -63,10 +70,35 @@ public class CityCleanerGame extends Game {
     }
 
     private void renderHUD(Canvas canvas) {
+
         player.drawHealthBar(canvas);
         canvas.drawString(player.getWeapon(), 20, 90, Color.white);
         if (player.isReloading()) {
             player.drawShootCoolDown(canvas);
+        }
+        renderBonusesBar(canvas);
+        for (Bonus b : found) {
+            if (b instanceof TemporaryBonus<?> && ((TemporaryBonus<?>) b).getRemainingDur() <= 0) {
+                bonusProgress.remove(b);
+            }
+        }
+    }
+
+    private void renderBonusesBar(Canvas canvas) {
+        final int BASE_X = 640;
+        int y = 40;
+        final int BASE_WIDTH = 200;
+
+        for (TemporaryBonus<?> p : bonusProgress) {
+            if (p.getRemainingDur() > 0) {
+                Bar progressBar = new Bar(new Position(BASE_X, y), new Size(BASE_WIDTH, 20), p.getColor());
+
+                int cooldownWidth = (p.getRemainingDur() * BASE_WIDTH) / (p.getDuration() / 1000);
+                progressBar.getSize().setWidth(cooldownWidth);
+                progressBar.draw(canvas);
+
+                y += 40;
+            }
         }
     }
 
@@ -117,6 +149,9 @@ public class CityCleanerGame extends Game {
             if (bonus.isFound()) {
                 found.add(bonus);
                 bonus.affect(player);
+                if (bonus instanceof TemporaryBonus) {
+                    bonusProgress.add((TemporaryBonus<?>) bonus);
+                }
             }
         }
         if (Math.random() < 0.0075) {

@@ -39,6 +39,10 @@ public abstract class Bonus {
         return position;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
     public void place(Canvas canvas) {
         if (!isFound) {
             canvas.drawRectangle(getBounds(), color);
