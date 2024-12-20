@@ -26,7 +26,7 @@ public class BonusFactory {
         }
     }
 
-    private static TemporaryBonus createRandomTemporaryBonus() {
+    private static TemporaryBonus<?> createRandomTemporaryBonus() {
         switch (random.nextInt(2)) {
             case 0:
                 return new SightBonus(generateRandomPosition(), generateRandomValue(10), generateRandomValue(10));

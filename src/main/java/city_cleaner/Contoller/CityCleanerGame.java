@@ -64,7 +64,7 @@ public class CityCleanerGame extends Game {
 
     private void renderHUD(Canvas canvas) {
         player.drawHealthBar(canvas);
-        canvas.drawString(player.getWeapon(), 20, 92, Color.white);
+        canvas.drawString(player.getWeapon(), 20, 90, Color.white);
         if (player.isReloading()) {
             player.drawShootCoolDown(canvas);
         }
@@ -119,7 +119,7 @@ public class CityCleanerGame extends Game {
                 bonus.affect(player);
             }
         }
-        if (Math.random() < 0.005) {
+        if (Math.random() < 0.0075) {
             bonuses.registerBonus(BonusFactory.createRandomBonus());
         }
         if (!enemies.isEmpty()) {
@@ -132,6 +132,7 @@ public class CityCleanerGame extends Game {
         }
         if (!found.isEmpty()) {
             Bonus.removeBonus(found);
+            found.clear();
         }
 
         camera.update();

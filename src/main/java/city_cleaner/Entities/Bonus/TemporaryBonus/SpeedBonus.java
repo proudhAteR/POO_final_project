@@ -5,8 +5,7 @@ import java.awt.Color;
 import Doctrina.Physics.Position;
 import city_cleaner.Entities.Player;
 
-public final class SpeedBonus extends TemporaryBonus {
-    private int prev;
+public final class SpeedBonus extends TemporaryBonus<Integer> {
 
     public SpeedBonus(Position pos, int value, int duration) {
         super(pos, value, duration);

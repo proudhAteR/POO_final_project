@@ -7,9 +7,9 @@ import Doctrina.Physics.Position;
 import city_cleaner.Entities.Player;
 import city_cleaner.Entities.Bonus.Bonus;
 
-public abstract class TemporaryBonus extends Bonus {
+public abstract class TemporaryBonus<P> extends Bonus {
     protected int duration; // value in seconds
-
+    protected P prev;
     public TemporaryBonus(Position pos, int value, int duration) {
         super(pos, value);
         this.duration = duration;
@@ -37,5 +37,11 @@ public abstract class TemporaryBonus extends Bonus {
                 timer.cancel();
             }
         }, duration * 1000);
+    }
+    public void setPrev(P prev) {
+        this.prev = prev;
+    }
+    public P getPrev() {
+        return prev;
     }
 }

@@ -6,8 +6,7 @@ import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import city_cleaner.Entities.Player;
 
-public final class SightBonus extends TemporaryBonus {
-    private Sight prev;
+public final class SightBonus extends TemporaryBonus<Sight> {
 
     public SightBonus(Position pos, int value, int duration) {
         super(pos, value, duration);
@@ -17,12 +16,13 @@ public final class SightBonus extends TemporaryBonus {
 
     @Override
     public void affect(Player player) {
-        Sight s = player.getSight();
-        prev = new Sight(player);
-        prev.setSize(s.getSize());
+        Sight currentSight = player.getSight();
+        if (prev == null) {
+            prev = new Sight(currentSight);
+        }
 
-        s.setSize(s.getSize().multiply(value));
-        player.getSight().setSize(s.getSize());
+        currentSight.setSize(currentSight.getSize().multiply(value));
+        player.setSight(currentSight);
         super.affect(player);
     }
 

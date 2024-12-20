@@ -4,11 +4,12 @@ public class Size {
     private int width;
     private int height;
 
-    public Size(int width, int height){
+    public Size(int width, int height) {
         this.height = height;
         this.width = width;
     }
-    public Size multiply(int num){
+
+    public Size multiply(int num) {
         return new Size(this.height * num, this.width * num);
     }
 
@@ -26,5 +27,10 @@ public class Size {
 
     public int getWidth() {
         return width;
+    }
+
+    public boolean isSmaller(Size s) {
+        int result = height * width;
+        return result < (s.height * s.width);
     }
 }

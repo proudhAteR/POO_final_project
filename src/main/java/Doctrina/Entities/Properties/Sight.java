@@ -12,6 +12,12 @@ public class Sight {
 
     public Sight(StaticEntity entity) {
         this.entity = entity;
+        this.size = new Size(0, 0);
+    }
+
+    public Sight(Sight s) {
+        this.entity = s.entity;
+        this.size = s.size;
     }
 
     public void setSize(Size size) {
@@ -42,6 +48,7 @@ public class Sight {
     }
 
     public Size getSize() {
-       return size;
+        return size;
     }
+
 }

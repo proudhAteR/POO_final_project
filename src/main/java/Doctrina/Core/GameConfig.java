@@ -19,19 +19,19 @@ public class GameConfig {
     }
 
     public static void drawCamPosition(RenderingEngine renderingEngine, Canvas canvas) {
-        canvas.drawString(String.valueOf(renderingEngine.getCamera().getPosition().getY()), 580, 40, Color.WHITE);
-        canvas.drawString(String.valueOf(renderingEngine.getCamera().getPosition().getX()), 680, 40, Color.WHITE);
+        canvas.drawString(String.valueOf(renderingEngine.getCamera().getPosition().getY()), 10, 540, Color.WHITE);
+        canvas.drawString(String.valueOf(renderingEngine.getCamera().getPosition().getX()), 110, 540, Color.WHITE);
     }
 
     public static void drawCamFocusPosition(RenderingEngine renderingEngine, Canvas canvas){
         Camera camera = renderingEngine.getCamera();
         StaticEntity e = camera.getEntityOnFocus();
-        canvas.drawString(String.valueOf(e.getPosition().getY()), 580, 80, Color.WHITE);
-        canvas.drawString(String.valueOf(e.getPosition().getX()), 680, 80, Color.WHITE);
+        canvas.drawString(String.valueOf(e.getPosition().getY()), 10, 580, Color.WHITE);
+        canvas.drawString(String.valueOf(e.getPosition().getX()), 110, 580, Color.WHITE);
     }
 
     public static void drawCount(Collection<?> list, Canvas canvas) {
-        canvas.drawString(String.valueOf(list.size()), 580, 120, Color.WHITE);
+        canvas.drawString(String.valueOf(list.size()), 10, 500, Color.WHITE);
     }
 
     public static void toggleDebug() {
