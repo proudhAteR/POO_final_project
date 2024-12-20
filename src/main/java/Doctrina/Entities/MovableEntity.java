@@ -19,8 +19,8 @@ import Doctrina.Physics.Position;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.ResourcesManager;
 import Doctrina.Rendering.SpriteProperties;
-import city_cleaner.Entities.Bonus;
 import city_cleaner.Entities.Player;
+import city_cleaner.Entities.Bonus.Bonus;
 
 public abstract class MovableEntity extends StaticEntity {
     protected int speed = 0;

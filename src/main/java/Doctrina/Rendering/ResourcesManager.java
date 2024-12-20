@@ -13,7 +13,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import Doctrina.Entities.StaticEntity;
-import city_cleaner.SFX;
+import city_cleaner.Sound.SFX;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;

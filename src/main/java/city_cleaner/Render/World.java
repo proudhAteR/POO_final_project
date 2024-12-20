@@ -1,4 +1,4 @@
-package city_cleaner;
+package city_cleaner.Render;
 
 import java.util.List;
 

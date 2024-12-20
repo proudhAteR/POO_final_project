@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import Doctrina.Rendering.ResourcesManager;
-import city_cleaner.World;
+import city_cleaner.Render.World;
 
 public class JSONParser {
     private static JSONParser instance;

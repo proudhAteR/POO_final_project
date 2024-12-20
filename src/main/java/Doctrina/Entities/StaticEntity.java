@@ -136,4 +136,7 @@ public abstract class StaticEntity {
     public AttackProperties getAttackProperties() {
         return this.attackProperties;
     }
+    public void setSight(Sight sight) {
+        this.sight = sight;
+    }
 }

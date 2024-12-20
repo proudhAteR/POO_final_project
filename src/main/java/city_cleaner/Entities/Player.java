@@ -4,6 +4,9 @@ import Doctrina.Controllers.MovementController;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
 import Doctrina.Rendering.UI.Bar;
+import city_cleaner.Entities.Bonus.Bonus;
+import city_cleaner.Entities.Projectile.Arrow;
+import city_cleaner.Entities.Projectile.Bullet;
 import Doctrina.Entities.ControllableEntity;
 import Doctrina.Entities.Projectile;
 import Doctrina.Entities.Properties.Action;
@@ -12,6 +15,7 @@ import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import java.awt.Color;
+import java.util.Collection;
 
 public class Player extends ControllableEntity implements Collidable {
     private final String[] ATTACKS_PATHS = {
@@ -96,8 +100,12 @@ public class Player extends ControllableEntity implements Collidable {
         return currentWeapon() == 1;
     }
 
-    public boolean canFire() {
-        return cooldown == 0;
+    public boolean canFire(Collection<Enemy> enemies) {
+        return !isReloading() && !enemies.stream().anyMatch(this::intersectsWith);
+    }
+
+    public boolean isReloading() {
+        return cooldown > 0;
     }
 
     public int currentWeapon() {
@@ -116,7 +124,7 @@ public class Player extends ControllableEntity implements Collidable {
     public void update() {
         super.update();
         moveWithController();
-        cooldown = !canFire() ? --cooldown : cooldown;
+        cooldown = isReloading() ? --cooldown : cooldown;
         updateAnimation();
         handleMovement();
     }

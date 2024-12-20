@@ -1,4 +1,4 @@
-package city_cleaner.Entities;
+package city_cleaner.Entities.Projectile;
 
 import Doctrina.Entities.MovableEntity;
 import Doctrina.Entities.Projectile;

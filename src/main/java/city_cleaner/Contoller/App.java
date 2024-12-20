@@ -1,4 +1,4 @@
-package city_cleaner;
+package city_cleaner.Contoller;
 
 public class App {
     public static void main(String[] args) {

@@ -1,8 +1,6 @@
-package city_cleaner;
+package city_cleaner.Contoller;
 
 import Doctrina.Rendering.*;
-//import Doctrina.Rendering.WorldRendering.JSONParser;
-import city_cleaner.Contoller.GamePad;
 import city_cleaner.Entities.*;
 import Doctrina.Entities.*;
 import Doctrina.Entities.Properties.*;
@@ -22,16 +20,14 @@ public class CityCleanerGame extends Game {
     private ArrayList<StaticEntity> destroyed;
     private boolean wasDebugPressed = false;
     private boolean wasQuitPressed = false;
-    //private World world;
-    private Bonus bonus;
+    // private World world;
 
     @Override
     protected void initialize() {
-        //world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
+        // world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
         initializeEntities();
         initializePlayer();
         initializeEnemies();
-        bonus = new Bonus(new Position(300, 400), 10);
         configureRenderingEngine();
         configureCamera();
     }
@@ -51,16 +47,13 @@ public class CityCleanerGame extends Game {
         }
 
         renderEntities(canvas);
-        if (!player.findBonus(bonus)) {
-            bonus.place(canvas);
-        }
 
         if (!GameConfig.debugMode()) {
             canvas.applyShaders(player.getSight().getBounds());
         }
         player.getHealthBar().draw(canvas);
         canvas.drawString(player.getWeapon(), 20, 92, Color.white);
-        if (!player.canFire()) {
+        if (player.isReloading()) {
             player.drawShootCoolDown(canvas);
         }
     }
@@ -184,7 +177,7 @@ public class CityCleanerGame extends Game {
 
     private void handlePlayerAction() {
         // The player can't shoot when too close to an enemy
-        if (gamePad.isFirePressed() && player.canFire() && !enemies.stream().anyMatch(player::intersectsWith)) {
+        if (gamePad.isFirePressed() && player.canFire(enemies)) {
             player.attack(player.currentWeapon());
             entities.add(player.fire());
         }

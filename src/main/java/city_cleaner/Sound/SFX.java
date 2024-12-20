@@ -1,4 +1,4 @@
-package city_cleaner;
+package city_cleaner.Sound;
 
 public enum SFX {
     STEPS("sounds/SFX/leaves02.wav");
