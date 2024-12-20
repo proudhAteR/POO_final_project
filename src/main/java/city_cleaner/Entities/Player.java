@@ -40,6 +40,7 @@ public class Player extends ControllableEntity implements Collidable {
     private int cooldown = 0;
     private int weaponIndex = 1;
     private Bar healthBar;
+    private Bar healthHolderBar;
     private Bar coolDownBar;
     private final int BASE_WIDTH = 200;
     private Projectile proj;
@@ -49,6 +50,7 @@ public class Player extends ControllableEntity implements Collidable {
     public Player(MovementController controller) {
         super(controller);
         BASE_HEALTH = 100;
+        healthHolderBar = new Bar(new Position(20, 20), new Size(BASE_WIDTH, 20), Color.red);
         healthBar = new Bar(new Position(20, 20), new Size(BASE_WIDTH, 20), Color.green);
         coolDownBar = new Bar(new Position(20, 48), new Size(BASE_WIDTH, 20), Color.pink);
         canCollide(this);
@@ -149,13 +151,26 @@ public class Player extends ControllableEntity implements Collidable {
         coolDownBar.draw(canvas);
     }
 
+    public void drawHealthBar(Canvas canvas) {
+        int boundedHealth = Math.max(0, Math.min(health, BASE_HEALTH));
+        int healthWidth = (boundedHealth * BASE_WIDTH) / BASE_HEALTH;
+
+        healthBar.getSize().setWidth(healthWidth);
+
+        healthHolderBar.draw(canvas);
+        healthBar.draw(canvas);
+    }
+
     public Bar getHealthBar() {
         return healthBar;
+    }
+
+    public Bar getHealthHolderBar() {
+        return healthHolderBar;
     }
 
     public Bar getCoolDownBar() {
         return coolDownBar;
     }
 
-    
 }

@@ -63,7 +63,7 @@ public class CityCleanerGame extends Game {
     }
 
     private void renderHUD(Canvas canvas) {
-        player.getHealthBar().draw(canvas);
+        player.drawHealthBar(canvas);
         canvas.drawString(player.getWeapon(), 20, 92, Color.white);
         if (player.isReloading()) {
             player.drawShootCoolDown(canvas);
