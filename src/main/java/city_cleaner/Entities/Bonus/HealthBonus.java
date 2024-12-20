@@ -14,7 +14,8 @@ public class HealthBonus extends PermanentBonus {
 
     @Override
     public void affect(Player player) {
-        player.setHealth(player.getHealth() + value);
+        int v = Math.min(player.getHealth() + value, player.getBASE_HEALTH());
+        player.setHealth(v);
     }
 
     

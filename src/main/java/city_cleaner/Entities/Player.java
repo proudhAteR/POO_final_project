@@ -45,13 +45,15 @@ public class Player extends ControllableEntity implements Collidable {
     private final int BASE_WIDTH = 200;
     private Projectile proj;
     private String weapon;
+    private final int BASE_HEALTH;
 
     public Player(MovementController controller) {
         super(controller);
+        BASE_HEALTH = 100;
         healthBar = new Bar(new Position(20, 20), new Size(BASE_WIDTH, 20), Color.green);
         coolDownBar = new Bar(new Position(20, 48), new Size(BASE_WIDTH, 20), Color.pink);
         canCollide(this);
-        setHealth(100);
+        setHealth(BASE_HEALTH);
         position = new Position(300, 400);
         teleport(position);
         size = new Size(32, 32);
@@ -84,6 +86,10 @@ public class Player extends ControllableEntity implements Collidable {
     public Player(MovementController controller, Color color) {
         this(controller);
         this.color = color;
+    }
+
+    public int getBASE_HEALTH() {
+        return BASE_HEALTH;
     }
 
     public Projectile fire() {
