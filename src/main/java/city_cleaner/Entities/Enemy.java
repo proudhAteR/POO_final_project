@@ -60,10 +60,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
         return intersectsWith(e);
     }
 
-    public boolean isEntityInSight(MovableEntity entity) {
-        return sight.intersects(entity.getBounds());
-    }
-
+ 
     public boolean isStepInSight(MovableEntity entity) {
         Step closestStep = null;
         double closestDistance = Double.MAX_VALUE;
@@ -150,7 +147,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
         if (!bonusExistsAtPosition(getPosition(), droppedBonusPositions)) {
             int targetX = getX() + getWidth() / 2;
             int targetY = getY() + getHeight() / 2;
-            
+
             Position pos = new Position(targetX, targetY);
             BonusesRepository.getInstance().registerBonus(BonusFactory.dropBonus(pos));
         }

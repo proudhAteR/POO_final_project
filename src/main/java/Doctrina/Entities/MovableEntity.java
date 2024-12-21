@@ -215,6 +215,10 @@ public abstract class MovableEntity extends StaticEntity {
 
     }
 
+    public boolean isEntityInSight(MovableEntity entity) {
+        return sight.intersects(entity.getBounds());
+    }
+
     @Override
     public void setAction(Action action) {
         if (action != this.action) {

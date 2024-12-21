@@ -1,4 +1,4 @@
-package city_cleaner;
+package city_cleaner.Game;
 
 import Doctrina.Rendering.*;
 import Doctrina.Rendering.UI.Bar;
@@ -52,7 +52,8 @@ public class CityCleanerGame extends Game {
         Thread musicThread = new Thread() {
             @Override
             public void run() {
-                MasteringEngine.getInstance().playContinuousTrack("sounds/music/theme.wav", -50);
+                MasteringEngine.getInstance().playContinuousTrack("sounds/music/theme.wav",
+                        -60);
             }
         };
 
@@ -65,6 +66,7 @@ public class CityCleanerGame extends Game {
         entitiesUpdate();
         arraysUpdate();
         camera.update();
+
     }
 
     @Override
@@ -214,6 +216,7 @@ public class CityCleanerGame extends Game {
             Enemy e = iterator.next();
             if (e.died()) {
                 Position dropPosition = e.getPosition();
+
                 if (!droppedBonusPositions.contains(dropPosition)) {
                     e.dropBonus(droppedBonusPositions);
                     droppedBonusPositions.add(dropPosition);
@@ -263,6 +266,7 @@ public class CityCleanerGame extends Game {
                 if (entity.died() || entity.isDying()) {
                     ScoreManager.getInstance().incrementScore(projectile.getAttackProperties().getDamage());
                 }
+
                 destroyed.add(projectile);
                 break;
             }
