@@ -1,5 +1,7 @@
 package city_cleaner.Entities;
 
+import java.util.Set;
+
 import Doctrina.Entities.*;
 import Doctrina.Entities.Properties.Action;
 import Doctrina.Entities.Properties.Collidable;
@@ -10,6 +12,8 @@ import Doctrina.Physics.Position;
 import Doctrina.Physics.Size;
 import Doctrina.Rendering.Canvas;
 import Doctrina.Rendering.SpriteProperties;
+import city_cleaner.Entities.Bonus.BonusesRepository;
+import city_cleaner.Factories.BonusFactory;
 
 public class Enemy extends MovableEntity implements Hostile, Collidable {
 
@@ -140,6 +144,20 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
         if (!touched) {
             touched = true;
         }
+    }
+
+    public void dropBonus(Set<Position> droppedBonusPositions) {
+        if (!bonusExistsAtPosition(getPosition(), droppedBonusPositions)) {
+            int targetX = getX() + getWidth() / 2;
+            int targetY = getY() + getHeight() / 2;
+            
+            Position pos = new Position(targetX, targetY);
+            BonusesRepository.getInstance().registerBonus(BonusFactory.dropBonus(pos));
+        }
+    }
+
+    private boolean bonusExistsAtPosition(Position position, Set<Position> droppedBonusPositions) {
+        return droppedBonusPositions.contains(position);
     }
 
     public boolean isTouched() {

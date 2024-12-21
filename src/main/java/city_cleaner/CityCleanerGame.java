@@ -15,6 +15,7 @@ import Doctrina.Physics.*;
 import java.util.List;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ public class CityCleanerGame extends Game {
     private BonusesRepository bonuses;
     private List<Bonus> found;
     private Set<TemporaryBonus<?>> bonusProgress;
+    private Set<Position> droppedBonusPositions;
     private boolean wasDebugPressed = false;
     private boolean wasQuitPressed = false;
     // private World world;
@@ -38,6 +40,7 @@ public class CityCleanerGame extends Game {
     @Override
     protected void initialize() {
         bonuses = BonusesRepository.getInstance();
+        droppedBonusPositions = new HashSet<>();
         found = new ArrayList<>();
         bonusProgress = new ArraySet<>();
         // world = JSONParser.getInstance().getWorld("images/map/base_map.tmj");
@@ -196,11 +199,20 @@ public class CityCleanerGame extends Game {
     }
 
     private void decomposeTheDead() {
-        for (Enemy e : enemies) {
-            if (e.died() && !player.getSight().intersects(e.getBounds())) {
-                enemies.remove(e);
-                destroyed.add(e);
-                break;
+        Iterator<Enemy> iterator = enemies.iterator();
+        while (iterator.hasNext()) {
+            Enemy e = iterator.next();
+            if (e.died()) {
+                Position dropPosition = e.getPosition();
+                if (!droppedBonusPositions.contains(dropPosition)) {
+                    e.dropBonus(droppedBonusPositions);
+                    droppedBonusPositions.add(dropPosition);
+                }
+                DestroyableManager.destroy(e);
+                if (!player.getSight().intersects(e.getBounds())) {
+                    iterator.remove();
+                    destroyed.add(e);
+                }
             }
         }
     }

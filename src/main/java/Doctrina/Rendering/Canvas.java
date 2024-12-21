@@ -46,7 +46,7 @@ public class Canvas {
         graphics.setPaint(originalPaint);
     }
 
-    public void drawRectangle(int x, int y, int width, int height, Paint paint) {
+    public void drawRectangle(int x, int y, int width, int height, Color paint) {
         Paint originalPaint = graphics.getPaint();
         graphics.setPaint(paint);
         graphics.fillRect(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
@@ -60,7 +60,7 @@ public class Canvas {
         graphics.clip(clipPath);
     }
 
-    public void drawRectangle(StaticEntity entity, Paint paint) {
+    public void drawRectangle(StaticEntity entity, Color paint) {
         drawRectangle(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight(), paint);
     }
 
@@ -68,7 +68,7 @@ public class Canvas {
         drawRectangle(entity, entity.getColor());
     }
 
-    public void drawRectangle(Rectangle rect, Paint paint) {
+    public void drawRectangle(Rectangle rect, Color paint) {
         drawRectangle(rect.x, rect.y, rect.width, rect.height, paint);
     }
 

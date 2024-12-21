@@ -9,47 +9,58 @@ import city_cleaner.Entities.Bonus.TemporaryBonus.TemporaryBonus;
 
 import java.util.Random;
 
+import Doctrina.Physics.Position;
+
 public class BonusFactory extends Factory {
 
     private static final Random random = new Random();
 
     public static Bonus createRandomBonus() {
         boolean isTemporary = random.nextBoolean();
+        Bonus bonus = isTemporary ? createTempBonus(generateRandomPosition())
+                : createPermanentBonus(generateRandomPosition());
 
-        if (isTemporary) {
-            return createRandomTemporaryBonus();
-        } else {
-            return createRandomPermanentBonus();
-        }
+        return bonus;
     }
 
-    private static TemporaryBonus<?> createRandomTemporaryBonus() {
+    private static TemporaryBonus<?> createTempBonus(Position pos) {
         int type = generateRandomValue(0, 2);
+
         switch (type) {
             case 0:
                 return new SightBonus(
-                        generateRandomPosition(),
+                        pos,
                         generateRandomValue(2, 10),
                         generateRandomValue(5, 10));
             case 1:
                 return new SpeedBonus(
-                        generateRandomPosition(),
+                        pos,
                         generateRandomValue(2, 5),
                         generateRandomValue(5, 10));
             default:
                 return new SightBonus(
-                        generateRandomPosition(),
+                        pos,
                         generateRandomValue(2, 10),
                         generateRandomValue(5, 10));
         }
     }
 
-    private static int generateRandomValue(int origin, int limit) {
-        return random.nextInt(origin, limit) + 1;
+    private static PermanentBonus createPermanentBonus(Position pos) {
+        return new HealthBonus(
+                pos,
+                generateRandomValue(20, 100));
     }
 
-    private static PermanentBonus createRandomPermanentBonus() {
-        return new HealthBonus(generateRandomPosition(), generateRandomValue(20, 100));
+    public static Bonus dropBonus(Position pos) {
+        boolean isTemporary = random.nextBoolean();
+
+        Bonus bonus = isTemporary ? createTempBonus(pos) : createPermanentBonus(pos);
+
+        return bonus;
+    }
+
+    private static int generateRandomValue(int origin, int limit) {
+        return random.nextInt(origin, limit) + 1;
     }
 
 }

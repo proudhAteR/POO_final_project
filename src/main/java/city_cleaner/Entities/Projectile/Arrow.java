@@ -16,7 +16,7 @@ public class Arrow extends Projectile {
         cooldown = 100;
         setSpeed(10);
         action = Action.IDLE;
-        attackProperties = new AttackProperties(50, 15);
+        attackProperties = new AttackProperties(75, 20);
         this.direction = e.getDirection();
         initialize(e);
     }

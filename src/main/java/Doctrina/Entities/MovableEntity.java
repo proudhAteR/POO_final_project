@@ -181,7 +181,7 @@ public abstract class MovableEntity extends StaticEntity {
             reduceMovementTime();
         }
         if (getLastMovementTime() == 0) {
-            getSteps().add(new Step(new Position(getX(), getY()), this, isHuman() ? Color.pink : Color.red));
+            getSteps().add(new Step(new Position(getX(), getY()), this, isHuman() ? Color.pink : Color.yellow));
             resetMovementTime();
             if (getSteps().size() > getSpeed() + 2) {
                 getSteps().removeFirst();
