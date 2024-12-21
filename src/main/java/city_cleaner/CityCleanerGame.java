@@ -79,6 +79,8 @@ public class CityCleanerGame extends Game {
 
         player.drawHealthBar(canvas);
         canvas.drawString(player.getWeapon(), 20, 90, Color.white);
+        canvas.drawString("Score: " + Integer.toString(ScoreManager.getInstance().getScore()),
+                20, 120, Color.white);
         if (player.isReloading()) {
             player.drawShootCoolDown(canvas);
         }
@@ -246,10 +248,13 @@ public class CityCleanerGame extends Game {
     private void checkShotCollisions(Projectile projectile) {
         for (MovableEntity entity : entities) {
             if (projectile.touched(entity) && !entity.isHuman()) {
-                if (!entity.died()) {
-                    (entity).moveTowards(projectile.getOppositeDirection());
-                }
                 entity.receiveAttack(projectile.getAttackProperties());
+                if (!entity.died()) {
+                    entity.moveTowards(projectile.getOppositeDirection());
+                }
+                if (entity.died() || entity.isDying()) {
+                    ScoreManager.getInstance().incrementScore(projectile.getAttackProperties().getDamage());
+                }
                 destroyed.add(projectile);
                 break;
             }
@@ -301,10 +306,14 @@ public class CityCleanerGame extends Game {
                 if (e instanceof Enemy) {
                     if (player.touched(e)) {
                         e.receiveAttack(player.getAttackProperties());
+                        if (e.died() || e.isDying()) {
+                            ScoreManager.getInstance().incrementScore(20);
+                        }
                     }
                 }
 
             }
+
         }
         if (gamePad.isWeaponKeyPressed()) {
             player.changeWeapon(gamePad.getWeaponKeyCode());
