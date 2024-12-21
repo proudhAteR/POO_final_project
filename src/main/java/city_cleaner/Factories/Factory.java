@@ -1,4 +1,4 @@
-package city_cleaner.Entities.Factories;
+package city_cleaner.Factories;
 
 import java.util.Random;
 

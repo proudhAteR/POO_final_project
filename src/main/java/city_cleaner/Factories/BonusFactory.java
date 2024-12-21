@@ -1,4 +1,4 @@
-package city_cleaner.Entities.Factories;
+package city_cleaner.Factories;
 
 import city_cleaner.Entities.Bonus.Bonus;
 import city_cleaner.Entities.Bonus.PermanentBonus.HealthBonus;
@@ -45,7 +45,5 @@ public class BonusFactory extends Factory{
     private static PermanentBonus createRandomPermanentBonus() {
         return new HealthBonus(generateRandomPosition(), generateRandomValue(20, 100));
     }
-
-    
 
 }

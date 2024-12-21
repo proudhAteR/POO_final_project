@@ -7,8 +7,8 @@ import city_cleaner.Entities.*;
 import city_cleaner.Entities.Bonus.Bonus;
 import city_cleaner.Entities.Bonus.BonusesRepository;
 import city_cleaner.Entities.Bonus.TemporaryBonus.TemporaryBonus;
-import city_cleaner.Entities.Factories.BonusFactory;
-import city_cleaner.Entities.Factories.EnemyFactory;
+import city_cleaner.Factories.BonusFactory;
+import city_cleaner.Factories.EnemySpawner;
 import Doctrina.Entities.*;
 import Doctrina.Entities.Properties.*;
 import Doctrina.Physics.*;
@@ -22,8 +22,6 @@ import org.tritonus.share.ArraySet;
 import Doctrina.Core.*;
 
 public class CityCleanerGame extends Game {
-    private final int DELAY = 10000;
-    private int i = 0;
     private GamePad gamePad;
     private Player player;
     private ArrayList<Enemy> enemies;
@@ -141,16 +139,7 @@ public class CityCleanerGame extends Game {
     }
 
     private void arraysUpdate() {
-        if (i > 0) {
-            i--;
-            if (enemies.size() < 20) {
-                Enemy enemy = EnemyFactory.generateEnemy();
-                entities.add(enemy);
-                enemies.add(enemy);
-            }
-        } else {
-            i = DELAY;
-        }
+        EnemySpawner.getInstance().startSpawning(enemies, entities);
         for (Bonus bonus : bonuses) {
             if (bonus.isFound()) {
                 found.add(bonus);
