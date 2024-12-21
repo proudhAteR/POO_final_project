@@ -71,9 +71,8 @@ public abstract class MovableEntity extends StaticEntity {
         getHurt(props.getDamage());
         checkDeath();
 
-        if (!isDying()) {
+        if (!isDying() && props.getRange() > 1) {
             jumpBack(200, props.getForce());
-
         }
     }
 
@@ -86,12 +85,12 @@ public abstract class MovableEntity extends StaticEntity {
         long startTime = System.currentTimeMillis();
         Position start = new Position(startX, startY);
         Position target = new Position(targetX, targetY);
-        
-        smoothTeleport(duration,startTime, start, target);
+
+        smoothTeleport(duration, startTime, start, target);
     }
 
     // !ChatGPT
-    private void smoothTeleport(int duration,long startTime, Position start, Position target) {
+    private void smoothTeleport(int duration, long startTime, Position start, Position target) {
         new Thread(() -> {
             long elapsed;
             Position position;
@@ -124,18 +123,24 @@ public abstract class MovableEntity extends StaticEntity {
 
     public void closeAttack() {
         long currentTime = System.currentTimeMillis();
-        if (canApplyDamage()) {
-            attack(0);
-            lastActionTime = currentTime;
+
+        if (!canApplyDamage()) {
+            return;
         }
+        attack(0);
+        lastActionTime = currentTime;
     }
 
-    public boolean attackWorked(StaticEntity e) {
-        return touched(e) && canApplyDamage();
+    public void attack(int i) {
+        if (isDying()) {
+            return;
+        }
+        setAction(Action.ATTACKING);
+        actionFrames.put(action, getAttackAt(i));
     }
 
     public boolean canApplyDamage() {
-        return System.currentTimeMillis() - lastActionTime >= COOLDOWN_TIME;
+        return (System.currentTimeMillis() - lastActionTime) >= COOLDOWN_TIME;
     }
 
     public void die() {
@@ -209,14 +214,6 @@ public abstract class MovableEntity extends StaticEntity {
             }
         }
         nextFrame = ANIMATION_SPEED;
-    }
-
-    public void attack(int i) {
-        if (isDying()) {
-            return;
-        }
-        setAction(Action.ATTACKING);
-        actionFrames.put(action, getAttackAt(i));
     }
 
     @Override
@@ -296,7 +293,7 @@ public abstract class MovableEntity extends StaticEntity {
     }
 
     public Rectangle getHitBox() {
-        
+
         return switch (direction) {
             case UP -> getUpperHitBox();
             case DOWN -> getLowerHitBox();

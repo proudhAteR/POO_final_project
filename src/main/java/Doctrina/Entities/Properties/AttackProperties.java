@@ -7,7 +7,7 @@ public class AttackProperties {
 
     public AttackProperties(int damage, int range) {
         this.damage = damage;
-        this.force = damage * 2;
+        this.force = damage;
         this.range = range;
     }
 

@@ -9,6 +9,7 @@ import city_cleaner.Entities.Projectile.Bullet;
 import Doctrina.Entities.ControllableEntity;
 import Doctrina.Entities.Projectile;
 import Doctrina.Entities.Properties.Action;
+import Doctrina.Entities.Properties.AttackProperties;
 import Doctrina.Entities.Properties.Collidable;
 import Doctrina.Entities.Properties.Sight;
 import Doctrina.Physics.Position;
@@ -49,7 +50,7 @@ public class Player extends ControllableEntity implements Collidable {
 
     public Player(MovementController controller) {
         super(controller);
-        BASE_HEALTH = 100;
+        BASE_HEALTH = 1000;
         healthHolderBar = new Bar(new Position(20, 20), new Size(BASE_WIDTH, 20), Color.red);
         healthBar = new Bar(new Position(20, 20), new Size(BASE_WIDTH, 20), Color.green);
         coolDownBar = new Bar(new Position(20, 48), new Size(BASE_WIDTH, 20), Color.pink);
@@ -62,6 +63,7 @@ public class Player extends ControllableEntity implements Collidable {
         sight.setSize(this.size.multiply(8));
         setDimension(size);
         setSpeed(4);
+        setAttackProperties(new AttackProperties(10, 0));
         proj = new Bullet(this);
         weapon = proj.getWeapon();
         load();
@@ -152,7 +154,7 @@ public class Player extends ControllableEntity implements Collidable {
     }
 
     public void drawHealthBar(Canvas canvas) {
-        int boundedHealth = Math.max(0, Math.min(health, BASE_HEALTH));
+        int boundedHealth = Math.max(0, health);
         int healthWidth = (boundedHealth * BASE_WIDTH) / BASE_HEALTH;
 
         healthBar.getSize().setWidth(healthWidth);

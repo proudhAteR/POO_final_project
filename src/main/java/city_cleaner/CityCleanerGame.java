@@ -5,16 +5,16 @@ import Doctrina.Rendering.UI.Bar;
 import city_cleaner.Controller.GamePad;
 import city_cleaner.Entities.*;
 import city_cleaner.Entities.Bonus.Bonus;
-import city_cleaner.Entities.Bonus.BonusFactory;
 import city_cleaner.Entities.Bonus.BonusesRepository;
 import city_cleaner.Entities.Bonus.TemporaryBonus.TemporaryBonus;
+import city_cleaner.Entities.Factories.BonusFactory;
+import city_cleaner.Entities.Factories.EnemyFactory;
 import Doctrina.Entities.*;
 import Doctrina.Entities.Properties.*;
 import Doctrina.Physics.*;
 import java.util.List;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Set;
 
 import org.tritonus.share.ArraySet;
@@ -22,6 +22,8 @@ import org.tritonus.share.ArraySet;
 import Doctrina.Core.*;
 
 public class CityCleanerGame extends Game {
+    private final int DELAY = 10000;
+    private int i = 0;
     private GamePad gamePad;
     private Player player;
     private ArrayList<Enemy> enemies;
@@ -78,28 +80,21 @@ public class CityCleanerGame extends Game {
             player.drawShootCoolDown(canvas);
         }
         renderBonusesBar(canvas);
-        for (Bonus b : found) {
-            if (b instanceof TemporaryBonus<?> && ((TemporaryBonus<?>) b).getRemainingDur() <= 0) {
-                bonusProgress.remove(b);
-            }
-        }
     }
 
     private void renderBonusesBar(Canvas canvas) {
-        final int BASE_X = 640;
+        final int BASE_X = 800;
         int y = 40;
         final int BASE_WIDTH = 200;
 
         for (TemporaryBonus<?> p : bonusProgress) {
-            if (p.getRemainingDur() > 0) {
-                Bar progressBar = new Bar(new Position(BASE_X, y), new Size(BASE_WIDTH, 20), p.getColor());
+            Bar progressBar = new Bar(new Position(BASE_X - BASE_WIDTH, y), new Size(BASE_WIDTH, 20), p.getColor());
 
-                int cooldownWidth = (p.getRemainingDur() * BASE_WIDTH) / (p.getDuration() / 1000);
-                progressBar.getSize().setWidth(cooldownWidth);
-                progressBar.draw(canvas);
+            int barWidth = (p.getRemainingDur() * BASE_WIDTH) / (p.getDuration() / 1000);
+            progressBar.getSize().setWidth(barWidth);
+            progressBar.draw(canvas);
 
-                y += 40;
-            }
+            y += 40;
         }
     }
 
@@ -146,6 +141,16 @@ public class CityCleanerGame extends Game {
     }
 
     private void arraysUpdate() {
+        if (i > 0) {
+            i--;
+            if (enemies.size() < 20) {
+                Enemy enemy = EnemyFactory.generateEnemy();
+                entities.add(enemy);
+                enemies.add(enemy);
+            }
+        } else {
+            i = DELAY;
+        }
         for (Bonus bonus : bonuses) {
             if (bonus.isFound()) {
                 found.add(bonus);
@@ -158,6 +163,7 @@ public class CityCleanerGame extends Game {
         if (Math.random() < 0.0075) {
             bonuses.registerBonus(BonusFactory.createRandomBonus());
         }
+
         if (!enemies.isEmpty()) {
             decomposeTheDead();
         }
@@ -170,7 +176,14 @@ public class CityCleanerGame extends Game {
             Bonus.removeBonus(found);
             found.clear();
         }
-
+        for (Bonus b : found) {
+            if (!(b instanceof TemporaryBonus<?>)) {
+                continue;
+            }
+            if (((TemporaryBonus<?>) b).getRemainingDur() <= 0) {
+                bonusProgress.remove(b);
+            }
+        }
         camera.update();
     }
 
@@ -233,7 +246,7 @@ public class CityCleanerGame extends Game {
             if (enemy.isReachable(player) && !enemy.isDying()) {
                 enemy.closeAttack();
 
-                if (enemy.attackWorked(player)) {
+                if (enemy.touched(player)) {
                     player.receiveAttack(enemy.getAttackProperties());
                 }
             }
@@ -255,7 +268,6 @@ public class CityCleanerGame extends Game {
     }
 
     private void handlePlayerAction() {
-        // The player can't shoot when too close to an enemy
         if (gamePad.isFirePressed() && player.canFire(enemies)) {
             player.attack(player.currentWeapon());
             entities.add(player.fire());
@@ -264,7 +276,7 @@ public class CityCleanerGame extends Game {
             player.closeAttack();
             for (MovableEntity e : entities) {
                 if (e instanceof Enemy) {
-                    if (player.attackWorked(e)) {
+                    if (player.touched(e)) {
                         e.receiveAttack(player.getAttackProperties());
                     }
                 }
@@ -290,22 +302,6 @@ public class CityCleanerGame extends Game {
 
     private void initializeEnemies() {
         enemies = new ArrayList<>();
-        for (int i = 0; i < 0; i++) {
-            Enemy enemy = new Enemy();
-            enemy.setAttackProperties(new AttackProperties(20, 0));
-            entities.add(enemy);
-            enemies.add(enemy);
-            enemy.canCollide(enemy);
-            enemy.teleport(randomPosition());
-        }
-    }
-
-    private Position randomPosition() {
-        Random random = new Random();
-        final int x = RenderingEngine.getInstance().getScreen().getHeight();
-        final int y = RenderingEngine.getInstance().getScreen().getWidth();
-
-        return new Position(random.nextInt(x), random.nextInt(y));
     }
 
     private void configureRenderingEngine() {
