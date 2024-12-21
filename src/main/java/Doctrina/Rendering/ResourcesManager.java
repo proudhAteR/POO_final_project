@@ -10,10 +10,8 @@ import java.nio.file.Path;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 import Doctrina.Entities.StaticEntity;
-import city_cleaner.Sound.SFX;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -22,10 +20,6 @@ import java.util.Objects;
 public class ResourcesManager {
 
     private static ResourcesManager instance;
-
-    private ResourcesManager() {
-
-    }
 
     public static ResourcesManager getInstance() {
         if (instance == null) {
@@ -55,29 +49,18 @@ public class ResourcesManager {
         return frames;
     }
 
-    public void playContinuosTrack(String soundPath) {
+    public AudioInputStream getAudio(String soundPath) {
         try {
-            Clip clip = AudioSystem.getClip();
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
                     Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(soundPath)));
-            clip.open(audioInputStream);
-            clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void playSFX(SFX effect) {
-        try {
-            Clip clip = AudioSystem.getClip();
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
-                    Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(effect.getPath())));
-            clip.open(audioInputStream);
-            clip.start();
+            return audioInputStream;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public static String readFile(String filePath) throws FileNotFoundException, IOException, URISyntaxException {

@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
+import Doctrina.Core.Camera;
+import Doctrina.Core.RenderingEngine;
 import Doctrina.Entities.StaticEntity;
 import Doctrina.Physics.Position;
 

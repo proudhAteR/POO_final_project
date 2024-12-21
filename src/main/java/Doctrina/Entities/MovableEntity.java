@@ -368,7 +368,7 @@ public abstract class MovableEntity extends StaticEntity {
         }
 
         Rectangle2D ellipseBounds = ellipse.getBounds2D();
-        return getHitBox().intersects(ellipseBounds);
+        return getBounds().intersects(ellipseBounds);
     }
 
     public Direction getOppositeDirection() {

@@ -2,9 +2,9 @@ package city_cleaner.Factories;
 
 import java.util.Random;
 
+import Doctrina.Core.Camera;
+import Doctrina.Core.RenderingEngine;
 import Doctrina.Physics.Position;
-import Doctrina.Rendering.Camera;
-import Doctrina.Rendering.RenderingEngine;
 
 public abstract class Factory {
     protected static Random random = new Random();

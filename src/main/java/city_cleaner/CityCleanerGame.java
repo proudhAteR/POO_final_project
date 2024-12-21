@@ -49,6 +49,14 @@ public class CityCleanerGame extends Game {
         initializeEnemies();
         configureRenderingEngine();
         configureCamera();
+        Thread musicThread = new Thread() {
+            @Override
+            public void run() {
+                MasteringEngine.getInstance().playContinuousTrack("sounds/music/theme.wav", -50);
+            }
+        };
+
+        musicThread.start();
     }
 
     @Override
@@ -115,10 +123,14 @@ public class CityCleanerGame extends Game {
         }
     }
 
-    public boolean handleBonus(Bonus bonus) {
+    public boolean isBonusFound(Bonus bonus) {
         if (player.intersectsWith(bonus)) {
             bonus.setFound(true);
-
+            found.add(bonus);
+            bonus.affect(player);
+            if (bonus instanceof TemporaryBonus) {
+                bonusProgress.add((TemporaryBonus<?>) bonus);
+            }
         }
         return bonus.isFound();
     }
@@ -130,8 +142,12 @@ public class CityCleanerGame extends Game {
                 handleProjectile((Projectile) e);
             }
         }
-        for (Bonus b : bonuses) {
-            handleBonus(b);
+        Iterator<Bonus> iterator = bonuses.iterator();
+        while (iterator.hasNext()) {
+            Bonus b = iterator.next();
+            if (isBonusFound(b)) {
+                iterator.remove();
+            }
         }
     }
 
@@ -153,15 +169,7 @@ public class CityCleanerGame extends Game {
 
     private void arraysUpdate() {
         EnemySpawner.getInstance().startSpawning(enemies, entities);
-        for (Bonus bonus : bonuses) {
-            if (bonus.isFound()) {
-                found.add(bonus);
-                bonus.affect(player);
-                if (bonus instanceof TemporaryBonus) {
-                    bonusProgress.add((TemporaryBonus<?>) bonus);
-                }
-            }
-        }
+
         registerBonuses();
 
         if (!enemies.isEmpty()) {

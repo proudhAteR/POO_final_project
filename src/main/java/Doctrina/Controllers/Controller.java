@@ -7,8 +7,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
 
+import Doctrina.Core.RenderingEngine;
 import Doctrina.Physics.Position;
-import Doctrina.Rendering.RenderingEngine;
 
 public abstract class Controller implements KeyListener, MouseListener {
     private final HashMap<Integer, Boolean> pressedKeys;
