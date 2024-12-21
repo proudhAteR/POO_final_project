@@ -9,7 +9,7 @@ import city_cleaner.Entities.Bonus.TemporaryBonus.TemporaryBonus;
 
 import java.util.Random;
 
-public class BonusFactory extends Factory{
+public class BonusFactory extends Factory {
 
     private static final Random random = new Random();
 
@@ -24,22 +24,28 @@ public class BonusFactory extends Factory{
     }
 
     private static TemporaryBonus<?> createRandomTemporaryBonus() {
-        switch (generateRandomValue(1)) {
+        int type = generateRandomValue(0, 2);
+        switch (type) {
             case 0:
-                return new SightBonus(generateRandomPosition(), generateRandomValue(2, 10), generateRandomValue(5, 10));
+                return new SightBonus(
+                        generateRandomPosition(),
+                        generateRandomValue(2, 10),
+                        generateRandomValue(5, 10));
             case 1:
-                return new SpeedBonus(generateRandomPosition(), generateRandomValue(2, 5), generateRandomValue(5, 10));
+                return new SpeedBonus(
+                        generateRandomPosition(),
+                        generateRandomValue(2, 5),
+                        generateRandomValue(5, 10));
             default:
-                return new SightBonus(generateRandomPosition(), generateRandomValue(2, 10), generateRandomValue(5, 10));
+                return new SightBonus(
+                        generateRandomPosition(),
+                        generateRandomValue(2, 10),
+                        generateRandomValue(5, 10));
         }
     }
 
     private static int generateRandomValue(int origin, int limit) {
         return random.nextInt(origin, limit) + 1;
-    } 
-
-    private static int generateRandomValue(int limit) {
-        return random.nextInt(limit) + 1;
     }
 
     private static PermanentBonus createRandomPermanentBonus() {

@@ -15,6 +15,7 @@ import Doctrina.Physics.*;
 import java.util.List;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.tritonus.share.ArraySet;
@@ -52,6 +53,7 @@ public class CityCleanerGame extends Game {
         actionsHandler();
         entitiesUpdate();
         arraysUpdate();
+        camera.update();
     }
 
     @Override
@@ -82,14 +84,20 @@ public class CityCleanerGame extends Game {
 
     private void renderBonusesBar(Canvas canvas) {
         final int BASE_X = 800;
-        int y = 40;
         final int BASE_WIDTH = 200;
+        int y = 40;
 
         for (TemporaryBonus<?> p : bonusProgress) {
-            Bar progressBar = new Bar(new Position(BASE_X - BASE_WIDTH, y), new Size(BASE_WIDTH, 20), p.getColor());
+            int duration = Math.max(1, p.getDuration() / 1000);
 
-            int barWidth = (p.getRemainingDur() * BASE_WIDTH) / (p.getDuration() / 1000);
+            Bar progressBar = new Bar(
+                    new Position(BASE_X - BASE_WIDTH, y),
+                    new Size(BASE_WIDTH, 20),
+                    p.getColor());
+
+            int barWidth = (p.getRemainingDur() * BASE_WIDTH) / duration;
             progressBar.getSize().setWidth(barWidth);
+
             progressBar.draw(canvas);
 
             y += 40;
@@ -149,13 +157,23 @@ public class CityCleanerGame extends Game {
                 }
             }
         }
-        if (Math.random() < 0.0075) {
-            bonuses.registerBonus(BonusFactory.createRandomBonus());
-        }
+        registerBonuses();
 
         if (!enemies.isEmpty()) {
             decomposeTheDead();
         }
+        emptyPlaceHolderArrays();
+        removeFinishedBonus();
+    }
+
+    private void registerBonuses() {
+        if (Math.random() < 0.0070) {
+            Bonus bonus = BonusFactory.createRandomBonus();
+            bonuses.registerBonus(bonus);
+        }
+    }
+
+    private void emptyPlaceHolderArrays() {
         if (!destroyed.isEmpty()) {
             DestroyableManager.destroyAll(destroyed);
             entities.removeAll(destroyed);
@@ -165,15 +183,16 @@ public class CityCleanerGame extends Game {
             Bonus.removeBonus(found);
             found.clear();
         }
-        for (Bonus b : found) {
-            if (!(b instanceof TemporaryBonus<?>)) {
-                continue;
-            }
-            if (((TemporaryBonus<?>) b).getRemainingDur() <= 0) {
-                bonusProgress.remove(b);
+    }
+
+    private void removeFinishedBonus() {
+        Iterator<TemporaryBonus<?>> iterator = bonusProgress.iterator();
+        while (iterator.hasNext()) {
+            TemporaryBonus<?> bonus = iterator.next();
+            if (bonus.getRemainingDur() <= 0) {
+                iterator.remove();
             }
         }
-        camera.update();
     }
 
     private void decomposeTheDead() {
@@ -188,21 +207,24 @@ public class CityCleanerGame extends Game {
 
     private void renderEntities(Canvas canvas) {
         for (MovableEntity e : entities) {
+            for (Step trace : ((MovableEntity) e).getSteps()) {
+                if ((e instanceof Enemy) && ((Enemy) e).isTouched()) {
+                    trace.placeStep(canvas);
+                }
+
+            }
             e.draw(canvas);
         }
     }
 
     private void renderDebugInfos(Canvas canvas) {
         for (StaticEntity e : entities) {
-            if (e instanceof Player) {
-                for (Step trace : ((MovableEntity) e).getSteps()) {
+            for (Step trace : ((MovableEntity) e).getSteps()) {
+                if (e instanceof Player) {
                     trace.placeStep(canvas);
                 }
-            } else {
-                if (!(e instanceof Projectile)) {
-                    e.getSight().draw(canvas);
-                }
             }
+            e.getSight().draw(canvas);
         }
         GameConfig.drawCamPosition(RenderingEngine.getInstance(), canvas);
         GameConfig.drawCamFocusPosition(RenderingEngine.getInstance(), canvas);

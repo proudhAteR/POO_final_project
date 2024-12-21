@@ -33,18 +33,24 @@ public class Canvas {
     }
 
     public void drawCircle(int x, int y, int height, int width, Color color) {
+        Paint originalPaint = graphics.getPaint();
         graphics.setPaint(color);
         graphics.fillOval(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
+        graphics.setPaint(originalPaint);
     }
 
     public void drawCircle(int x, int y, int height, int width, RadialGradientPaint gradientPaint) {
+        Paint originalPaint = graphics.getPaint();
         graphics.setPaint(gradientPaint);
         graphics.fillOval(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
+        graphics.setPaint(originalPaint);
     }
 
     public void drawRectangle(int x, int y, int width, int height, Paint paint) {
+        Paint originalPaint = graphics.getPaint();
         graphics.setPaint(paint);
         graphics.fillRect(x - camera.getPosition().getX(), y - camera.getPosition().getY(), width, height);
+        graphics.setPaint(originalPaint);
     }
 
     public void clip(Ellipse2D bounds) {
@@ -106,5 +112,9 @@ public class Canvas {
 
     public void drawCircle(Ellipse2D bounds) {
         drawCircle((int) bounds.getX(), (int) bounds.getY(), (int) bounds.getHeight(), (int) bounds.getWidth());
+    }
+
+    public void drawCircle(Ellipse2D bounds, Color color) {
+        drawCircle((int) bounds.getX(), (int) bounds.getY(), (int) bounds.getHeight(), (int) bounds.getWidth(), color);
     }
 }

@@ -6,10 +6,11 @@ import Doctrina.Rendering.Canvas;
 import java.awt.*;
 
 public class Step {
-    Position position;
-    StaticEntity entity;
+    private Position position;
+    private StaticEntity entity;
+    private Color color;
 
-    public Step(Position position, StaticEntity entity) {
+    public Step(Position position, StaticEntity entity, Color color) {
         this.position = position;
         this.entity = entity;
     }
@@ -19,7 +20,9 @@ public class Step {
     }
 
     public void placeStep(Canvas canvas) {
-        canvas.drawRectangle(getBounds(), Color.PINK);
+        if (!entity.died()) {
+            canvas.drawRectangle(getBounds(), color);
+        }
     }
 
     public Rectangle getBounds() {

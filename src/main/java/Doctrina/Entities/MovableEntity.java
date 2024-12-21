@@ -1,6 +1,9 @@
 package Doctrina.Entities;
 
 import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ import city_cleaner.Entities.Bonus.Bonus;
 public abstract class MovableEntity extends StaticEntity {
     protected int speed = 0;
     private long lastActionTime = 0;
+    private final int BASE_MOVEMENT_TIME = 20;
+    protected int lastMovementTime = BASE_MOVEMENT_TIME;
     private static final long COOLDOWN_TIME = 1000;
     protected static final int ANIMATION_SPEED = 10;
     protected int currentAnimationFrame = 1;
@@ -72,7 +77,7 @@ public abstract class MovableEntity extends StaticEntity {
         checkDeath();
 
         if (!isDying() && props.getRange() > 1) {
-            jumpBack(200, props.getForce());
+            jumpBack(250, props.getForce());
         }
     }
 
@@ -155,6 +160,32 @@ public abstract class MovableEntity extends StaticEntity {
             moved = (position.getX() != lastX || position.getY() != lastY);
             lastX = position.getX();
             lastY = position.getY();
+        }
+
+    }
+
+    private void resetMovementTime() {
+        lastMovementTime = BASE_MOVEMENT_TIME;
+    }
+
+    private void reduceMovementTime() {
+        lastMovementTime--;
+    }
+
+    private int getLastMovementTime() {
+        return lastMovementTime;
+    }
+
+    public void handleMovement() {
+        if (hasMoved()) {
+            reduceMovementTime();
+        }
+        if (getLastMovementTime() == 0) {
+            getSteps().add(new Step(new Position(getX(), getY()), this, isHuman() ? Color.pink : Color.red));
+            resetMovementTime();
+            if (getSteps().size() > getSpeed() + 2) {
+                getSteps().removeFirst();
+            }
         }
 
     }
@@ -330,7 +361,14 @@ public abstract class MovableEntity extends StaticEntity {
         if (b == null) {
             return false;
         }
-        return getHitBox().intersects(b.getBounds());
+
+        Ellipse2D ellipse = b.getBounds();
+        if (ellipse == null) {
+            return false;
+        }
+
+        Rectangle2D ellipseBounds = ellipse.getBounds2D();
+        return getHitBox().intersects(ellipseBounds);
     }
 
     public Direction getOppositeDirection() {

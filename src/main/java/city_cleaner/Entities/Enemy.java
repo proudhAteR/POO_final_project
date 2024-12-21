@@ -15,7 +15,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
 
     private final String ATTACKS_PATHS = "images/sprite_sheets/zombies/Attack.png";
     private final SpriteProperties ATTACKS_PROPS = new SpriteProperties(8, 32, 0);
-
+    private boolean touched;
     protected final String[] SPRITE_PATHS = {
             "images/sprite_sheets/zombies/z_walk.png",
             "images/sprite_sheets/zombies/z_idle.png",
@@ -28,6 +28,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
     };
 
     public Enemy() {
+        touched = false;
         canCollide(this);
         position = new Position(0, 0);
         size = new Size(32, 32);
@@ -110,6 +111,7 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
             super.update();
             move();
             updateAnimation();
+            handleMovement();
         }
     }
 
@@ -131,4 +133,16 @@ public class Enemy extends MovableEntity implements Hostile, Collidable {
         super.draw(canvas);
     }
 
+    @Override
+    public void getHurt(int number) {
+        super.getHurt(number);
+
+        if (!touched) {
+            touched = true;
+        }
+    }
+
+    public boolean isTouched() {
+        return touched;
+    }
 }

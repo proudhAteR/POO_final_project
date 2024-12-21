@@ -1,7 +1,7 @@
 package city_cleaner.Entities.Bonus;
 
 import java.awt.Color;
-import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
 import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,12 +45,14 @@ public abstract class Bonus {
 
     public void place(Canvas canvas) {
         if (!isFound) {
-            canvas.drawRectangle(getBounds(), color);
+            canvas.drawCircle(getBounds(), color);
         }
     }
 
-    public Rectangle getBounds() {
-        return new Rectangle(position.getX(), position.getY(), 6, 6);
+    public Ellipse2D getBounds() {
+        return new Ellipse2D.Double(
+                position.getX(), position.getY(),
+                6, 6);
     }
 
     public boolean isFound() {

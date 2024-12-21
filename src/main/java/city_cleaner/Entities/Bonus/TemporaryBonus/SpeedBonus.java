@@ -9,7 +9,7 @@ public final class SpeedBonus extends TemporaryBonus<Integer> {
 
     public SpeedBonus(Position pos, int value, int duration) {
         super(pos, value, duration);
-        this.color = Color.yellow;
+        this.color = Color.magenta;
         this.name = "Flash Speed";
     }
 
